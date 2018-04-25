@@ -5,6 +5,7 @@ import com.example.demo.domain.*;
 import java.util.List;
 
 public interface ShopRepository {
+
     List<Order> listOrders();
 
     List<Product> listProducts();
