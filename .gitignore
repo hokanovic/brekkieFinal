@@ -69,5 +69,8 @@ modules.xml
 .idea/misc.xml
 *.ipr
 
+#Photo
+*.jpg
+*.png
 
 # End of https://www.gitignore.io/api/intellij+all

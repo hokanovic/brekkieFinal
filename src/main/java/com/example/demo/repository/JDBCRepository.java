@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -11,6 +12,8 @@ import java.util.List;
 
 @Component
 public class JDBCRepository implements ShopRepository {
+    @Qualifier("dataSource")
+    @Autowired
     private DataSource dataSource;
     private List<Order> orderList = new ArrayList<>();
     private List<Product> productList = new ArrayList<>();
@@ -95,7 +98,7 @@ public class JDBCRepository implements ShopRepository {
     public List<BreakfastBag> listBreakfastBag() {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  id, name FROM BreakfastBags")) {
+             ResultSet rs = stmt.executeQuery("SELECT  id, name, description FROM \"Bag\"")) {
             while (rs.next()) breakfastBagsList.add(rsBreakfastBag(rs));
             return breakfastBagsList;
         } catch (SQLException e) {
@@ -268,7 +271,7 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new BrekfastBag from database
     private BreakfastBag rsBreakfastBag(ResultSet rs) throws SQLException {
-        return new BreakfastBag(rs.getInt("id"), rs.getString("name"));
+        return new BreakfastBag(rs.getInt("id"), rs.getString("name"), rs.getString("description"));
     }
 
     //Creates new ProductCategory from database

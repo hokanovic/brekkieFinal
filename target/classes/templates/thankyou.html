@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tack</title>
+</head>
+<body>
+<h2>Ordersförfrågan mottagen</h2>
+<p>Tack för din förfrågan, vi återkommer snart med mer information</p>
+
+<p th:text="'Företag: ' + ${orderForm.companyName}" />
+<p th:text="'Organisationsnummer: ' + ${orderForm.orgId}" />
+<p th:text="'Kontaktinformation: ' + ${orderForm.email} + ', ' + ${orderForm.phoneNumber}" />
+<p th:text="'Kontaktperson/referens: ' + ${orderForm.reference}" />
+<p th:text="'Leveransadress: ' + ${orderForm.deliveryAdress} + ', ' + ${orderForm.deliveryPostNumber}  + ' ' + ${orderForm.deliveryPostalTown}"/>
+<p th:text="'Faktureringsadress: ' + ${orderForm.invoiceAdress} + ', ' + ${orderForm.invoicePostNumber}  + ' ' + ${orderForm.invoicePostalTown}"/>
+<p th:text="'Allergier: ' + ${orderForm.allergy} + ', ' + ${orderForm.allergyMarking}" />
+<p th:text="'Leverandsdatum ' + ${orderForm.deliveryDate}" />
+<p th:text="'Leverandstid ' + ${orderForm.deliveryTime}" />
+
+</body>
+</html>
