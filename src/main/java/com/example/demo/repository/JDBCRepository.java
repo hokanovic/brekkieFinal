@@ -16,7 +16,6 @@ public class JDBCRepository implements ShopRepository {
     @Autowired
     private DataSource dataSource;
 
-
     @Override
     //Creates a list of all Orders from database
     public List<Order> listOrders() {
