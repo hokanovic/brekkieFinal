@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <title>beställ frukost</title>
+</head>
+<body ng-app="app">
+<div class="form">
+<form ng-controller="formController" action="#" th:action="@{/frukost}" th:object="${orderForm}" method="post">
+    <div class="form-row">
+    <div class="form-group col-md-4">
+        <label for="inputCompanyName">Företagsnamn</label>
+        <input type="text" th:field="*{companyName}" class="form-control" id="inputCompanyName" placeholder="Företagsnamn">
+    </div>
+    <div class="form-group col-md-4">
+        <label for="kontaktPerson">Referens</label>
+        <input type="text" th:field="*{reference}" class="form-control" id="kontaktPerson" placeholder="Kontaktperson/referensnummer">
+    </div>
+</div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputEmail">Epost</label>
+            <input type="email" th:field="*{email}"class="form-control" id="inputEmail" placeholder="Epost">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="kontaktInfo">Telefonnummer?</label>
+            <input type="text" th:field="*{phoneNumber}" class="form-control" id="kontaktInfo" placeholder="Telefonnummer">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputEmail">Leveransdag</label>
+            <input type="datetime-local" th:field="*{deliveryDate}"class="form-control" id="deliveryDate" placeholder="">
+        </div>
+        <div class="form-group col-md-4">
+            <label for="kontaktInfo">Leveranstid</label>
+            <input type="time" th:field="*{deliveryTime}" class="form-control" id="deliveryTime" placeholder="">
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="deliveryAdress">Leveransadress</label>
+        <input type="text" th:field="*{deliveryAdress}" class="form-control" id="deliveryAdress" placeholder="Adress">
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputCity">Stad</label>
+            <input type="text" th:field="*{deliveryPostalTown}" class="form-control" id="inputCity" placeholder="Stad">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputZip">Postnummer</label>
+            <input type="text" th:field="*{deliveryPostNumber}" class="form-control" id="inputZip" placeholder="Postnummer">
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputOrgnr">Organisationsnummer</label>
+            <input type="text" th:field="*{orgId}" class="form-control" id="inputOrgnr" placeholder="Organisationsnnummer">
+        </div>
+
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" ng-click="checkboxClick()" type="checkbox" value="" id="defaultCheck1"  >
+            <label class="form-check-label" for="defaultCheck1">
+                Leveransadressen är samma som faktureringsadressen
+            </label>
+        </div>
+    </div>
+    <div class="fakturaAdress" ng-show="hide">
+        <div class="form-group col-md-6">
+            <label for="deliveryAdress">Faktureringsadress</label>
+            <input type="text" class="form-control" id="deliveryAdress" placeholder="Adress">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputCity">Stad</label>
+                <input type="text" class="form-control" id="inputCity" placeholder="Stad">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="inputZip">Postnummer</label>
+                <input type="text" class="form-control" id="inputZip" placeholder="Postnummer">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-check form-check-inline">
+        <span>Allergier?</span>
+        <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergi" name="inlineRadioOptions"   value="Ja">
+        <label class="form-check-label" for="allergi">Ja</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" ng-click="radioClick('hide')" type="radio" id="allergi" name="inlineRadioOptions"  value="Nej">
+        <label class="form-check-label" for="allergi">Nej</label>
+    </div>
+
+        <div ng-if='show === true' class="form-group">
+            <textarea class="form-control" id="allergyMessage" rows="3" placeholder="Ange allergier här"></textarea>
+        </div>
+    <div class="form-row">
+    <button type="submit" class="btn btn-primary">Beställ</button>
+    </div>
+
+</form>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
