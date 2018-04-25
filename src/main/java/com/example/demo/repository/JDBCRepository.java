@@ -19,7 +19,7 @@ public class JDBCRepository implements ShopRepository {
     private List<Product> productList = new ArrayList<>();
     private List<Customer> customerList = new ArrayList<>();
     private List<OrderLines> orderLinesList = new ArrayList<>();
-    private List<BreakfastBag> breakfastBagsList = new ArrayList<>();
+//    private List<BreakfastBag> breakfastBagsList = new ArrayList<>();
     private List<ProductCategory> productCategoryList = new ArrayList<>();
     private List<BreakfastBag_ProductCategory> breakfastBag_ProductCategoryList = new ArrayList<>();
 
@@ -96,6 +96,7 @@ public class JDBCRepository implements ShopRepository {
     //Creates a list of all BreakfastBags from database
     @Override
     public List<BreakfastBag> listBreakfastBag() {
+        List<BreakfastBag> breakfastBagsList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT  id, name, description FROM \"Bag\"")) {
