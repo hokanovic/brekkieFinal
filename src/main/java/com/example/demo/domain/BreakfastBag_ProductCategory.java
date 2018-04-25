@@ -7,8 +7,8 @@ public class BreakfastBag_ProductCategory {
 
     public BreakfastBag_ProductCategory(int id, int breakfastbag_FK, int productCategory_FK) {
         this.id = id;
-        Breakfastbag_FK = breakfastbag_FK;
-        ProductCategory_FK = productCategory_FK;
+        this.Breakfastbag_FK = breakfastbag_FK;
+        this.ProductCategory_FK = productCategory_FK;
     }
 
     public int getId() {

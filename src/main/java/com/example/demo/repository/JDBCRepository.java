@@ -15,22 +15,16 @@ public class JDBCRepository implements ShopRepository {
     @Qualifier("dataSource")
     @Autowired
     private DataSource dataSource;
-    private List<Order> orderList = new ArrayList<>();
-    private List<Product> productList = new ArrayList<>();
-    private List<Customer> customerList = new ArrayList<>();
-    private List<OrderLines> orderLinesList = new ArrayList<>();
-//    private List<BreakfastBag> breakfastBagsList = new ArrayList<>();
-    private List<ProductCategory> productCategoryList = new ArrayList<>();
-    private List<BreakfastBag_ProductCategory> breakfastBag_ProductCategoryList = new ArrayList<>();
 
     @Override
     //Creates a list of all Orders from database
     public List<Order> listOrders() {
+        List<Order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, customerId, orderDate," +
                      "paymentOption, marking, " +
-                     "experationDate, deliveryDate, deliveryTime FROM Order")) {
+                     "experationDate, deliveryDate, deliveryTime FROM \"Order\"")) {
             while (rs.next()) orderList.add(rsOrder(rs));
             return orderList;
         } catch (SQLException e) {
@@ -42,23 +36,25 @@ public class JDBCRepository implements ShopRepository {
     @Override
     //Creates a list of all Producs from database
     public List<Product> listProducts() {
+        List<Product> productList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, name, productCategory FROM Product")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, name, productCategory FROM \"Product\"")) {
             while (rs.next()) productList.add(rsProduct(rs));
             return productList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
     //Creates a list of all Customers from database
+
     @Override
     public List<Customer> listCustomers() {
+        List<Customer> customerList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT  id,email, orgId, adress, deliveryAdress," +
-                     " contactInfo, name FROM Customer")) {
+                     " contactInfo, name FROM \"Customer\"")) {
             while (rs.next()) customerList.add(rsCustomer(rs));
             return customerList;
         } catch (SQLException e) {
@@ -69,10 +65,11 @@ public class JDBCRepository implements ShopRepository {
     //Creates a list of all OrderLines from database
     @Override
     public List<OrderLines> listOrderLines() {
+        List<OrderLines> orderLinesList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT  id, order_id," +
-                     "breakfastBasket_id, quantity FROM OrderLines")) {
+                     "breakfastBasket_id, quantity FROM \"OrderLines\"")) {
             while (rs.next()) orderLinesList.add(rsOrderLines(rs));
             return orderLinesList;
         } catch (SQLException e) {
@@ -83,9 +80,10 @@ public class JDBCRepository implements ShopRepository {
     //Creates a list of all ProductCategory from database
     @Override
     public List<ProductCategory> listProductCategory() {
+        List<ProductCategory> productCategoryList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  id, name FROM OrderLines")) {
+             ResultSet rs = stmt.executeQuery("SELECT  id, name FROM \"OrderLines\"")) {
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
             return productCategoryList;
         } catch (SQLException e) {
@@ -110,11 +108,12 @@ public class JDBCRepository implements ShopRepository {
     //Creates a list of all BreakfastBag_ProductCategorys from database
     @Override
     public List<BreakfastBag_ProductCategory> listbreakfastBag_ProductCategory() {
+        List<BreakfastBag_ProductCategory> breakfastBag_ProductCategoryList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT  id, " +
                      "Breakfastbag_FK, " +
-                     "ProductCategory_FK FROM BreakfastBag_ProductCategory")) {
+                     "ProductCategory_FK FROM \"BreakfastBag_ProductCategory\"")) {
             while (rs.next()) breakfastBag_ProductCategoryList.add(rsBreakfastBag_ProductCategoryList(rs));
             return breakfastBag_ProductCategoryList;
         } catch (SQLException e) {
@@ -127,7 +126,7 @@ public class JDBCRepository implements ShopRepository {
     public void addOrder(int id, int customerId, String orderDate, String paymentOption, String marking,
                          String experationDate, String deliveryDate, String deliveryTime) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO order(id, customerID, orderDate, paymentOption," +
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"order\"(id, customerID, orderDate, paymentOption," +
                      "marking, experationDate, deliveryDate, deliveryTime) VALUES (?,?,?,?,?,?,?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setInt(2, customerId);
@@ -148,7 +147,7 @@ public class JDBCRepository implements ShopRepository {
     @Override
     public void addProduct(int id, String name, int productCategory_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO product(id, name, productCategory_id) " +
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"product\"(id, name, productCategory_id) " +
                      "VALUES (?,?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setString(2, name);
@@ -165,7 +164,7 @@ public class JDBCRepository implements ShopRepository {
                             String contactInfo, String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "Customer(id, email, orgId, adress, deliveryAdress, contactInfo, name)" +
+                     "\"Customer\"(id, email, orgId, adress, deliveryAdress, contactInfo, name)" +
                      "VALUES (?,?,?,?,?,?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setString(2, email);
@@ -185,7 +184,7 @@ public class JDBCRepository implements ShopRepository {
     public void addOrderLines(int id, int order_id, int breakfastBasket_id, int quantity) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "OrderLines(id, order_id, breakfastBasket_id, quantity " +
+                     "\"OrderLines\"(id, order_id, breakfastBasket_id, quantity " +
                      "VALUES (?,?,?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setInt(2, order_id);
@@ -202,7 +201,7 @@ public class JDBCRepository implements ShopRepository {
     public void addBreakfastBag(int id, String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "BreakfastBag(id, name VALUES (?,?) ", new String[]{"id"})) {
+                     "\"BreakfastBag\"(id, name VALUES (?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.executeUpdate();
@@ -216,7 +215,7 @@ public class JDBCRepository implements ShopRepository {
     public void addProductCategory(int id, String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "ProductCategory(id, name VALUES (?,?) ", new String[]{"id"})) {
+                     "\"ProductCategory\"(id, name VALUES (?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.executeUpdate();
@@ -230,7 +229,7 @@ public class JDBCRepository implements ShopRepository {
     public void addBreakfastBag_ProductCategory(int id, int Breakfastbag_FK,int ProductCategory_FK) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "BreakfastBag_ProductCategory(id, BreakfastBag_FK, ProductCategory_FK" +
+                     "\"BreakfastBag_ProductCategory\"(id, BreakfastBag_FK, ProductCategory_FK" +
                      " VALUES (?,?,?) ", new String[]{"id"})) {
             ps.setInt(1, id);
             ps.setInt(2, Breakfastbag_FK);
