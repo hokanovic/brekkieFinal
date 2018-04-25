@@ -37,4 +37,9 @@ public class brekkieController {
         else
             return "thankyou";
     }
+
+    @GetMapping("/dashboardOrders")
+    public ModelAndView dashboardOrders(){
+        return new ModelAndView("dashboardOrders");
+    }
 }
