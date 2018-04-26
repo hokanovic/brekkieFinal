@@ -20,6 +20,20 @@ public class JDBCRepository implements ShopRepository {
 
     @Override
     //Creates a list of all Orders from database
+    public List<OrderStatus> listOrderStatuses() {
+        List<OrderStatus> orderStatusList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM \"OrderStatus\"")) {
+            while (rs.next()) orderStatusList.add(rsOrderStatus(rs));
+            return orderStatusList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    //Creates a list of all Orders from database
     public List<Order> listOrders() {
         List<Order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
@@ -49,6 +63,24 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersTextP(int OrderStatus) {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O where " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\""+
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"")) {
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     //Creates a list of all Producs from database
@@ -278,6 +310,11 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt("paymentMethod_id"),
                 rs.getInt("customer_id"),
                 rs.getInt("orderstatus_id"));
+    }
+
+    //Creates new Orders from database
+    private OrderStatus rsOrderStatus(ResultSet rs) throws SQLException {
+        return new OrderStatus(rs.getInt("id"), rs.getString("name"));
     }
 
     //Creates new Orders from database

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.sql.Date;
@@ -63,6 +64,23 @@ public class brekkieController {
 
     @GetMapping("/dashboardOrdersText")
     public ModelAndView brekkiedashboardOrdersText(){
-        return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("Orders", shopRepository.listOrdersText())
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
+
+    @GetMapping("/dashboardOrdersTextP")
+    public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus){
+
+
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("Orders", shopRepository.listOrdersText())
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
+
+    @GetMapping("/dashboardCustomers")
+    public ModelAndView brekkiedashboardCustomers(){
+        return new ModelAndView("dashboardCustomers").addObject("Customers", shopRepository.listCustomers());
+    }
+
 }
