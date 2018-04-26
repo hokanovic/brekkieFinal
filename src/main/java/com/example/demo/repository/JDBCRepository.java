@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
+import com.example.demo.domain.view.v_dashboard_order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,24 @@ public class JDBCRepository implements ShopRepository {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM \"Order\"")) {
             while (rs.next()) orderList.add(rsOrder(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersText() {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\""+
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"")) {
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
             return orderList;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -259,6 +278,24 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt("paymentMethod_id"),
                 rs.getInt("customer_id"),
                 rs.getInt("orderstatus_id"));
+    }
+
+    //Creates new Orders from database
+    private v_dashboard_order rsv_dashboard_order(ResultSet rs) throws SQLException {
+        return new v_dashboard_order(
+                rs.getInt("id"),
+                rs.getDate("creationdate"),
+                rs.getString("additionaltext"),
+                rs.getString("allergy"),
+                rs.getString("deliveryaddress"),
+                rs.getString("deliveryaddresspostalcode"),
+                rs.getString("deliveryaddresspostaltown"),
+                rs.getString("invoiceaddress"),
+                rs.getString("invoiceaddresspostalcode"),
+                rs.getString("invoiceaddresspostaltown"),
+                rs.getString(11),
+                rs.getString(12),
+                rs.getString(13));
     }
 
     //Creates new Products from database

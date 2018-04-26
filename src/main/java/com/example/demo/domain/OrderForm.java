@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import com.example.demo.Controller.EmailController;
+
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Time;
@@ -11,6 +13,7 @@ public class OrderForm {
     @Size(min=2, max=50)
     private String companyName;
     @NotEmpty
+
     private String orgId;
     @NotEmpty
     @Size(min=2, max=30)

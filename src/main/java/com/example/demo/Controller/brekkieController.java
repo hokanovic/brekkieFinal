@@ -19,6 +19,9 @@ public class brekkieController {
     @Autowired
     private ShopRepository shopRepository;
 
+    @Autowired
+    private EmailController emailService;
+
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
@@ -32,8 +35,11 @@ public class brekkieController {
     }
 
     @PostMapping("/frukost")
+
     public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+        emailService.sendMail(orderForm);
+        if (bindingResult.hasErrors()){
             return "orderForm";
         } else {
             java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -50,8 +56,13 @@ public class brekkieController {
 
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders(){
-    
+
         return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
     }
 
+
+    @GetMapping("/dashboardOrdersText")
+    public ModelAndView brekkiedashboardOrdersText(){
+        return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+    }
 }
