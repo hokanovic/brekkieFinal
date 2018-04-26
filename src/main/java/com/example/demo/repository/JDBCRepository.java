@@ -131,8 +131,8 @@ public class JDBCRepository implements ShopRepository {
                          String invoiceaddresspostalcode, String invoiceaddresspostaltown,
                          int PaymentMethod_id, int Customer_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"order\"(id, customerID, orderDate, paymentOption," +
-                     "marking, experationDate, deliveryDate, deliveryTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ", new String[]{"id"})) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (id, customerID, orderDate, paymentOption," +
+                     "marking, experationDate, deliveryDate, deliveryTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ")) {
             ps.setInt(1, id);
             ps.setDate(2, creationdate);
             ps.setString(3, additionaltext);
@@ -156,8 +156,8 @@ public class JDBCRepository implements ShopRepository {
     @Override
     public void addProduct(int id, String name, int productCategory_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"product\"(id, name, productCategory_id) " +
-                     "VALUES (?,?,?) ", new String[]{"id"})) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (id, name, productCategory_id) " +
+                     "VALUES (?,?,?) ")) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.setInt(3, productCategory_id);
@@ -172,9 +172,9 @@ public class JDBCRepository implements ShopRepository {
     public void addCustomer(int id, String orgnr, String companyname, String contactperson, String mail) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "\"Customer\"(id, orgnr, " +
+                     "\"Customer\" (id, orgnr, " +
                      "companyname, contactperson, mail)" +
-                     "VALUES (?,?,?,?,?) ", new String[]{"id"})) {
+                     "VALUES (?,?,?,?,?) ")) {
             ps.setInt(1, id);
             ps.setString(2, orgnr);
             ps.setString(3, companyname);
@@ -191,8 +191,8 @@ public class JDBCRepository implements ShopRepository {
     public void addOrderLine(int id, int order_id, int bag_id, int quantity) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "\"OrderLines\"(id, order_id, bag_id, quantity " +
-                     "VALUES (?,?,?,?) ", new String[]{"id"})) {
+                     "\"OrderLine\" (id, order_id, bag_id, quantity) " +
+                     "VALUES (?,?,?,?) ")) {
             ps.setInt(1, id);
             ps.setInt(2, order_id);
             ps.setInt(3, bag_id);
@@ -222,7 +222,7 @@ public class JDBCRepository implements ShopRepository {
     public void addProductCategory(int id, String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "\"ProductCategory\"(id, name VALUES (?,?) ", new String[]{"id"})) {
+                     "\"ProductCategory\" (id, name VALUES (?,?) ")) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.executeUpdate();
@@ -236,8 +236,8 @@ public class JDBCRepository implements ShopRepository {
     public void addBag_ProductCategory(int bag_id, int productCategory_id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "bag_id, productCategory_id" +
-                     " VALUES (?,?) ", new String[]{"id"})) {
+                     "\"Bag_ProductCategory\" (bag_id, productCategory_id)" +
+                     " VALUES (?,?) ")) {
             ps.setInt(1, bag_id);
             ps.setInt(2, productCategory_id);
             ps.executeUpdate();
