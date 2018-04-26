@@ -222,7 +222,7 @@ public class JDBCRepository implements ShopRepository {
     public void addProductCategory(int id, String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "\"ProductCategory\" (id, name VALUES (?,?) ")) {
+                     "\"ProductCategory\" (id, name) VALUES (?,?) ")) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.executeUpdate();

@@ -21,7 +21,6 @@ public class brekkieController {
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
-        shopRepository.addBag(5,"Katt",150);
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
