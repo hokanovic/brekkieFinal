@@ -3,12 +3,12 @@ package com.example.demo.domain;
 public class Product {
     private int id;
     private String name;
-    private int productCategori_id;
+    private int productCategory_id;
 
-    public Product(int id, String name, int productCategori_id) {
+    public Product(int id, String name, int productCategory_id) {
         this.id = id;
         this.name = name;
-        this.productCategori_id = productCategori_id;
+        this.productCategory_id = productCategory_id;
     }
 
     public int getId() {
@@ -28,10 +28,10 @@ public class Product {
     }
 
     public int getProductCategori_id() {
-        return productCategori_id;
+        return productCategory_id;
     }
 
-    public void setProductCategori_id(int productCategori_id) {
-        this.productCategori_id = productCategori_id;
+    public void setProductCategori_id(int productCategory_id) {
+        this.productCategory_id = productCategory_id;
     }
 }

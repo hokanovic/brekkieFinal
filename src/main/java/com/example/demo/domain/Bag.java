@@ -1,14 +1,14 @@
 package com.example.demo.domain;
 
-public class BreakfastBag {
+public class Bag {
     private int id;
     private String name;
-    private String description;
+    private int price;
 
-    public BreakfastBag(int id, String name, String description) {
+    public Bag(int id, String name, int price) {
         this.id = id;
         this.name = name;
-        this.description=description;
+        this.price = price;
     }
 
     public int getId() {
@@ -27,11 +27,11 @@ public class BreakfastBag {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public int getPrice() {
+        return price;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPrice(int price) {
+        this.price = price;
     }
 }
