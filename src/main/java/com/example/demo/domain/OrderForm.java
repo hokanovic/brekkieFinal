@@ -1,15 +1,19 @@
 package com.example.demo.domain;
 
+import com.example.demo.Controller.EmailController;
+
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Time;
 
 public class OrderForm {
 
+
+
     @NotNull(message = "Måste anges")
     @NotEmpty(message = "Måste anges")
     @Size(min=2, max=50, message = "Företagsnamnet måste bestå av minst 2 tecken")
-    private String companyName;
+    private String companyName = "";
 
     private String orgId;
     @NotNull(message = "Måste anges")

@@ -29,6 +29,9 @@ public class brekkieController {
     @Autowired
     private ShopRepository shopRepository;
 
+    @Autowired
+    private EmailController emailService;
+
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
@@ -42,6 +45,8 @@ public class brekkieController {
 
     @PostMapping("/frukost")
     public String checkPersonInfo(@Valid OrderForm orderForm, BindingResult bindingResult, Model model) {
+
+        emailService.sendMail(orderForm);
         if (bindingResult.hasErrors()){
             return "orderForm";
         }
