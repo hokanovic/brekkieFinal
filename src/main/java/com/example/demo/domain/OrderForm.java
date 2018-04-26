@@ -5,48 +5,51 @@ import com.example.demo.Controller.EmailController;
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalTime;
 
 public class OrderForm {
 
-    @NotEmpty(message = "Måste anges")
-    @Size(min=2, max=50, message = "Företagsnamnet måste bestå av minst 2 tecken")
-    private String companyName = "";
+    @NotEmpty
+    @Size(min=2, max=50)
+    private String companyName;
+    @NotEmpty
 
     private String orgId;
-    @NotEmpty(message = "Måste anges")
+    @NotEmpty
     @Size(min=2, max=30)
     private String reference;
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$", message= "Ange ett giltigt telefonnummer")
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
     private String phoneNumber;
-    @NotEmpty(message = "Måste anges")
+    @NotEmpty
     @Email
     private String email;
-    @NotEmpty(message = "Måste anges")
+
+
     private String invoiceAdress;
-    @NotEmpty(message = "Måste anges")
+
     private String invoicePostalTown;
-    @NotEmpty(message = "Måste anges")
-    @Pattern.List({
-        @Pattern(regexp = "\\d{3}[ ]?\\d{2}", message = "Ange ett giltigt postnummer"),
-        @Pattern(regexp = "\\d{5}", message = "Ange ett giltigt postnummer")})
+//    @Pattern.List({
+//        @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
+//        @Pattern(regexp = "\\d{5}")})
     private String invoicePostNumber;
-    @NotEmpty(message = "Måste anges")
+    @NotEmpty
     private String deliveryAdress;
     @NotEmpty
     private String deliveryPostalTown;
-    @NotEmpty(message = "Måste anges")
-    @Pattern.List({
-            @Pattern(regexp = "\\d{3}[ ]?\\d{2}", message = "Ange ett giltigt postnummer"),
-            @Pattern(regexp = "\\d{5}", message = "Ange ett giltigt postnummer")})
+    @NotEmpty
+//    @Pattern.List({
+//            @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
+//            @Pattern(regexp = "\\d{5}")})
     private String deliveryPostNumber;
-    @NotNull(message = "Ange om allergier förekommer")
+    @NotNull
     private boolean allergy;
 
-    private String allergymarking;
-
+    private String allergyMarking;
+    @NotNull
     private Date deliveryDate;
-
-    private Time deliveryTime;
+    @NotNull
+    private LocalTime deliveryTime;
+    private String additionalText;
 
     public OrderForm() {
     }
@@ -56,8 +59,8 @@ public class OrderForm {
                      String email, String invoiceAdress,
                      String invoicePostalTown, String invoicePostNumber,
                      String deliveryAdress, String deliveryPostalTown,
-                     String deliveryPostNumber, boolean allergy, String allergymarking,
-                     Date deliveryDate, Time deliveryTime) {
+                     String deliveryPostNumber, boolean allergy, String allergyMarking,
+                     Date deliveryDate, LocalTime deliveryTime) {
         this.companyName = companyName;
         this.orgId = orgId;
         this.reference = reference;
@@ -70,7 +73,7 @@ public class OrderForm {
         this.deliveryPostalTown = deliveryPostalTown;
         this.deliveryPostNumber = deliveryPostNumber;
         this.allergy = allergy;
-        this.allergymarking = allergymarking;
+        this.allergyMarking = allergyMarking;
         this.deliveryDate = deliveryDate;
         this.deliveryTime = deliveryTime;
     }
@@ -171,12 +174,12 @@ public class OrderForm {
         this.allergy = allergy;
     }
 
-    public String getAllergymarking() {
-        return allergymarking;
+    public String getAllergyMarking() {
+        return allergyMarking;
     }
 
-    public void setAllergymarking(String allergymarking) {
-        this.allergymarking = allergymarking;
+    public void setAllergyMarking(String allergymarking) {
+        this.allergyMarking = allergymarking;
     }
 
     public Date getDeliveryDate() {
@@ -187,11 +190,19 @@ public class OrderForm {
         this.deliveryDate = deliveryDate;
     }
 
-    public Time getDeliveryTime() {
+    public LocalTime getDeliveryTime() {
         return deliveryTime;
     }
 
-    public void setDeliveryTime(Time deliveryTime) {
+    public void setDeliveryTime(LocalTime deliveryTime) {
         this.deliveryTime = deliveryTime;
+    }
+
+    public String getAdditionalText() {
+        return additionalText;
+    }
+
+    public void setAdditionalText(String additionalText) {
+        this.additionalText = additionalText;
     }
 }
