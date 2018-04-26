@@ -8,34 +8,38 @@ import java.sql.Time;
 
 public class OrderForm {
 
-
-
-    @NotNull(message = "Måste anges")
     @NotEmpty(message = "Måste anges")
     @Size(min=2, max=50, message = "Företagsnamnet måste bestå av minst 2 tecken")
     private String companyName = "";
 
     private String orgId;
-    @NotNull(message = "Måste anges")
+    @NotEmpty(message = "Måste anges")
     @Size(min=2, max=30)
     private String reference;
-    //@Digits(message = "Ange ett giltigt telefonnummer")
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$", message= "Ange ett giltigt telefonnummer")
     private String phoneNumber;
-    @NotNull(message = "Måste anges")
+    @NotEmpty(message = "Måste anges")
     @Email
     private String email;
+    @NotEmpty(message = "Måste anges")
     private String invoiceAdress;
+    @NotEmpty(message = "Måste anges")
     private String invoicePostalTown;
+    @NotEmpty(message = "Måste anges")
+    @Pattern.List({
+        @Pattern(regexp = "\\d{3}[ ]?\\d{2}", message = "Ange ett giltigt postnummer"),
+        @Pattern(regexp = "\\d{5}", message = "Ange ett giltigt postnummer")})
     private String invoicePostNumber;
-    @NotNull(message = "Måste anges")
+    @NotEmpty(message = "Måste anges")
     private String deliveryAdress;
-    @NotNull
+    @NotEmpty
     private String deliveryPostalTown;
-    @NotNull(message = "Måste anges")
-    //@Digits(message = "Ange ett giltigt postnummer")
-    @Size(min=5, max=6, message = "Ange ett giltigt postnummer")
+    @NotEmpty(message = "Måste anges")
+    @Pattern.List({
+            @Pattern(regexp = "\\d{3}[ ]?\\d{2}", message = "Ange ett giltigt postnummer"),
+            @Pattern(regexp = "\\d{5}", message = "Ange ett giltigt postnummer")})
     private String deliveryPostNumber;
-    @NotNull(message = "Måste klicka i om allergier förekommer")
+    @NotNull(message = "Ange om allergier förekommer")
     private boolean allergy;
 
     private String allergymarking;

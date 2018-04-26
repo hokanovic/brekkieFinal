@@ -1,9 +1,8 @@
-package com.example.demo.domain;
+package com.example.demo.domain.view;
 
 import java.sql.Date;
-import java.sql.Time;
 
-public class Order {
+public class v_dashboard_order {
     private int id;
     private Date creationdate;
     private String additionaltext;
@@ -14,14 +13,11 @@ public class Order {
     private String invoiceaddress;
     private String invoiceaddresspostalcode;
     private String invoiceaddresspostaltown;
-    private int PaymentMethod_id;
-    private int Customer_id;
-    private int OrderStatus_id;
+    private String PaymentMethod;
+    private String Customer;
+    private String OrderStatus;
 
-    public Order(int id, Date creationdate, String additionaltext, String allergy,
-                 String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
-                 String invoiceaddress, String invoiceaddresspostalcode,
-                 String invoiceaddresspostaltown, int paymentMethod_id, int customer_id, int OrderStatus_id) {
+    public v_dashboard_order(int id, Date creationdate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus) {
         this.id = id;
         this.creationdate = creationdate;
         this.additionaltext = additionaltext;
@@ -32,18 +28,11 @@ public class Order {
         this.invoiceaddress = invoiceaddress;
         this.invoiceaddresspostalcode = invoiceaddresspostalcode;
         this.invoiceaddresspostaltown = invoiceaddresspostaltown;
-        this.PaymentMethod_id = paymentMethod_id;
-        this.Customer_id = customer_id;
-        this.OrderStatus_id = OrderStatus_id;
+        PaymentMethod = paymentMethod;
+        Customer = customer;
+        OrderStatus = orderStatus;
     }
 
-    public int getOrderStatus_id() {
-        return OrderStatus_id;
-    }
-
-    public void setOrderStatus_id(int orderStatus_id) {
-        OrderStatus_id = orderStatus_id;
-    }
 
     public int getId() {
         return id;
@@ -125,19 +114,27 @@ public class Order {
         this.invoiceaddresspostaltown = invoiceaddresspostaltown;
     }
 
-    public int getPaymentMethod_id() {
-        return PaymentMethod_id;
+    public String getPaymentMethod() {
+        return PaymentMethod;
     }
 
-    public void setPaymentMethod_id(int paymentMethod_id) {
-        PaymentMethod_id = paymentMethod_id;
+    public void setPaymentMethod(String paymentMethod) {
+        PaymentMethod = paymentMethod;
     }
 
-    public int getCustomer_id() {
-        return Customer_id;
+    public String getCustomer() {
+        return Customer;
     }
 
-    public void setCustomer_id(int customer_id) {
-        Customer_id = customer_id;
+    public void setCustomer(String customer) {
+        Customer = customer;
+    }
+
+    public String getOrderStatus() {
+        return OrderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        OrderStatus = orderStatus;
     }
 }

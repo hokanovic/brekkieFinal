@@ -35,12 +35,13 @@ public class brekkieController {
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
+        shopRepository.addBag(5,"Katt",150);
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
     @GetMapping("/alternativ")
     public ModelAndView seeBreakfastAlternatives(){
-        return new ModelAndView("displayBags").addObject("BreakfastBag", shopRepository.listBreakfastBag());
+        return new ModelAndView("displayBags").addObject("BreakfastBag", shopRepository.listBags());
     }
 
     @PostMapping("/frukost")
@@ -57,17 +58,11 @@ public class brekkieController {
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders(){
 
+        return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
+    }
 
-
-        Order2 order1 = new Order2(1,1,"2018-02-02","1",false,"additionaltext","2018-08-08",LocalDate.of(2012, Month.DECEMBER, 12), LocalTime.of(12,13,14));
-        Order2 order2 = new Order2(1,1,"2018-02-02","1",false,"additionaltext","2018-08-08",LocalDate.of(2012, Month.DECEMBER, 12), LocalTime.of(12,13,14));
-        Order2 order3 = new Order2(1,1,"2018-02-02","1",false,"additionaltext","2018-08-08",LocalDate.of(2012, Month.DECEMBER, 12), LocalTime.of(12,13,14));
-        List<Order2> orderList = new ArrayList<>();
-        orderList.add(order1);
-        orderList.add(order2);
-        orderList.add(order3);
-
-//        return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
-        return new ModelAndView("dashboardOrders").addObject("Orders", orderList);
+    @GetMapping("/dashboardOrdersText")
+    public ModelAndView brekkiedashboardOrdersText(){
+        return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
     }
 }
