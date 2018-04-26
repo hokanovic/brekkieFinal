@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    font-family: 'Lekton', sans-serif;
 }
 
 .bg{
@@ -9,8 +10,18 @@ body, html {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    display:flex;
+    justify-content: center;
+
 }
 
 .jumbotron {
-    background: none;
+    background-color: rgba(255,255,255,0.9);
+    width: 75%;
+
+    height: 60vh;
+
+}
+#errorMessage {
+    color: darkred;
 }

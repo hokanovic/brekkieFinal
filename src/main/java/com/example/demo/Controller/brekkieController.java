@@ -1,5 +1,7 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.Order;
+import com.example.demo.domain.Order2;
 import com.example.demo.domain.OrderForm;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 @Controller
 public class brekkieController {
 
     @Autowired
     private ShopRepository shopRepository;
+
+    @Autowired
+    private EmailController emailService;
 
 
     @GetMapping("/frukost")
@@ -31,6 +45,8 @@ public class brekkieController {
 
     @PostMapping("/frukost")
     public String checkPersonInfo(@Valid OrderForm orderForm, BindingResult bindingResult, Model model) {
+
+        emailService.sendMail(orderForm);
         if (bindingResult.hasErrors()){
             return "orderForm";
         }
@@ -39,7 +55,13 @@ public class brekkieController {
     }
 
     @GetMapping("/dashboardOrders")
-    public ModelAndView dashboardOrders(){
-        return new ModelAndView("dashboardOrders");
+    public ModelAndView brekkiedashboardOrders(){
+
+        return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
+    }
+
+    @GetMapping("/dashboardOrdersText")
+    public ModelAndView brekkiedashboardOrdersText(){
+        return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
     }
 }
