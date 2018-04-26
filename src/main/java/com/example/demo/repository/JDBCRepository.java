@@ -202,13 +202,12 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
+    //insert into "Bag" values (1, 'Liten',100);
     //Adds Bag to database
     @Override
     public void addBag(int id, String name, int price) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "\"BreakfastBag\"(id, name, price VALUES (?,?,?) ", new String[]{"id"})) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Bag\" (id, name, price) VALUES (?,?,?)")) {
             ps.setInt(1, id);
             ps.setString(2, name);
             ps.setInt(3, price);
