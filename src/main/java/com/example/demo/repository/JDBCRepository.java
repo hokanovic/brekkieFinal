@@ -32,6 +32,7 @@ public class JDBCRepository implements ShopRepository {
         }
     }
 
+
     @Override
     //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersText() {
@@ -48,7 +49,6 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
 
     @Override
     //Creates a list of all Producs from database
@@ -146,8 +146,9 @@ public class JDBCRepository implements ShopRepository {
                          String invoiceaddresspostalcode, String invoiceaddresspostaltown,
                          int PaymentMethod_id, int Customer_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (id, customerID, orderDate, paymentOption," +
-                     "marking, experationDate, deliveryDate, deliveryTime) VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (id, creationdate, additionaltext, allergy, deliveryaddress," +
+                     "deliveryaddresspostalcode, deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, invoiceaddresspostaltown, \"PaymentMethod_id\", " +
+                     "\"Customer_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ")) {
             ps.setInt(1, id);
             ps.setDate(2, creationdate);
             ps.setString(3, additionaltext);
@@ -158,8 +159,8 @@ public class JDBCRepository implements ShopRepository {
             ps.setString(8, invoiceaddress);
             ps.setString(9, invoiceaddresspostalcode);
             ps.setString(10, invoiceaddresspostaltown);
-            ps.setInt(11,PaymentMethod_id);
-            ps.setInt(12,Customer_id);
+            ps.setInt(11, PaymentMethod_id);
+            ps.setInt(12, Customer_id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -175,6 +176,7 @@ public class JDBCRepository implements ShopRepository {
              PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name, \"ProductCategory_id\") VALUES (?,?)")) {
             ps.setString(1, name);
             ps.setInt(2, ProductCategory_id);
+
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -210,12 +212,13 @@ public class JDBCRepository implements ShopRepository {
             ps.setInt(1, id);
             ps.setInt(2, order_id);
             ps.setInt(3, bag_id);
-            ps.setInt(3, quantity);
+            ps.setInt(4, quantity);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
     //insert into "Bag" values (1, 'Liten',100);
     //Adds Bag to database
     @Override
@@ -262,16 +265,18 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new Orders from database
     private Order rsOrder(ResultSet rs) throws SQLException {
-        return new Order(rs.getInt("id"), rs.getDate("creationdate"),
+        return new Order(rs.getInt("id"),
+                rs.getDate("creationdate"),
                 rs.getString("additionaltext"),
-                rs.getString("allergy"), rs.getString("deliveryaddress"),
+                rs.getString("allergy"),
+                rs.getString("deliveryaddress"),
                 rs.getString("deliveryaddresspostalcode"),
                 rs.getString("deliveryaddresspostaltown"),
                 rs.getString("invoiceaddress"),
                 rs.getString("invoiceaddresspostalcode"),
                 rs.getString("invoiceaddresspostaltown"),
-        rs.getInt("paymentMethod_id"),
-        rs.getInt("customer_id"),
+                rs.getInt("paymentMethod_id"),
+                rs.getInt("customer_id"),
                 rs.getInt("orderstatus_id"));
     }
 
@@ -309,16 +314,16 @@ public class JDBCRepository implements ShopRepository {
     //Creates new OrderLine from database
     private OrderLine rsOrderLine(ResultSet rs) throws SQLException {
         return new OrderLine(rs.getInt("id"),
-        rs.getInt("order_id"),
-        rs.getInt("bag_id"),
-        rs.getInt("quantity"));
+                rs.getInt("order_id"),
+                rs.getInt("bag_id"),
+                rs.getInt("quantity"));
     }
 
     //Creates new Bag from database
     private Bag rsBreakfastBag(ResultSet rs) throws SQLException {
         return new Bag(rs.getInt("id"),
                 rs.getString("name"),
-        rs.getInt("price"));
+                rs.getInt("price"));
     }
 
     //Creates new ProductCategory from database
