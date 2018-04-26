@@ -48,7 +48,7 @@
                                 Orderstatus
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <button th:each="orderstatus : ${OrderStatuses}" class="dropdown-item" type="button"
+                                <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
                                         th:text="${orderstatus.name}"/>
                             </div>
                         </div>
