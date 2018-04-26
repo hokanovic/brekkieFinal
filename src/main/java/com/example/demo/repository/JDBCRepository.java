@@ -168,14 +168,13 @@ public class JDBCRepository implements ShopRepository {
     }
 
     //Adds product to database
+    //"INSERT INTO \"Bag\" (id, name, price) VALUES (?,?,?)"))
     @Override
-    public void addProduct(int id, String name, int productCategory_id) {
+    public void addProduct(String name, int ProductCategory_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (id, name, productCategory_id) " +
-                     "VALUES (?,?,?) ")) {
-            ps.setInt(1, id);
-            ps.setString(2, name);
-            ps.setInt(3, productCategory_id);
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name, \"ProductCategory_id\") VALUES (?,?)")) {
+            ps.setString(1, name);
+            ps.setInt(2, ProductCategory_id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
