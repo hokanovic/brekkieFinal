@@ -16,11 +16,12 @@ public class Order {
     private String invoiceaddresspostaltown;
     private int PaymentMethod_id;
     private int Customer_id;
+    private int OrderStatus_id;
 
     public Order(int id, Date creationdate, String additionaltext, String allergy,
                  String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
                  String invoiceaddress, String invoiceaddresspostalcode,
-                 String invoiceaddresspostaltown, int paymentMethod_id, int customer_id) {
+                 String invoiceaddresspostaltown, int paymentMethod_id, int customer_id, int OrderStatus_id) {
         this.id = id;
         this.creationdate = creationdate;
         this.additionaltext = additionaltext;
@@ -33,6 +34,15 @@ public class Order {
         this.invoiceaddresspostaltown = invoiceaddresspostaltown;
         this.PaymentMethod_id = paymentMethod_id;
         this.Customer_id = customer_id;
+        this.OrderStatus_id = OrderStatus_id;
+    }
+
+    public int getOrderStatus_id() {
+        return OrderStatus_id;
+    }
+
+    public void setOrderStatus_id(int orderStatus_id) {
+        OrderStatus_id = orderStatus_id;
     }
 
     public int getId() {

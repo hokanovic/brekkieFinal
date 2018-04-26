@@ -23,10 +23,7 @@ public class JDBCRepository implements ShopRepository {
         List<Order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, creationdate, additionaltext," +
-                             " allergy, deliveryaddress, deliveryaddresspostalcode, " +
-                     "deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, " +
-                     "invoiceaddresspostaltown, paymentMethod_id, customer_id FROM \"Order\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM \"Order\"")) {
             while (rs.next()) orderList.add(rsOrder(rs));
             return orderList;
         } catch (SQLException e) {
@@ -258,7 +255,8 @@ public class JDBCRepository implements ShopRepository {
                 rs.getString("invoiceaddresspostalcode"),
                 rs.getString("invoiceaddresspostaltown"),
         rs.getInt("paymentMethod_id"),
-        rs.getInt("customer_id"));
+        rs.getInt("customer_id"),
+                rs.getInt("orderstatus_id"));
     }
 
     //Creates new Products from database
