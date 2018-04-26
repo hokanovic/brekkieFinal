@@ -11,7 +11,7 @@ public interface ShopRepository {
     List<Order> listOrders();
     List<v_dashboard_order> listOrdersText();
     List<OrderStatus> listOrderStatuses();
-
+    List<v_dashboard_order> listOrdersTextP(int OrderStatus);
     List<Product> listProducts();
 
     List<Customer> listCustomers();
