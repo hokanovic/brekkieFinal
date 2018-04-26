@@ -32,7 +32,7 @@ public interface ShopRepository {
             String invoiceaddresspostalcode, String invoiceaddresspostaltown,
             int PaymentMethod_id, int Customer_id);
 
-    void addProduct(int id, String name, int productCategory_id);
+    void addProduct(String name, int productCategory_id);
 
     void addOrderLine(int id, int order_id, int bag_id, int quantity);
 
