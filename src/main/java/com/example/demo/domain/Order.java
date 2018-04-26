@@ -5,27 +5,44 @@ import java.sql.Time;
 
 public class Order {
     private int id;
-    private int customerId;
-    private String orderDate;
-    private String paymentOption;
-    private boolean allergy;
-    private String marking;
-    private String experationDate;
-    private Date deliveryDate;
-    private Time deliveryTime;
+    private Date creationdate;
+    private String additionaltext;
+    private String allergy;
+    private String deliveryaddress;
+    private String deliveryaddresspostalcode;
+    private String deliveryaddresspostaltown;
+    private String invoiceaddress;
+    private String invoiceaddresspostalcode;
+    private String invoiceaddresspostaltown;
+    private int PaymentMethod_id;
+    private int Customer_id;
+    private int OrderStatus_id;
 
-    public Order(int id, int customerId, String orderDate,
-                 String paymentOption, boolean allergy, String marking,
-                 String experationDate, Date deliveryDate, Time deliveryTime) {
+    public Order(int id, Date creationdate, String additionaltext, String allergy,
+                 String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
+                 String invoiceaddress, String invoiceaddresspostalcode,
+                 String invoiceaddresspostaltown, int paymentMethod_id, int customer_id, int OrderStatus_id) {
         this.id = id;
-        this.customerId = customerId;
-        this.orderDate = orderDate;
-        this.paymentOption = paymentOption;
+        this.creationdate = creationdate;
+        this.additionaltext = additionaltext;
         this.allergy = allergy;
-        this.marking = marking;
-        this.experationDate = experationDate;
-        this.deliveryDate = deliveryDate;
-        this.deliveryTime = deliveryTime;
+        this.deliveryaddress = deliveryaddress;
+        this.deliveryaddresspostalcode = deliveryaddresspostalcode;
+        this.deliveryaddresspostaltown = deliveryaddresspostaltown;
+        this.invoiceaddress = invoiceaddress;
+        this.invoiceaddresspostalcode = invoiceaddresspostalcode;
+        this.invoiceaddresspostaltown = invoiceaddresspostaltown;
+        this.PaymentMethod_id = paymentMethod_id;
+        this.Customer_id = customer_id;
+        this.OrderStatus_id = OrderStatus_id;
+    }
+
+    public int getOrderStatus_id() {
+        return OrderStatus_id;
+    }
+
+    public void setOrderStatus_id(int orderStatus_id) {
+        OrderStatus_id = orderStatus_id;
     }
 
     public int getId() {
@@ -36,67 +53,91 @@ public class Order {
         this.id = id;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public Date getCreationdate() {
+        return creationdate;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCreationdate(Date creationdate) {
+        this.creationdate = creationdate;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getAdditionaltext() {
+        return additionaltext;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
+    public void setAdditionaltext(String additionaltext) {
+        this.additionaltext = additionaltext;
     }
 
-    public String getPaymentOption() {
-        return paymentOption;
-    }
-
-    public void setPaymentOption(String paymentOption) {
-        this.paymentOption = paymentOption;
-    }
-
-    public boolean isAllergy() {
+    public String getAllergy() {
         return allergy;
     }
 
-    public void setAllergy(boolean allergy) {
+    public void setAllergy(String allergy) {
         this.allergy = allergy;
     }
 
-    public String getMarking() {
-        return marking;
+    public String getDeliveryaddress() {
+        return deliveryaddress;
     }
 
-    public void setMarking(String marking) {
-        this.marking = marking;
+    public void setDeliveryaddress(String deliveryaddress) {
+        this.deliveryaddress = deliveryaddress;
     }
 
-    public String getExperationDate() {
-        return experationDate;
+    public String getDeliveryaddresspostalcode() {
+        return deliveryaddresspostalcode;
     }
 
-    public void setExperationDate(String experationDate) {
-        this.experationDate = experationDate;
+    public void setDeliveryaddresspostalcode(String deliveryaddresspostalcode) {
+        this.deliveryaddresspostalcode = deliveryaddresspostalcode;
     }
 
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public String getDeliveryaddresspostaltown() {
+        return deliveryaddresspostaltown;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setDeliveryaddresspostaltown(String deliveryaddresspostaltown) {
+        this.deliveryaddresspostaltown = deliveryaddresspostaltown;
     }
 
-    public Time getDeliveryTime() {
-        return deliveryTime;
+    public String getInvoiceaddress() {
+        return invoiceaddress;
     }
 
-    public void setDeliveryTime(Time deliveryTime) {
-        this.deliveryTime = deliveryTime;
+    public void setInvoiceaddress(String invoiceaddress) {
+        this.invoiceaddress = invoiceaddress;
+    }
+
+    public String getInvoiceaddresspostalcode() {
+        return invoiceaddresspostalcode;
+    }
+
+    public void setInvoiceaddresspostalcode(String invoiceaddresspostalcode) {
+        this.invoiceaddresspostalcode = invoiceaddresspostalcode;
+    }
+
+    public String getInvoiceaddresspostaltown() {
+        return invoiceaddresspostaltown;
+    }
+
+    public void setInvoiceaddresspostaltown(String invoiceaddresspostaltown) {
+        this.invoiceaddresspostaltown = invoiceaddresspostaltown;
+    }
+
+    public int getPaymentMethod_id() {
+        return PaymentMethod_id;
+    }
+
+    public void setPaymentMethod_id(int paymentMethod_id) {
+        PaymentMethod_id = paymentMethod_id;
+    }
+
+    public int getCustomer_id() {
+        return Customer_id;
+    }
+
+    public void setCustomer_id(int customer_id) {
+        Customer_id = customer_id;
     }
 }
