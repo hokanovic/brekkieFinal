@@ -26,7 +26,7 @@ public class brekkieController {
 
     @GetMapping("/alternativ")
     public ModelAndView seeBreakfastAlternatives(){
-        return new ModelAndView("displayBags").addObject("BreakfastBag", shopRepository.listBreakfastBag());
+        return new ModelAndView("displayBags").addObject("BreakfastBag", shopRepository.listBags());
     }
 
     @PostMapping("/frukost")
