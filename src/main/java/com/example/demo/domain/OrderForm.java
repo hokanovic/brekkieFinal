@@ -10,25 +10,24 @@ import java.time.LocalTime;
 public class OrderForm {
 
     @NotEmpty
-    @Size(min=2, max=50)
+    @Size(min = 2, max = 50)
     private String companyName;
     @NotEmpty
 
     private String orgId;
     @NotEmpty
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     private String reference;
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
+    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
     private String phoneNumber;
     @NotEmpty
     @Email
     private String email;
 
-
     private String invoiceAdress;
 
     private String invoicePostalTown;
-//    @Pattern.List({
+    //    @Pattern.List({
 //        @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
 //        @Pattern(regexp = "\\d{5}")})
     private String invoicePostNumber;
