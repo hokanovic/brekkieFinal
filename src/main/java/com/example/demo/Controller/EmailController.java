@@ -17,8 +17,14 @@ public class EmailController {
     public String sendMail(OrderForm orderForm) {
 
         String to = "slutprojektacademy@gmail.com";
-        String subject = "Move along..nothing to see here..";
-        String text = "Oskar says hello" + " " + orderForm.getCompanyName() + orderForm.getInvoiceAdress();
+        String subject = "En ny beställning!";
+        String text = " En testbeställning från Team Brekkie: \n" + " " + orderForm.getCompanyName() + " " +
+                orderForm.getOrgId() + "\n " + orderForm.getReference() + " " + orderForm.getPhoneNumber() + " " +
+                orderForm.getEmail() + "\n " + orderForm.getInvoiceAdress() + " " + orderForm.getInvoicePostalTown() +
+                " " + orderForm.getInvoicePostNumber() + "\n " + orderForm.getDeliveryAdress() + " " +
+                orderForm.getDeliveryPostalTown() + " " + orderForm.getDeliveryPostNumber() + "\n " +
+                orderForm.isAllergy() + " " + orderForm.getAllergymarking() + "\n " + orderForm.getDeliveryDate() +
+                " " + orderForm.getDeliveryTime();
 
         emailService.sendSimpleMessage(to, subject, text);
 
