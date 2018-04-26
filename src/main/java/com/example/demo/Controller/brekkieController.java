@@ -73,10 +73,8 @@ public class brekkieController {
 
     @GetMapping("/dashboardOrdersTextP")
     public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus) {
-
-
         return new ModelAndView("dashboardOrdersText")
-                .addObject("Orders", shopRepository.listOrdersText())
+                .addObject("Orders", shopRepository.listOrdersTextP(OrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 

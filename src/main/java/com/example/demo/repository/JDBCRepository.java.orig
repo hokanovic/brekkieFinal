@@ -54,7 +54,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
-                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\""+
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"")) {
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
@@ -64,18 +64,18 @@ public class JDBCRepository implements ShopRepository {
         }
     }
 
+<<<<<<< HEAD
+=======
     @Override
     //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersTextP(int OrderStatus) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
-                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O where " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\""+
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
-                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
-             "where OS.\"id\" = ?")) {
-            ps.setInt(1, OrderStatus);
-            ResultSet rs = ps.executeQuery();
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"")) {
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
             return orderList;
         } catch (SQLException e) {
@@ -84,6 +84,7 @@ public class JDBCRepository implements ShopRepository {
     }
 
 
+>>>>>>> table2excel
     @Override
     //Creates a list of all Producs from database
     public List<Product> listProducts() {
