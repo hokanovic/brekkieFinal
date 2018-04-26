@@ -52,7 +52,12 @@ public class brekkieController {
 
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders(){
-    
+
         return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
+    }
+
+    @GetMapping("/dashboardOrdersText")
+    public ModelAndView brekkiedashboardOrdersText(){
+        return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
     }
 }
