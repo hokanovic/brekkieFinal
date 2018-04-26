@@ -26,8 +26,7 @@
                         <button class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
                     </div>
                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                        <span data-feather="calendar"></span>
-                        Denna vecka
+                        Pågående
                     </button>
                     <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
                         <span data-feather="calendar"></span>
@@ -40,28 +39,36 @@
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Kundid</th>
-                        <th>Orderdatum</th>
-                        <th>Betalningsmetod</th>
-                        <th>Allergi</th>
-                        <th>Märkning</th>
-                        <th>FFdatum</th>
-                        <th>Leveransdatum</th>
-                        <th>Leveranstid</th>
+                        <th>id</th>
+                        <th>creationdate</th>
+                        <th>additionaltext</th>
+                        <th>allergy</th>
+                        <th>deliveryaddress</th>
+                        <th>deliveryaddresspostalcode</th>
+                        <th>deliveryaddresspostaltown</th>
+                        <th>invoiceaddress</th>
+                        <th>invoiceaddresspostalcode</th>
+                        <th>invoiceaddresspostaltown</th>
+                        <th>PaymentMethod_id</th>
+                        <th>Customer_id</th>
+                        <th>OrderStatus_id</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="order : ${Orders}">
                         <td th:text="${order.id}"/>
-                        <td th:text="${order.customerId}"/>
-                        <td th:text="${order.orderDate}"/>
-                        <td th:text="${order.paymentOption}"/>
+                        <td th:text="${order.creationdate}"/>
+                        <td th:text="${order.additionaltext}"/>
                         <td th:text="${order.allergy}"/>
-                        <td th:text="${order.marking}"/>
-                        <td th:text="${order.experationDate}"/>
-                        <td th:text="${order.deliveryDate}"/>
-                        <td th:text="${order.deliveryTime}"/>
+                        <td th:text="${order.deliveryaddress}"/>
+                        <td th:text="${order.deliveryaddresspostalcode}"/>
+                        <td th:text="${order.deliveryaddresspostaltown}"/>
+                        <td th:text="${order.invoiceaddress}"/>
+                        <td th:text="${order.invoiceaddresspostalcode}"/>
+                        <td th:text="${order.invoiceaddresspostaltown}"/>
+                        <td th:text="${order.PaymentMethod_id}"/>
+                        <td th:text="${order.Customer_id}"/>
+                        <td th:text="${order.OrderStatus_id}"/>
                     </tr>
                     </tbody>
                 </table>
