@@ -21,7 +21,7 @@ public class Order {
     public Order(int id, Date creationdate, String additionaltext, String allergy,
                  String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
                  String invoiceaddress, String invoiceaddresspostalcode,
-                 String invoiceaddresspostaltown, int paymentMethod_id, int customer_id, int OrderStatus_id) {
+                 String invoiceaddresspostaltown, int PaymentMethod_id, int customer_id, int OrderStatus_id) {
         this.id = id;
         this.creationdate = creationdate;
         this.additionaltext = additionaltext;
@@ -32,7 +32,7 @@ public class Order {
         this.invoiceaddress = invoiceaddress;
         this.invoiceaddresspostalcode = invoiceaddresspostalcode;
         this.invoiceaddresspostaltown = invoiceaddresspostaltown;
-        this.PaymentMethod_id = paymentMethod_id;
+        this.PaymentMethod_id = PaymentMethod_id;
         this.Customer_id = customer_id;
         this.OrderStatus_id = OrderStatus_id;
     }
