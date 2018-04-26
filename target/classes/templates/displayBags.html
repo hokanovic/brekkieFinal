@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css"  href="styles.css">
     <title>välj frukost</title>
 </head>
 <body>
 <div class="bg">
-    <div class="jumbotron">
+    <div class="jumbotron text-center">
         <h1 class="display-4">beställ frukost</h1>
-        <!--<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>-->
         <hr class="my-4">
 
         <div class="card-deck">
@@ -21,14 +21,12 @@
                 <img class="card-img-top" src="" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${bag.name}"></h5>
-                    <p class="card-text" th:text="${bag.description}">smörgås och juice</p>
+                    <p class="card-text" th:text="${bag.description}"></p>
                     <a href="breakfastBag" class="btn btn-primary">välj</a>
                 </div>
             </div>
         </div>
         <p>välj frukostpåse och gör era val</p>
-
-        </p>
     </div>
 </div>
 </body>
