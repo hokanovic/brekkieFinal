@@ -25,9 +25,7 @@ public class brekkieController {
     @Autowired
     private EmailController emailService;
 
-
     @GetMapping("/frukost")
-
     public ModelAndView orderBreakfast(){
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
@@ -41,22 +39,22 @@ public class brekkieController {
     public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             emailService.sendMail(orderForm);
-            if (bindingResult.hasErrors()) {
-                return "orderForm";
-            } else {
-                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-                //OBS - PaymentMethod, Customer_ID!!!
-                shopRepository.addOrder(133, date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
-                        orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAdress(),
-                        orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2);
-                // OBS ID
-                shopRepository.addCustomer(133, orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
-
-            }
         }
+        if (bindingResult.hasErrors()) {
+            return "orderForm";
+        } else {
+            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+            //OBS - PaymentMethod, Customer_ID!!!
+            shopRepository.addOrder(134, date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
+                    orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAdress(),
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2);
+            // OBS ID
+            shopRepository.addCustomer(134, orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
             return "thankyou";
+        }
     }
+
 
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders() {
@@ -76,6 +74,9 @@ public class brekkieController {
         return new ModelAndView("dashboardOrdersText")
                 .addObject("Orders", shopRepository.listOrdersTextP(OrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+
+        //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+
     }
 
     @GetMapping("/dashboardCustomers")
