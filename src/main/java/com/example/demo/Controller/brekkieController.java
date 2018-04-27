@@ -25,9 +25,6 @@ public class brekkieController {
     @Autowired
     private EmailController emailService;
 
-
-
-
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
@@ -53,11 +50,11 @@ public class brekkieController {
                         orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2,2);
                 // OBS ID
                 shopRepository.addCustomer(orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
-
             }
         }
-            return "thankyou";
+        return "thankyou";
     }
+
 
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders() {
@@ -77,6 +74,9 @@ public class brekkieController {
         return new ModelAndView("dashboardOrdersText")
                 .addObject("Orders", shopRepository.listOrdersTextP(OrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+
+        //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+
     }
 
     @GetMapping("/dashboardCustomers")
