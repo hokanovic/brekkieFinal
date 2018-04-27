@@ -17,15 +17,15 @@ app.controller('formController', function($scope) {
             console.log("Copy");
             $scope.invoice = angular.copy($scope.delivery);
         }
-        // else {
-        //     console.log("Clear");
-        //     $scope.invoice = angular.clear;
-        // }
+        else {
+            console.log("Clear");
+            $scope.invoice = angular.clear;
+        }
     }
-    // $scope.$watch('delivery', function(newValue) {
-    //     if (newValue) {
-    //         console.log("callingCopyAdress");
-    //         $scope.copyAddresses();
-    //     }
-    // }, true);
+    $scope.$watch('delivery', function(newValue) {
+        if (newValue) {
+            console.log("callingCopyAdress");
+            $scope.copyAddresses();
+        }
+    }, true);
 });
