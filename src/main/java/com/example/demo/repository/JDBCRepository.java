@@ -91,7 +91,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, name, " +
-                     "productCategory_id FROM \"Product\"")) {
+                     "\"ProductCategory_id\" FROM \"Product\"")) {
             while (rs.next()) productList.add(rsProduct(rs));
             return productList;
         } catch (SQLException e) {
@@ -99,7 +99,6 @@ public class JDBCRepository implements ShopRepository {
         }
     }
     //Creates a list of all Customers from database
-
     @Override
     public List<Customer> listCustomers() {
         List<Customer> customerList = new ArrayList<>();
@@ -121,7 +120,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, " +
-                     "order_id, bag_id, quantity FROM \"OrderLine\"")) {
+                     "\"Order_id\", \"Bag_id\", quantity FROM \"Orderline\"")) {
             while (rs.next()) orderLineList.add(rsOrderLine(rs));
             return orderLineList;
         } catch (SQLException e) {
@@ -135,7 +134,7 @@ public class JDBCRepository implements ShopRepository {
         List<ProductCategory> productCategoryList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, name FROM \"OrderLines\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, name FROM \"ProductCategory\"")) {
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
             return productCategoryList;
         } catch (SQLException e) {
@@ -149,7 +148,7 @@ public class JDBCRepository implements ShopRepository {
         List<Bag> breakfastBagsList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  id, name, price FROM \"Bag\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\"")) {
             while (rs.next()) breakfastBagsList.add(rsBreakfastBag(rs));
             return breakfastBagsList;
         } catch (SQLException e) {
@@ -163,8 +162,8 @@ public class JDBCRepository implements ShopRepository {
         List<Bag_ProductCategory> breakfastBag_ProductCategoryList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  bag_id, " +
-                     "productCategory_id FROM \"BreakfastBag_ProductCategory\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT  \"Bag_id\", " +
+                     "\"ProductCategory_id\" FROM \"Bag_ProductCategory\"")) {
             while (rs.next()) breakfastBag_ProductCategoryList.add(rsBreakfastBag_ProductCategoryList(rs));
             return breakfastBag_ProductCategoryList;
         } catch (SQLException e) {
@@ -174,27 +173,27 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds order to database
     @Override
-    public void addOrder(int id, Date creationdate, String additionaltext, String allergy,
+    public void addOrder(Date creationdate, String additionaltext, String allergy,
                          String deliveryaddress, String deliveryaddresspostalcode,
                          String deliveryaddresspostaltown, String invoiceaddress,
                          String invoiceaddresspostalcode, String invoiceaddresspostaltown,
-                         int PaymentMethod_id, int Customer_id) {
+                         int PaymentMethod_id, int Customer_id, int OrderStatus_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (id, creationdate, additionaltext, allergy, deliveryaddress," +
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (creationdate, additionaltext, allergy, deliveryaddress," +
                      "deliveryaddresspostalcode, deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, invoiceaddresspostaltown, \"PaymentMethod_id\", " +
-                     "\"Customer_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ")) {
-            ps.setInt(1, id);
-            ps.setDate(2, creationdate);
-            ps.setString(3, additionaltext);
-            ps.setString(4, allergy);
-            ps.setString(5, deliveryaddress);
-            ps.setString(6, deliveryaddresspostalcode);
-            ps.setString(7, deliveryaddresspostaltown);
-            ps.setString(8, invoiceaddress);
-            ps.setString(9, invoiceaddresspostalcode);
-            ps.setString(10, invoiceaddresspostaltown);
-            ps.setInt(11, PaymentMethod_id);
-            ps.setInt(12, Customer_id);
+                     "\"Customer_id\", \"OrderStatus_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?) ")) {
+            ps.setDate(1, creationdate);
+            ps.setString(2, additionaltext);
+            ps.setString(3, allergy);
+            ps.setString(4, deliveryaddress);
+            ps.setString(5, deliveryaddresspostalcode);
+            ps.setString(6, deliveryaddresspostaltown);
+            ps.setString(7, invoiceaddress);
+            ps.setString(8, invoiceaddresspostalcode);
+            ps.setString(9, invoiceaddresspostaltown);
+            ps.setInt(10, PaymentMethod_id);
+            ps.setInt(11, Customer_id);
+            ps.setInt(12, OrderStatus_id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -203,7 +202,6 @@ public class JDBCRepository implements ShopRepository {
     }
 
     //Adds product to database
-    //"INSERT INTO \"Bag\" (id, name, price) VALUES (?,?,?)"))
     @Override
     public void addProduct(String name, int ProductCategory_id) {
         try (Connection conn = dataSource.getConnection();
@@ -219,17 +217,16 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds customer to database
     @Override
-    public void addCustomer(int id, String orgnr, String companyname, String contactperson, String mail) {
+    public void addCustomer(String orgnr, String companyname, String contactperson, String mail) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "\"Customer\" (id, orgnr, " +
+                     "\"Customer\" (orgnr, " +
                      "companyname, contactperson, mail)" +
-                     "VALUES (?,?,?,?,?) ")) {
-            ps.setInt(1, id);
-            ps.setString(2, orgnr);
-            ps.setString(3, companyname);
-            ps.setString(4, contactperson);
-            ps.setString(5, mail);
+                     "VALUES (?,?,?,?) ")) {
+            ps.setString(1, orgnr);
+            ps.setString(2, companyname);
+            ps.setString(3, contactperson);
+            ps.setString(4, mail);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -238,30 +235,28 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds OrderLine to database
     @Override
-    public void addOrderLine(int id, int order_id, int bag_id, int quantity) {
+    public void addOrderLine(int Order_id, int Bag_id, int quantity) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
-                     "\"OrderLine\" (id, order_id, bag_id, quantity) " +
-                     "VALUES (?,?,?,?) ")) {
-            ps.setInt(1, id);
-            ps.setInt(2, order_id);
-            ps.setInt(3, bag_id);
-            ps.setInt(4, quantity);
+                     "\"Orderline\" (\"Order_id\", \"Bag_id\", quantity) " +
+                     "VALUES (?,?,?) ")) {
+            ps.setInt(1, Order_id);
+            ps.setInt(2, Bag_id);
+            ps.setInt(3, quantity);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    //insert into "Bag" values (1, 'Liten',100);
     //Adds Bag to database
     @Override
-    public void addBag(int id, String name, int price) {
+    public void addBag(String name, int price,String description) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Bag\" (id, name, price) VALUES (?,?,?)")) {
-            ps.setInt(1, id);
-            ps.setString(2, name);
-            ps.setInt(3, price);
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Bag\" (name, price, description) VALUES (?,?,?)")) {
+            ps.setString(1, name);
+            ps.setInt(2, price);
+            ps.setString(3,description);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -270,12 +265,11 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds ProductCategory to database
     @Override
-    public void addProductCategory(int id, String name) {
+    public void addProductCategory(String name) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "\"ProductCategory\" (id, name) VALUES (?,?) ")) {
-            ps.setInt(1, id);
-            ps.setString(2, name);
+                     "\"ProductCategory\" (name) VALUES (?) ")) {
+            ps.setString(1, name);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -284,12 +278,12 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds Bag_ProductCategory to database
     @Override
-    public void addBag_ProductCategory(int bag_id, int productCategory_id) {
+    public void addBag_ProductCategory(int Bag_id, int productCategory_id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO" +
-                     "\"Bag_ProductCategory\" (bag_id, productCategory_id)" +
+                     "\"Bag_ProductCategory\" (\"Bag_id\", \"ProductCategory_id\")" +
                      " VALUES (?,?) ")) {
-            ps.setInt(1, bag_id);
+            ps.setInt(1, Bag_id);
             ps.setInt(2, productCategory_id);
             ps.executeUpdate();
         } catch (SQLException e) {

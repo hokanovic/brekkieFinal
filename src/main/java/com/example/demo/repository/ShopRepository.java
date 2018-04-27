@@ -24,21 +24,21 @@ public interface ShopRepository {
 
     List<Bag_ProductCategory> listBag_ProductCategorys();
 
-    void addCustomer(int id, String orgnr, String companyname, String contactperson, String mail);
+    void addCustomer(String orgnr, String companyname, String contactperson, String mail);
 
-    void addOrder(int id, Date creationdate, String additionaltext, String allergy,
+    void addOrder(Date creationdate, String additionaltext, String allergy,
             String deliveryaddress, String deliveryaddresspostalcode,
             String deliveryaddresspostaltown, String invoiceaddress,
             String invoiceaddresspostalcode, String invoiceaddresspostaltown,
-            int PaymentMethod_id, int Customer_id);
+            int PaymentMethod_id, int Customer_id, int OrderStatus_id);
 
     void addProduct(String name, int productCategory_id);
 
-    void addOrderLine(int id, int order_id, int bag_id, int quantity);
+    void addOrderLine(int order_id, int bag_id, int quantity);
 
-    void addBag(int id, String name, int price);
+    void addBag(String name, int price,String description);
 
-    void addProductCategory(int id, String name);
+    void addProductCategory(String name);
 
     void addBag_ProductCategory(int bag_id, int productCategory_id);
 

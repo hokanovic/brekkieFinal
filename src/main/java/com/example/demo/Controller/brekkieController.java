@@ -26,8 +26,9 @@ public class brekkieController {
     private EmailController emailService;
 
 
-    @GetMapping("/frukost")
 
+
+    @GetMapping("/frukost")
     public ModelAndView orderBreakfast(){
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
@@ -47,11 +48,11 @@ public class brekkieController {
                 java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
                 //OBS - PaymentMethod, Customer_ID!!!
-                shopRepository.addOrder(133, date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
+                shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
                         orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAdress(),
-                        orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2);
+                        orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2,2);
                 // OBS ID
-                shopRepository.addCustomer(133, orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
+                shopRepository.addCustomer(orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
 
             }
         }
