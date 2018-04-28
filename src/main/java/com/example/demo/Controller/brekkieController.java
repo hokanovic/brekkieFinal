@@ -37,22 +37,21 @@ public class brekkieController {
 
     @PostMapping("/frukost")
     public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            emailService.sendMail(orderForm);
-        }
-        if (bindingResult.hasErrors()) {
-            return "orderForm";
-        } else {
-            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+            if (bindingResult.hasErrors()) {
+                return "orderForm";
+            } else {
+                emailService.sendMail(orderForm);
+                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
-            //OBS - PaymentMethod, Customer_ID!!!
-            shopRepository.addOrder(134, date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
-                    orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAdress(),
-                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2);
-            // OBS ID
-            shopRepository.addCustomer(134, orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
-            return "thankyou";
-        }
+                //OBS - PaymentMethod, Customer_ID!!!
+                shopRepository.addOrder(135, date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+                        orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
+                        orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2);
+                // OBS ID
+                shopRepository.addCustomer(135, orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
+                return "thankyou";
+            }
+
     }
 
 
