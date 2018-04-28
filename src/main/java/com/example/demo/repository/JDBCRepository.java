@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
-import com.example.demo.domain.view.v_dashboard_order;
+import com.example.demo.domain.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -73,7 +73,7 @@ public class JDBCRepository implements ShopRepository {
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
-             "where OS.\"id\" = ?")) {
+                     "where OS.\"id\" = ?")) {
             ps.setInt(1, OrderStatus);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
@@ -127,6 +127,7 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
+
 
     //Creates a list of all ProductCategory from database
     @Override
@@ -373,10 +374,13 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new Customer from database
     private Customer rsCustomer(ResultSet rs) throws SQLException {
-        return new Customer(rs.getInt("id"),
-                rs.getString("orgnr"), rs.getString("companyname"),
+        return new Customer(
+                rs.getInt("id"),
+                rs.getString("orgnr"),
+                rs.getString("companyname"),
                 rs.getString("contactperson"),
-                rs.getString("mail"));
+                rs.getString("mail")
+        );
     }
 
     //Creates new OrderLine from database
@@ -386,6 +390,7 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt("bag_id"),
                 rs.getInt("quantity"));
     }
+
 
     //Creates new Bag from database
     private Bag rsBreakfastBag(ResultSet rs) throws SQLException {
@@ -406,4 +411,133 @@ public class JDBCRepository implements ShopRepository {
         return new Bag_ProductCategory(rs.getInt("bag_id"),
                 rs.getInt("productCategory_id"));
     }
+
+
+    @Override
+    public v_dash_orderdetails_order listV_dash_orderdetails_order(int Orderid) {
+//        private v_dashboard_order v_dashboard_Order;
+//        private Customer customer;
+//        private List<v_dash_orderdetails_orderbag> orderbagList;
+
+        v_dashboard_order v_dashboard_Order = listOrdersTextP(Orderid).get(0);
+        Customer customer = listCustomer(Orderid);
+        List<v_dash_orderdetails_orderbag> orderbagList = listOrderBags(Orderid);
+
+        return new v_dash_orderdetails_order(v_dashboard_Order,customer,orderbagList);
+    }
+
+
+    private List<v_dash_orderdetails_orderbag> listOrderBags(int Orderid) {
+//        private OrderBag orderbag;
+//        private List<OrderBagProducts> orderbagproductsList;
+
+
+        List<v_dash_orderdetails_orderbag> orderbagList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select * " +
+                     "from \"OrderBag\" " +
+                     "where \"Order_id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+
+                OrderBag orderBag = listOrderBag(Orderid);
+                List<OrderBagProducts> orderBagProductsList = listOrderBagProducts(rs.getInt(1));
+
+                orderbagList.add(new v_dash_orderdetails_orderbag(orderBag,orderBagProductsList));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orderbagList;
+    }
+
+    private List<OrderBagProducts> listOrderBagProducts(int OrderBag_id) {
+        List<OrderBagProducts> orderBagProductsList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select * " +
+                     "from \"OrderBagProducts\" " +
+                     "where \"OrderBag_id\" = ?")) {
+            ps.setInt(1, OrderBag_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderBagProductsList.add(rsOrderBagProduct(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return orderBagProductsList;
+    }
+
+    private OrderBagProducts rsOrderBagProduct(ResultSet rs)  throws SQLException  {
+        return new OrderBagProducts(
+                rs.getInt(1),
+                rs.getInt(2),
+                rs.getInt(3)
+        );
+    }
+
+    private OrderBag listOrderBag(int Orderid) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select * " +
+                     "from \"OrderBag\"" +
+                     "where \"Order_id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rsOrderBag(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private v_dashboard_orderbag listV_dashboard_orderbag(int Orderid) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\" " +
+                     "from \"OrderBag\" AS OB " +
+                     "INNER JOIN \"Bag\" AS B ON OB.\"Order_id\" = B.\"id\" " +
+                     "where \"Order_id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rsV_dashboard_orderbag(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private OrderBag rsOrderBag(ResultSet rs) throws SQLException {
+        return new OrderBag(
+            rs.getInt(1),
+            rs.getInt(2),
+            rs.getInt(3)
+        );
+    }
+
+    @Override
+    public Customer listCustomer(int Orderid) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT id, orgnr, companyname, contactperson, mail " +
+                     "FROM \"Customer\"" +
+                     "where \"id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return rsCustomer(rs);
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private v_dashboard_orderbag rsV_dashboard_orderbag(ResultSet rs) throws SQLException {
+        return new v_dashboard_orderbag(
+                rs.getInt(1),
+                rs.getInt(2),
+                rs.getInt(3),
+                rs.getString(4)
+        );
+    }
+
 }

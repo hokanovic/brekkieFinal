@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
-import com.example.demo.domain.view.v_dashboard_order;
+import com.example.demo.domain.view.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -13,6 +13,8 @@ public interface ShopRepository {
     List<OrderStatus> listOrderStatuses();
     List<v_dashboard_order> listOrdersTextP(int OrderStatus);
     List<Product> listProducts();
+    v_dash_orderdetails_order listV_dash_orderdetails_order(int Orderid);
+    Customer listCustomer(int Orderid);
 
     List<Customer> listCustomers();
 
