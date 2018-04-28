@@ -15,11 +15,11 @@ public class OrderForm {
     private String companyName;
     @NotEmpty
 
-    private String orgId;
+    private String orgNr;
 
     @NotEmpty
     @Size(min = 2, max = 30)
-    private String reference;
+    private String contactperson;
 
     //@Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
     //@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
@@ -29,7 +29,7 @@ public class OrderForm {
     @Email
     private String email;
 
-    private String invoiceAdress;
+    private String invoiceAddress;
 
     private String invoicePostalTown;
     //    @Pattern.List({
@@ -38,7 +38,7 @@ public class OrderForm {
     private String invoicePostNumber;
 
     @NotEmpty
-    private String deliveryAdress;
+    private String deliveryAddress;
 
     @NotEmpty
     private String deliveryPostalTown;
