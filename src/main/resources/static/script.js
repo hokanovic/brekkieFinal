@@ -16,6 +16,7 @@ app.controller('formController', function($scope) {
         if ($scope.copyAddress) {
             $scope.invoice = angular.copy($scope.delivery);
         }
+
          else {
              $scope.invoice = angular.clear;
          }

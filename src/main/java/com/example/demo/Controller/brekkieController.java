@@ -25,9 +25,7 @@ public class brekkieController {
     @Autowired
     private EmailController emailService;
 
-
     @GetMapping("/frukost")
-
     public ModelAndView orderBreakfast(){
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
@@ -53,7 +51,9 @@ public class brekkieController {
                 shopRepository.addCustomer(135, orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
                 return "thankyou";
             }
+
     }
+
 
     @GetMapping("/dashboardOrders")
     public ModelAndView brekkiedashboardOrders() {
@@ -73,6 +73,9 @@ public class brekkieController {
         return new ModelAndView("dashboardOrdersText")
                 .addObject("Orders", shopRepository.listOrdersTextP(OrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+
+        //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+
     }
 
     @GetMapping("/dashboardCustomers")
