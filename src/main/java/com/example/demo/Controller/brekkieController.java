@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.Bag;
 import com.example.demo.domain.OrderForm;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 
 @Controller
@@ -30,10 +30,34 @@ public class brekkieController {
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
+    //Beginning of "Lecoq ändringar"
     @GetMapping("/alternativ")
     public ModelAndView seeBreakfastAlternatives() {
-        return new ModelAndView("displayBags").addObject("BreakfastBag", shopRepository.listBags());
+        List<Bag> bagList;
+        bagList = shopRepository.listBags();
+        return new ModelAndView("displayBags").addObject("BreakfastBag", bagList);
     }
+
+    //HÅRDKÅDAT PLEASE DO REFACTOR!
+    @GetMapping("/breakfastBag")
+    public ModelAndView seeYourBreakfastBag(@RequestParam int id){
+        List<Bag> bagList;
+        bagList = shopRepository.listBagById(id);
+        Bag bag = bagList.get(0);
+        return new ModelAndView("breakfastBag").addObject("bag", bag);
+    }
+
+    /*@RequestMapping("/breakfastBag")
+    public ModelAndView seeChosenBreakfastBag(@RequestParam int id){
+        List<Bag> bagList;
+        bagList = shopRepository.listBagById(id);
+        Bag bag = bagList.get(0);
+        ModelAndView modelAndView = new ModelAndView("bag");
+        modelAndView.addObject("bag", bag);
+        return modelAndView;
+    }*/
+    //HÅRDKÅDAT PLEASE DO REFACTOR!
+    //End of "Lecoq ändringar"
 
     @PostMapping("/frukost")
     public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {

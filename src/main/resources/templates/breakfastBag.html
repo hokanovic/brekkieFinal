@@ -2,16 +2,64 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>frukostpåse</title>
 </head>
 <body>
+<div class="bg">
+    <div class="jumbotron text-center">
+        <h1 class="display-4" th:text="${bag.name}"></h1>
+        <hr class="my-4">
 
-<h3 th:text="${}"</h3>
+        <div class="card-deck">
 
-<form>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="productcategory1"></h5>
+                    <select>
+                        <option>morotsbröd med avokado</option>
+                        <option>morotsbröd med tomat och lagrad ost</option>
+                        <option>morotsbröd med taleggio</option>
+                    </select>
+                    <form name='form1' class="btn">
+                        <button onclick='input()' type='button' id='addSandwich' class="btn btn-primary">
+                            Lägg till
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-
-</form>
-
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="productCategory2"></h5>
+                    <button onclick="addToCart()" class="btn btn-primary" id="item1">rödbeta och äpple</button>
+                        <br><br>
+                    <button onclick="addToCart()" class="btn btn-primary" id="item2">spenat och ananas</button>
+                        <br><br>
+                    <button onclick="addToCart()" class="btn btn-primary" id="item3">morot och ingefära</button>
+                </div>
+            </div>
+        </div>
+        <h5 id="cardText">Välj produkt! Mums!</h5>
+    </div>
+</div>
+<div class="orderSummary">
+<div class="jumbotron text-center">
+    <div id="product1">
+        <p>Hej</p>
+    </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function addToCart() {
+        var choice = $('#item1').text();
+        $("#product1").html("<p>" + choice + "</p>");
+    }
+</script>
 </body>
 </html>
