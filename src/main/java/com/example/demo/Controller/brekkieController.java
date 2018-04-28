@@ -37,6 +37,7 @@ public class brekkieController {
 
     @PostMapping("/frukost")
     public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             emailService.sendMail(orderForm);
             if (bindingResult.hasErrors()) {
@@ -45,14 +46,15 @@ public class brekkieController {
                 java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
                 //OBS - PaymentMethod, Customer_ID!!!
-                shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAdress(),
-                        orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAdress(),
+                shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+                        orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
                         orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2,2);
                 // OBS ID
-                shopRepository.addCustomer(orderForm.getOrgId(), orderForm.getCompanyName(), orderForm.getReference(), orderForm.getEmail());
+                shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
             }
         }
         return "thankyou";
+
     }
 
 

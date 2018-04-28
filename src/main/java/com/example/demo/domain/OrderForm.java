@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 public class OrderForm {
 
+
     @NotEmpty
     @Size(min=2, max=50)
     private String companyName;
@@ -64,22 +65,22 @@ public class OrderForm {
     public OrderForm() {
     }
 
-    public OrderForm(String companyName, String orgId,
-                     String reference, String phoneNumber,
-                     String email, String invoiceAdress,
+    public OrderForm(String companyName, String orgNr,
+                     String contactperson, String phoneNumber,
+                     String email, String invoiceAddress,
                      String invoicePostalTown, String invoicePostNumber,
-                     String deliveryAdress, String deliveryPostalTown,
+                     String deliveryAddress, String deliveryPostalTown,
                      String deliveryPostNumber, boolean allergy, String allergyMarking,
                      Date deliveryDate, LocalTime deliveryTime) {
         this.companyName = companyName;
-        this.orgId = orgId;
-        this.reference = reference;
+        this.orgNr = orgNr;
+        this.contactperson = contactperson;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.invoiceAdress = invoiceAdress;
+        this.invoiceAddress = invoiceAddress;
         this.invoicePostalTown = invoicePostalTown;
         this.invoicePostNumber = invoicePostNumber;
-        this.deliveryAdress = deliveryAdress;
+        this.deliveryAddress = deliveryAddress;
         this.deliveryPostalTown = deliveryPostalTown;
         this.deliveryPostNumber = deliveryPostNumber;
         this.allergy = allergy;
@@ -96,20 +97,20 @@ public class OrderForm {
         this.companyName = companyName;
     }
 
-    public String getOrgId() {
-        return orgId;
+    public String getOrgNr() {
+        return orgNr;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setOrgNr(String orgNr) {
+        this.orgNr = orgNr;
     }
 
-    public String getReference() {
-        return reference;
+    public String getContactperson() {
+        return contactperson;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setContactperson(String contactperson) {
+        this.contactperson = contactperson;
     }
 
     public String getPhoneNumber() {
@@ -128,12 +129,12 @@ public class OrderForm {
         this.email = email;
     }
 
-    public String getInvoiceAdress() {
-        return invoiceAdress;
+    public String getInvoiceAddress() {
+        return invoiceAddress;
     }
 
-    public void setInvoiceAdress(String invoiceAdress) {
-        this.invoiceAdress = invoiceAdress;
+    public void setInvoiceAddress(String invoiceAdress) {
+        this.invoiceAddress = invoiceAddress;
     }
 
     public String getInvoicePostalTown() {
@@ -152,12 +153,12 @@ public class OrderForm {
         this.invoicePostNumber = invoicePostNumber;
     }
 
-    public String getDeliveryAdress() {
-        return deliveryAdress;
+    public String getDeliveryAddress() {
+        return deliveryAddress;
     }
 
-    public void setDeliveryAdress(String deliveryAdress) {
-        this.deliveryAdress = deliveryAdress;
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public String getDeliveryPostalTown() {
