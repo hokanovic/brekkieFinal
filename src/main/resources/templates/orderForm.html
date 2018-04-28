@@ -24,15 +24,15 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="kontaktPerson">Referens</label>
-                    <input type="text" th:field="*{reference}" class="form-control" id="kontaktPerson"
+                    <input type="text" th:field="*{contactperson}" class="form-control" id="kontaktPerson"
                            placeholder="Kontaktperson/referensnummer">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('reference')}">Måste fyllas i</p>
+                    <p class="errorMessage" th:if="${#fields.hasErrors('contactperson')}">Måste fyllas i</p>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputOrgnr">Organisationsnummer</label>
-                    <input type="text" th:field="*{orgId}" class="form-control" id="inputOrgnr"
+                    <input type="text" th:field="*{orgNr}" class="form-control" id="inputOrgnr"
                            placeholder="Organisationsnnummer">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('orgId')}">Måste fyllas i</p>
+                    <p class="errorMessage" th:if="${#fields.hasErrors('orgNr')}">Måste fyllas i</p>
                 </div>
             </div>
             <div class="form-row">
@@ -51,7 +51,7 @@
             <div class="form-row">
                 <span>Allergier?</span>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input"  ng-click="radioClick('show')" type="radio" id="allergiJa"
+                    <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergiJa"
                            name="inlineRadioOptions" value="Ja">
                     <label class="form-check-label" for="allergiJa">Ja</label>
                 </div>
@@ -63,7 +63,8 @@
             </div>
             <p class="errorMessage" th:if="${#fields.hasErrors('allergy')}">Måste besvaras</p>
             <div ng-if='show === true' class="form-group">
-                <textarea class="form-control" th:field="*{allergyMarking}" id="allergyMessage"  rows="2" placeholder="Ange allergier här"></textarea>
+                <textarea class="form-control" th:field="*{allergyMarking}" id="allergyMessage" rows="2"
+                          placeholder="Ange allergier här"></textarea>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-3">
@@ -79,11 +80,11 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="deliveryAdress">Leveransadress</label>
-                    <input type="text" th:field="*{deliveryAdress}" ng-model="delivery.Address" class="form-control"
-                           id="deliveryAdress"
-                           placeholder="Adress">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAdress')}">Måste fyllas i</p>
+                    <label for="deliveryAddress">Leveransaddress</label>
+                    <input type="text" th:field="*{deliveryAddress}" ng-model="delivery.Address" class="form-control"
+                           id="deliveryAddress"
+                           placeholder="LeveransAddress">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAddress')}">Måste fyllas i</p>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="inputDeliveryPostalTown">Stad</label>
@@ -102,39 +103,41 @@
             </div>
 
 
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()" type="checkbox"  id="defaultCheck1">
-                <label class="form-check-label" for="defaultCheck1">
-                    Leveransadressen är samma som faktureringsadressen
-                </label>
-            </div>
-        </div>
-
-            <div class="form-group col-md-6">
-                <label for="invoiceAdress">Faktureringsadress</label>
-                <input type="text" class="form-control" ng-model="invoice.Adress" id="invoiceAdress" placeholder="Adress">
-                <p id="errorMessage" th:if="${#fields.hasErrors('invoiceAdress')}" th:errors="*{invoiceAdress}"></p>
+            <div class="form-row">
+                <div class="form-check">
+                    <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()" type="checkbox"
+                           id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Leveransadressen är samma som faktureringsadressen
+                    </label>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
+                    <label for="invoiceAddress">Faktureringsaddress</label>
+                    <input type="text" th:field="*{invoiceAddress}" class="form-control" ng-model="invoice.Address"
+                           id="invoiceAddress" placeholder="Faktureringsaddress">
+                    <p id="errorMessage" th:if="${#fields.hasErrors('invoiceAddress')}" th:errors="*{invoiceAddress}">Måste fyllas i</p>
+                </div>
+
+                <div class="form-group col-md-3">
                     <label for="invoicePostalTown">Stad</label>
-                    <input type="text" th:field="*{invoicePostalTown}" ng-model="invoice.PostalTown" class="form-control" id="invoicePostalTown"
+                    <input type="text" th:field="*{invoicePostalTown}" ng-model="invoice.PostalTown"
+                           class="form-control" id="invoicePostalTown"
                            placeholder="Stad">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostalTown')}">fel</p>
+                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostalTown')}">Måste fyllas i</p>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="invoicePostNumber">Postnummer</label>
-                    <input type="text" th:field="*{invoicePostNumber}" ng-model="invoice.PostNumber" class="form-control"  id="invoicePostNumber"
+                    <input type="text" th:field="*{invoicePostNumber}" ng-model="invoice.PostNumber"
+                           class="form-control" id="invoicePostNumber"
                            placeholder="Postnummer">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostNumber')}">fel</p>
+                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostNumber')}">Måste fyllas i</p>
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group">
                     <textarea class="form-control" th:field="*{additionalText}" id="additionalText" rows="3"
                               placeholder="Övrig information"></textarea>
-                </div>
             </div>
 
             <div class="form-row">

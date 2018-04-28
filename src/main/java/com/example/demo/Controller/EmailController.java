@@ -19,9 +19,9 @@ public class EmailController {
         String to = "slutprojektacademy@gmail.com";
         String subject = "En ny beställning!";
         String text = " En testbeställning från Team Brekkie: \n" + " " + orderForm.getCompanyName() + " " +
-                orderForm.getOrgId() + "\n " + orderForm.getReference() + " " + orderForm.getPhoneNumber() + " " +
-                orderForm.getEmail() + "\n " + orderForm.getInvoiceAdress() + " " + orderForm.getInvoicePostalTown() +
-                " " + orderForm.getInvoicePostNumber() + "\n " + orderForm.getDeliveryAdress() + " " +
+                orderForm.getOrgNr() + "\n " + orderForm.getContactperson() + " " + orderForm.getPhoneNumber() + " " +
+                orderForm.getEmail() + "\n " + orderForm.getInvoiceAddress() + " " + orderForm.getInvoicePostalTown() +
+                " " + orderForm.getInvoicePostNumber() + "\n " + orderForm.getDeliveryAddress() + " " +
                 orderForm.getDeliveryPostalTown() + " " + orderForm.getDeliveryPostNumber() + "\n " +
                 orderForm.isAllergy() + " " + orderForm.getAllergyMarking() + "\n " + orderForm.getDeliveryDate() +
                 " " + orderForm.getDeliveryTime();

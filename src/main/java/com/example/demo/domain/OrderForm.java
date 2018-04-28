@@ -13,26 +13,31 @@ public class OrderForm {
     @Size(min = 2, max = 50)
     private String companyName;
     @NotEmpty
-
-    private String orgId;
-    @NotEmpty
     @Size(min = 2, max = 30)
-    private String reference;
-    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
-    private String phoneNumber;
+    private String contactperson;
+
+    @NotEmpty
+    private String orgNr;
+
     @NotEmpty
     @Email
     private String email;
 
-    private String invoiceAdress;
+    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
+    private String phoneNumber;
 
-    private String invoicePostalTown;
-    //    @Pattern.List({
-//        @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
-//        @Pattern(regexp = "\\d{5}")})
-    private String invoicePostNumber;
+    @NotNull
+    private boolean allergy;
+
+    private String allergyMarking;
+
+    @NotNull
+    private Date deliveryDate;
+    @NotNull
+    private LocalTime deliveryTime;
+
     @NotEmpty
-    private String deliveryAdress;
+    private String deliveryAddress;
     @NotEmpty
     private String deliveryPostalTown;
     @NotEmpty
@@ -40,35 +45,37 @@ public class OrderForm {
 //            @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
 //            @Pattern(regexp = "\\d{5}")})
     private String deliveryPostNumber;
-    @NotNull
-    private boolean allergy;
 
-    private String allergyMarking;
-    @NotNull
-    private Date deliveryDate;
-    @NotNull
-    private LocalTime deliveryTime;
+    private String invoiceAddress;
+
+    private String invoicePostalTown;
+    //    @Pattern.List({
+//        @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
+//        @Pattern(regexp = "\\d{5}")})
+    private String invoicePostNumber;
+
+
     private String additionalText;
 
     public OrderForm() {
     }
 
-    public OrderForm(String companyName, String orgId,
-                     String reference, String phoneNumber,
-                     String email, String invoiceAdress,
+    public OrderForm(String companyName, String orgNr,
+                     String contactperson, String phoneNumber,
+                     String email, String invoiceAddress,
                      String invoicePostalTown, String invoicePostNumber,
-                     String deliveryAdress, String deliveryPostalTown,
+                     String deliveryAddress, String deliveryPostalTown,
                      String deliveryPostNumber, boolean allergy, String allergyMarking,
                      Date deliveryDate, LocalTime deliveryTime) {
         this.companyName = companyName;
-        this.orgId = orgId;
-        this.reference = reference;
+        this.orgNr = orgNr;
+        this.contactperson = contactperson;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.invoiceAdress = invoiceAdress;
+        this.invoiceAddress = invoiceAddress;
         this.invoicePostalTown = invoicePostalTown;
         this.invoicePostNumber = invoicePostNumber;
-        this.deliveryAdress = deliveryAdress;
+        this.deliveryAddress = deliveryAddress;
         this.deliveryPostalTown = deliveryPostalTown;
         this.deliveryPostNumber = deliveryPostNumber;
         this.allergy = allergy;
@@ -85,20 +92,20 @@ public class OrderForm {
         this.companyName = companyName;
     }
 
-    public String getOrgId() {
-        return orgId;
+    public String getOrgNr() {
+        return orgNr;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setOrgNr(String orgNr) {
+        this.orgNr = orgNr;
     }
 
-    public String getReference() {
-        return reference;
+    public String getContactperson() {
+        return contactperson;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setContactperson(String contactperson) {
+        this.contactperson = contactperson;
     }
 
     public String getPhoneNumber() {
@@ -117,12 +124,12 @@ public class OrderForm {
         this.email = email;
     }
 
-    public String getInvoiceAdress() {
-        return invoiceAdress;
+    public String getInvoiceAddress() {
+        return invoiceAddress;
     }
 
-    public void setInvoiceAdress(String invoiceAdress) {
-        this.invoiceAdress = invoiceAdress;
+    public void setInvoiceAddress(String invoiceAdress) {
+        this.invoiceAddress = invoiceAddress;
     }
 
     public String getInvoicePostalTown() {
@@ -141,12 +148,12 @@ public class OrderForm {
         this.invoicePostNumber = invoicePostNumber;
     }
 
-    public String getDeliveryAdress() {
-        return deliveryAdress;
+    public String getDeliveryAddress() {
+        return deliveryAddress;
     }
 
-    public void setDeliveryAdress(String deliveryAdress) {
-        this.deliveryAdress = deliveryAdress;
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public String getDeliveryPostalTown() {
