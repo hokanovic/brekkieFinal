@@ -20,6 +20,8 @@ public interface ShopRepository {
 
     List<Bag> listBags();
 
+    List<Bag> listBagById(int id);
+
     List<ProductCategory> listProductCategorys();
 
     List<Bag_ProductCategory> listBag_ProductCategorys();

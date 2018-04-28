@@ -1,14 +1,17 @@
 package com.example.demo.domain;
 
+//ADD DESCRIPTION
 public class Bag {
     private int id;
     private String name;
     private int price;
+    private String description;
 
-    public Bag(int id, String name, int price) {
+    public Bag(int id, String name, int price, String description) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.description = description;
     }
 
     public int getId() {
@@ -33,5 +36,13 @@ public class Bag {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

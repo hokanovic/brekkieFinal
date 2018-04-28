@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="bootstrap.css" type="text/css" rel="stylesheet">
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"-->
-          <!--integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css"  href="styles.css">
     <title>välj frukost</title>
@@ -23,11 +22,15 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${bag.name}"></h5>
                     <p class="card-text" th:text="${bag.description}"></p>
-                    <a href="breakfastBag" class="btn btn-primary">välj</a>
+                    <!--
+                    add below to <a>
+                    th:href="@{'/breakfastBag?id=' + ${bag.id}"
+                    -->
+                    <a th:href="@{'/breakfastBag?id=' + ${bag.id}}" class="btn btn-primary">välj</a>
                 </div>
             </div>
         </div>
-        <h5 id="cardText">välj frukostpåse och gör era val</h5>
+        <p>välj frukostpåse och gör era val</p>
     </div>
 </div>
 </body>

@@ -156,6 +156,41 @@ public class JDBCRepository implements ShopRepository {
         }
     }
 
+    //Creates a list containing one single Bag from database based on id of that Bag
+    @Override
+    public List<Bag> listBagById(int id) {
+        List<Bag> breakfastBagsList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\" where id = " + id)) {
+            while (rs.next()) breakfastBagsList.add(rsBreakfastBag(rs));
+            return breakfastBagsList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //(Beginning) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
+    //Get a bag from database
+    /*@Override
+    public Bag getBag(int id) {
+        Bag breakfastBag;
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT  name, price, description FROM \"Bag\" where id = " + id)) {
+            if (rs.next()) {
+                breakfastBag = new Bag(id,
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getString("description"));
+            }
+            return breakfastBag;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+    //(END) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
+
     //Creates a list of all BreakfastBag_ProductCategorys from database
     @Override
     public List<Bag_ProductCategory> listBag_ProductCategorys() {
@@ -356,7 +391,8 @@ public class JDBCRepository implements ShopRepository {
     private Bag rsBreakfastBag(ResultSet rs) throws SQLException {
         return new Bag(rs.getInt("id"),
                 rs.getString("name"),
-                rs.getInt("price"));
+                rs.getInt("price"),
+                rs.getString("description"));
     }
 
     //Creates new ProductCategory from database
