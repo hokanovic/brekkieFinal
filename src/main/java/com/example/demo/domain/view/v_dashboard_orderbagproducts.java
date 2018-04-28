@@ -5,12 +5,14 @@ public class v_dashboard_orderbagproducts {
     private int OrderBag_id;
     private int Product_id;
     private String Product;
+    private String ProductCategory;
 
-    public v_dashboard_orderbagproducts(int id, int orderBag_id, int product_id, String product) {
+    public v_dashboard_orderbagproducts(int id, int orderBag_id, int product_id, String product, String productCategory) {
         this.id = id;
         OrderBag_id = orderBag_id;
         Product_id = product_id;
         Product = product;
+        ProductCategory = productCategory;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class v_dashboard_orderbagproducts {
 
     public void setProduct(String product) {
         Product = product;
+    }
+
+    public String getProductCategory() {
+        return ProductCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        ProductCategory = productCategory;
     }
 }

@@ -74,28 +74,25 @@
                 <li th:text="${order.getV_dashboard_Order().PaymentMethod}"/>
                 <li th:text="${order.getV_dashboard_Order().Customer}"/>
                 <li th:text="${order.getV_dashboard_Order().OrderStatus}"/>
+            </ul>
                 <h1>Kund</h1>
+            <ul th:each="order : ${Orders}">
                 <li th:text="${order.getCustomer().id}"/>
                 <li th:text="${order.getCustomer().orgnr}"/>
                 <li th:text="${order.getCustomer().companyname}"/>
                 <li th:text="${order.getCustomer().contactperson}"/>
                 <li th:text="${order.getCustomer().mail}"/>
-                <!--<li th:text="${order.getOrderbagList().getOrderbag()}"/>-->
             </ul>
             <h1>Orderlines</h1>
             <ul th:each="order : ${Orders.getOrderbagList()}">
                 <ul th:each="order2 : ${order.getOrderbag()}">
-                    <li th:text="${order2.Bag_id}"/>
+                    <li th:text="${order2.Bag}"/>
                     <ul th:each="order3 : ${order.getOrderbagproductsList()}">
-                        <li th:text="${order3.getProduct_id()}"/>
+                        <li th:text=" ${order3.ProductCategory} + ': ' + ${order3.Product}"/>
+                        <!--<li>hej</li>-->
                     </ul>
                 </ul>
-                </ul>
             </ul>
-
-            </ul>
-
-
         </main>
     </div>
 </div>

@@ -1,32 +1,31 @@
 package com.example.demo.domain.view;
 
 import com.example.demo.domain.OrderBag;
-import com.example.demo.domain.OrderBagProducts;
 
 import java.util.List;
 
 public class v_dash_orderdetails_orderbag {
-    private OrderBag orderbag;
-    private List<OrderBagProducts> orderbagproductsList;
+    private v_dashboard_orderbag orderbag;
+    private List<v_dashboard_orderbagproducts> orderbagproductsList;
 
-    public v_dash_orderdetails_orderbag(OrderBag orderbag, List<OrderBagProducts> orderbagproductsList) {
+    public v_dash_orderdetails_orderbag(v_dashboard_orderbag orderbag, List<v_dashboard_orderbagproducts> orderbagproductsList) {
         this.orderbag = orderbag;
         this.orderbagproductsList = orderbagproductsList;
     }
 
-    public OrderBag getOrderbag() {
+    public v_dashboard_orderbag getOrderbag() {
         return orderbag;
     }
 
-    public void setOrderbag(OrderBag orderbag) {
+    public void setOrderbag(v_dashboard_orderbag orderbag) {
         this.orderbag = orderbag;
     }
 
-    public List<OrderBagProducts> getOrderbagproductsList() {
+    public List<v_dashboard_orderbagproducts> getOrderbagproductsList() {
         return orderbagproductsList;
     }
 
-    public void setOrderbagproductsList(List<OrderBagProducts> orderbagproductsList) {
+    public void setOrderbagproductsList(List<v_dashboard_orderbagproducts> orderbagproductsList) {
         this.orderbagproductsList = orderbagproductsList;
     }
 }
