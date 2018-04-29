@@ -113,6 +113,7 @@ public class brekkieController {
     @GetMapping("/dashboardOrderDetails")
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
         return new ModelAndView("dashboardOrderDetails")
-                .addObject("Orders", shopRepository.listV_dash_orderdetails_order(Orderid));
+                .addObject("Orders", shopRepository.listV_dash_orderdetails_order(Orderid))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 }
