@@ -60,38 +60,39 @@
                 </div>
             </div>
             <h1>Order</h1>
-            <ul th:each="order : ${Orders}">
-                <li th:text="${order.getV_dashboard_Order().id}"/>
-                <li th:text="${order.getV_dashboard_Order().creationdate}"/>
-                <li th:text="${order.getV_dashboard_Order().additionaltext}"/>
-                <li th:text="${order.getV_dashboard_Order().allergy}"/>
-                <li th:text="${order.getV_dashboard_Order().deliveryaddress}"/>
-                <li th:text="${order.getV_dashboard_Order().deliveryaddresspostalcode}"/>
-                <li th:text="${order.getV_dashboard_Order().deliveryaddresspostaltown}"/>
-                <li th:text="${order.getV_dashboard_Order().invoiceaddress}"/>
-                <li th:text="${order.getV_dashboard_Order().invoiceaddresspostalcode}"/>
-                <li th:text="${order.getV_dashboard_Order().invoiceaddresspostaltown}"/>
-                <li th:text="${order.getV_dashboard_Order().PaymentMethod}"/>
-                <li th:text="${order.getV_dashboard_Order().Customer}"/>
-                <li th:text="${order.getV_dashboard_Order().OrderStatus}"/>
+            <ul th:each="order : ${Orders.getV_dashboard_Order()}">
+                <li th:text="${order.id}"/>
+                <li th:text="${order.creationdate}"/>
+                <li th:text="${order.additionaltext}"/>
+                <li th:text="${order.allergy}"/>
+                <li th:text="${order.deliveryaddress}"/>
+                <li th:text="${order.deliveryaddresspostalcode}"/>
+                <li th:text="${order.deliveryaddresspostaltown}"/>
+                <li th:text="${order.invoiceaddress}"/>
+                <li th:text="${order.invoiceaddresspostalcode}"/>
+                <li th:text="${order.invoiceaddresspostaltown}"/>
+                <li th:text="${order.PaymentMethod}"/>
+                <li th:text="${order.Customer}"/>
+                <li th:text="${order.OrderStatus}"/>
             </ul>
                 <h1>Kund</h1>
-            <ul th:each="order : ${Orders}">
-                <li th:text="${order.getCustomer().id}"/>
-                <li th:text="${order.getCustomer().orgnr}"/>
-                <li th:text="${order.getCustomer().companyname}"/>
-                <li th:text="${order.getCustomer().contactperson}"/>
-                <li th:text="${order.getCustomer().mail}"/>
+            <ul th:each="customer : ${Orders.getCustomer()}">
+                <li th:text="${customer.id}"/>
+                <li th:text="${customer.orgnr}"/>
+                <li th:text="${customer.companyname}"/>
+                <li th:text="${customer.contactperson}"/>
+                <li th:text="${customer.mail}"/>
             </ul>
             <h1>Orderlines</h1>
+
             <ul th:each="order : ${Orders.getOrderbagList()}">
-                <ul th:each="order2 : ${order.getOrderbag()}">
-                    <li th:text="${order2.Bag}"/>
-                    <ul th:each="order3 : ${order.getOrderbagproductsList()}">
-                        <li th:text=" ${order3.ProductCategory} + ': ' + ${order3.Product}"/>
-                        <!--<li>hej</li>-->
-                    </ul>
-                </ul>
+                    <li th:text="${order.getOrderbag().getBag()}"/>
+            <ul th:each="order2 : ${order.getOrderbagproductsList()}">
+                    <li th:text="${order2.getProductCategory() + ': ' + order2.getProduct()}"/>
+            </ul>
+            <!--<ul th:each="order : ${Orders.getOrderbagList()}">-->
+                    <!--<li th:text="${order}"/>-->
+                    <!--<li th:text="${order.getOrderbag.getBag}"/>-->
             </ul>
         </main>
     </div>

@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.*;
 import com.example.demo.domain.view.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -427,21 +428,19 @@ public class JDBCRepository implements ShopRepository {
     }
 
 
-    private List<v_dash_orderdetails_orderbag> listOrderBags(int Orderid) {
+    public List<v_dash_orderdetails_orderbag> listOrderBags(int Orderid) {
 //        private OrderBag orderbag;
 //        private List<OrderBagProducts> orderbagproductsList;
-
 
         List<v_dash_orderdetails_orderbag> orderbagList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("select * " +
                      "from \"OrderBag\" " +
                      "where \"Order_id\" = ?")) {
-            ps.setInt(1, Orderid);
+            ps.setInt(1,Orderid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-
-                v_dashboard_orderbag orderBag = listV_dashboard_orderbag(Orderid);
+                v_dashboard_orderbag orderBag = listV_dashboard_orderbag(rs.getInt(1));
                 List<v_dashboard_orderbagproducts> orderBagProductsList = listV_dashboard_orderbagproducts(rs.getInt(1));
 
                 orderbagList.add(new v_dash_orderdetails_orderbag(orderBag,orderBagProductsList));
@@ -474,13 +473,14 @@ public class JDBCRepository implements ShopRepository {
         }
     }
 
-    private v_dashboard_orderbag listV_dashboard_orderbag(int Orderid) {
+    private v_dashboard_orderbag listV_dashboard_orderbag(int OrderBag_id) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\" " +
+             PreparedStatement ps = conn.prepareStatement(
+                     "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\" " +
                      "from \"OrderBag\" AS OB " +
-                     "INNER JOIN \"Bag\" AS B ON OB.\"Order_id\" = B.\"id\" " +
-                     "where \"Order_id\" = ?")) {
-            ps.setInt(1, Orderid);
+                     "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\" " +
+                     "where OB.\"id\" = ?")) {
+            ps.setInt(1, OrderBag_id);
             ResultSet rs = ps.executeQuery();
             rs.next();
             return rsV_dashboard_orderbag(rs);
@@ -508,8 +508,6 @@ public class JDBCRepository implements ShopRepository {
             ResultSet rs = ps.executeQuery();
             rs.next();
             return rsCustomer(rs);
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
