@@ -52,48 +52,99 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Orderdetaljer</h1>
+                <h1 class="h2" th:text="${'Order ' + Orders.getV_dashboard_Order().id}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
                     </div>
                 </div>
             </div>
-            <h1>Order</h1>
-            <ul th:each="order : ${Orders.getV_dashboard_Order()}">
-                <li th:text="${order.id}"/>
-                <li th:text="${order.creationdate}"/>
-                <li th:text="${order.additionaltext}"/>
-                <li th:text="${order.allergy}"/>
-                <li th:text="${order.deliveryaddress}"/>
-                <li th:text="${order.deliveryaddresspostalcode}"/>
-                <li th:text="${order.deliveryaddresspostaltown}"/>
-                <li th:text="${order.invoiceaddress}"/>
-                <li th:text="${order.invoiceaddresspostalcode}"/>
-                <li th:text="${order.invoiceaddresspostaltown}"/>
-                <li th:text="${order.PaymentMethod}"/>
-                <li th:text="${order.Customer}"/>
-                <li th:text="${order.OrderStatus}"/>
-            </ul>
-                <h1>Kund</h1>
-            <ul th:each="customer : ${Orders.getCustomer()}">
-                <li th:text="${customer.id}"/>
-                <li th:text="${customer.orgnr}"/>
-                <li th:text="${customer.companyname}"/>
-                <li th:text="${customer.contactperson}"/>
-                <li th:text="${customer.mail}"/>
-            </ul>
-            <h1>Orderlines</h1>
 
-            <ul th:each="order : ${Orders.getOrderbagList()}">
-                    <li th:text="${order.getOrderbag().getBag()}"/>
-            <ul th:each="order2 : ${order.getOrderbagproductsList()}">
-                    <li th:text="${order2.getProductCategory() + ': ' + order2.getProduct()}"/>
-            </ul>
-            <!--<ul th:each="order : ${Orders.getOrderbagList()}">-->
-                    <!--<li th:text="${order}"/>-->
-                    <!--<li th:text="${order.getOrderbag.getBag}"/>-->
-            </ul>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
+                        id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                    <span data-feather="book-open"></span>
+                    Orderstatus
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
+                       th:text="${orderstatus.name}"/>
+                </div>
+            </div>
+
+            <table class="table table-responsive table-borderless table-sm">
+                <thead>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="font-weight-bold">Orgnr:</td>
+                    <td th:text="${Orders.getCustomer().orgnr}"></td>
+                    <td class="font-weight-bold">Kontaktperson:</td>
+                    <td th:text="${Orders.getCustomer().contactperson}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Kund:</td>
+                    <td th:text="${Orders.getCustomer().companyname}"></td>
+                    <td class="font-weight-bold">E-post:</td>
+                    <td th:text="${Orders.getCustomer().mail}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Datum:</td>
+                    <td th:text="${Orders.getV_dashboard_Order().creationdate}"></td>
+                    <td class="font-weight-bold">Fakturaadress:</td>
+                    <td th:text="${Orders.getV_dashboard_Order().invoiceaddress + ', ' + Orders.getV_dashboard_Order().invoiceaddresspostalcode + ', ' + Orders.getV_dashboard_Order().invoiceaddresspostaltown}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Betalningsmetod:</td>
+                    <td th:text="${Orders.getV_dashboard_Order().PaymentMethod}"></td>
+                    <td class="font-weight-bold">Leveransadress:</td>
+                    <td th:text="${Orders.getV_dashboard_Order().deliveryaddress + ', ' + Orders.getV_dashboard_Order().deliveryaddresspostalcode + ', ' + Orders.getV_dashboard_Order().deliveryaddresspostaltown}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Allergi</td>
+                    <td th:text="${Orders.getV_dashboard_Order().allergy}"></td>
+                </tr>
+                <tr>
+                    <td class="font-weight-bold">Märkning:</td>
+                    <td th:text="${Orders.getV_dashboard_Order().additionaltext}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <h3>Specifikation</h3>
+            <table class="table table-borderless table-sm">
+                <thead>
+                </thead>
+                <tbody th:each="order : ${Orders.getOrderbagList()}">
+                <tr>
+                    <th th:text="${order.getOrderbag().getBag()}"></th>
+                    <td th:each="order2 : ${order.getOrderbagproductsList()}">
+                    <span th:text="${order2.getProductCategory()} + ': ' + ${order2.getProduct()}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <!--<table class="table table-bordered">-->
+                <!--<thead>-->
+                <!--</thead>-->
+                <!--<tbody th:each="order : ${Orders.getOrderbagList()}">-->
+                <!--<th colspan="8" th:text="${order.getOrderbag().getBag()}"></th>-->
+                <!--<tr th:each="order2 : ${order.getOrderbagproductsList()}">-->
+                    <!--&lt;!&ndash;<td th:text="${order2.getProductCategory()}"></td>&ndash;&gt;-->
+                    <!--<td th:text="${order2.getProductCategory()}"/>-->
+                    <!--<td th:text="${order2.getProduct()}"/>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+
         </main>
     </div>
 </div>
