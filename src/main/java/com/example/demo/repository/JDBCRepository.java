@@ -553,4 +553,25 @@ public class JDBCRepository implements ShopRepository {
         return orderBagProductsList;
     }
 
+
+
+    //Creates a list of all Orders from database
+    @Override
+    public List<v_dashboard_order> listCustomerOrders(int Customerid) {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
+                     "where C.\"id\" = ?")) {
+            ps.setInt(1, Customerid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

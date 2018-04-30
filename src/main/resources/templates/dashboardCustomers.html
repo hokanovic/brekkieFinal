@@ -47,9 +47,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="customer : ${Customers}">
-                        <a href="#">
-                        <td th:text="${customer.id}"/>
-                        </a>
+                        <td>
+                            <a th:href="@{dashboardCustomerOrders?Customerid=} + ${customer.id}"  th:text="${customer.id}"></a>
+                        </td>
                         <td th:text="${customer.orgnr}"/>
                         <td th:text="${customer.companyname}"/>
                         <td th:text="${customer.contactperson}"/>
