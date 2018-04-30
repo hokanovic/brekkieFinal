@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+
     <title>beställ frukost</title>
 </head>
 <body ng-app="app">
@@ -23,7 +24,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="inputEmail">Leveransdag</label>
-                        <input type="date" th:field="*{deliveryDate}" class="form-control" id="deliveryDate"
+                        <input type="date" th:field="*{deliveryDate}" class="form-control" min="" id="deliveryDate"
                                placeholder="">
                         <p class="errorMessage" th:if="${#fields.hasErrors('deliveryDate')}">Felaktigt datum</p>
                     </div>
@@ -126,8 +127,6 @@
                     <p class="errorMessage" th:if="${#fields.hasErrors('phoneNumber')}">Måste fyllas i</p>
                 </div>
             </div>
-
-
             <div class="form-row">
                 <div class="form-check">
                     <div id = "checkbox-invoice">
@@ -192,6 +191,8 @@
         </form>
     </div>
 <!--</div>-->
+<script src="jquery-3.3.1.slim.min.js"></script>
+<script>window.jQuery || document.write('<script src="jquery-slim.min.js"><\/script>')</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="script.js"></script>
 </body>
