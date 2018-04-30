@@ -23,7 +23,7 @@ public class EmailController {
                 orderForm.getEmail() + "\n " + orderForm.getInvoiceAddress() + " " + orderForm.getInvoicePostalTown() +
                 " " + orderForm.getInvoicePostNumber() + "\n " + orderForm.getDeliveryAddress() + " " +
                 orderForm.getDeliveryPostalTown() + " " + orderForm.getDeliveryPostNumber() + "\n " +
-                orderForm.isAllergy() + " " + orderForm.getAllergyMarking() + "\n " + orderForm.getDeliveryDate() +
+                orderForm.getAllergy() + " " + orderForm.getAllergyMarking() + "\n " + orderForm.getDeliveryDate() +
                 " " + orderForm.getDeliveryTime();
 
         emailService.sendSimpleMessage(to, subject, text);

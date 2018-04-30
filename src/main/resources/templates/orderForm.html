@@ -3,18 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"-->
+          <!--integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">-->
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>beställ frukost</title>
 </head>
 <body ng-app="app">
-<div class="bg">
-    <div class="jumbotron text-center">
-        <h1 class="display-4">orderformulär</h1>
-        <hr class="my-4">
-        <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
+<!--<div class="bg">-->
+
+    <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
+    <div class="part1">
+        <div class="jumbotron text-center">
+
+            <h1 class="display-4">beställningsinformation</h1>
+            <hr class="my-4">
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="inputEmail">Leveransdag</label>
+                        <input type="date" th:field="*{deliveryDate}" class="form-control" id="deliveryDate"
+                               placeholder="">
+                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryDate')}">Felaktigt datum</p>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="kontaktInfo">Leveranstid</label>
+                        <input type="time" th:field="*{deliveryTime}" class="form-control" id="deliveryTime"
+                               placeholder="">
+                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryTime')}">Felaktig tid</p>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <span id="allergySpan">Allergier</span>
+                        <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergiJa"
+                               name="inlineRadioOptions" th:field="*{allergy}" th:value="true">
+                        <label class="form-check-label" for="allergiJa">Ja</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" ng-click="radioClick('hide')" type="radio" id="allergiNej"
+                               name="inlineRadioOptions" th:field="*{allergy}" th:value="false">
+                        <label class="form-check-label" for="allergiNej">Nej</label>
+                    </div>
+                    <p class="errorMessage" th:if="${#fields.hasErrors('allergy')}">Måste besvaras</p>
+                </div>
+
+                    <div ng-if='show === true' class="form-group">
+                <textarea class="form-control" th:field="*{allergyMarking}" id="allergyMessage" rows="2"
+                          placeholder="Ange allergier här"></textarea>
+                    </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="deliveryAddress">Leveransaddress</label>
+                        <input type="text" th:field="*{deliveryAddress}" ng-model="delivery.Address"
+                               class="form-control"
+                               id="deliveryAddress"
+                               placeholder="LeveransAddress">
+                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAddress')}">Måste fyllas i</p>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputZip">Postnummer</label>
+                        <input type="text"  th:field="*{deliveryPostNumber}" ng-model="delivery.PostNumber"
+                               class="form-control" id="inputZip"
+                               placeholder="Postnummer">
+                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostNumber')}">Måste fyllas i</p>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputDeliveryPostalTown">Stad</label>
+                        <input type="text" th:field="*{deliveryPostalTown}" ng-model="delivery.PostalTown"
+                               class="form-control" id="inputDeliveryPostalTown"
+                               placeholder="Stad">
+                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostalTown')}">Måste fyllas i</p>
+                    </div>
+
+                </div>
+            <div class="form-row">
+                    <textarea class="form-control" th:field="*{additionalText}" id="additionalText" rows="3"
+                              placeholder="Övrig information"></textarea>
+            </div>
+            <A HREF = "#kundinformation"><button type="button" class="btn btn-primary">Gå vidare</button></A>
+        </div>
+    </div>
+        <div class="spacing"></div>
+
+    <div class="part2">
+        <A NAME = "kundinformation"></A>
+        <div class="jumbotron text-center">
+
+            <h1 class="display-4">kundinformation</h1>
+            <hr class="my-4">
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="inputCompanyName">Företagsnamn</label>
@@ -22,10 +99,10 @@
                            placeholder="Företagsnamn">
                     <p class="errorMessage" th:if="${#fields.hasErrors('companyName')}">Måste fyllas i</p>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label for="kontaktPerson">Referens</label>
                     <input type="text" th:field="*{contactperson}" class="form-control" id="kontaktPerson"
-                           placeholder="Kontaktperson/referensnummer">
+                           placeholder="Kontaktperson/referensnr">
                     <p class="errorMessage" th:if="${#fields.hasErrors('contactperson')}">Måste fyllas i</p>
                 </div>
                 <div class="form-group col-md-3">
@@ -38,7 +115,8 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="inputEmail">Epost</label>
-                    <input type="email" th:field="*{email}" class="form-control" id="inputEmail" placeholder="Epost">
+                    <input type="email" th:field="*{email}" class="form-control" id="inputEmail"
+                           placeholder="Epost">
                     <p class="errorMessage" th:if="${#fields.hasErrors('email')}">Måste fyllas i</p>
                 </div>
                 <div class="form-group col-md-4">
@@ -48,76 +126,35 @@
                     <p class="errorMessage" th:if="${#fields.hasErrors('phoneNumber')}">Måste fyllas i</p>
                 </div>
             </div>
-            <div class="form-row">
-                <span>Allergier?</span>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergiJa"
-                           name="inlineRadioOptions" value="Ja">
-                    <label class="form-check-label" for="allergiJa">Ja</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" ng-click="radioClick('hide')" type="radio" id="allergiNej"
-                           name="inlineRadioOptions" value="Nej">
-                    <label class="form-check-label" for="allergiNej">Nej</label>
-                </div>
-            </div>
-            <p class="errorMessage" th:if="${#fields.hasErrors('allergy')}">Måste besvaras</p>
-            <div ng-if='show === true' class="form-group">
-                <textarea class="form-control" th:field="*{allergyMarking}" id="allergyMessage" rows="2"
-                          placeholder="Ange allergier här"></textarea>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="inputEmail">Leveransdag</label>
-                    <input type="date" th:field="*{deliveryDate}" class="form-control" id="deliveryDate" placeholder="">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryDate')}">Felaktigt datum</p>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="kontaktInfo">Leveranstid</label>
-                    <input type="time" th:field="*{deliveryTime}" class="form-control" id="deliveryTime" placeholder="">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryTime')}">Felaktig tid</p>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="deliveryAddress">Leveransaddress</label>
-                    <input type="text" th:field="*{deliveryAddress}" ng-model="delivery.Address" class="form-control"
-                           id="deliveryAddress"
-                           placeholder="LeveransAddress">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAddress')}">Måste fyllas i</p>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="inputDeliveryPostalTown">Stad</label>
-                    <input type="text" th:field="*{deliveryPostalTown}" ng-model="delivery.PostalTown"
-                           class="form-control" id="inputDeliveryPostalTown"
-                           placeholder="Stad">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostalTown')}">Måste fyllas i</p>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputZip">Postnummer</label>
-                    <input type="text" th:field="*{deliveryPostNumber}" ng-model="delivery.PostNumber"
-                           class="form-control" id="inputZip"
-                           placeholder="Postnummer">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostNumber')}">Måste fyllas i</p>
-                </div>
-            </div>
 
 
             <div class="form-row">
                 <div class="form-check">
-                    <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()" type="checkbox"
+                    <div id = "checkbox-invoice">
+                    <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()"
+                           type="checkbox"
                            id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
-                        Leveransadressen är samma som faktureringsadressen
+                        Faktureringsadressen är samma som leveransadressen
                     </label>
+                </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="invoiceAddress">Faktureringsaddress</label>
-                    <input type="text" th:field="*{invoiceAddress}" class="form-control" ng-model="invoice.Address"
+                    <input type="text" th:field="*{invoiceAddress}" class="form-control"
+                           ng-model="invoice.Address"
                            id="invoiceAddress" placeholder="Faktureringsaddress">
-                    <p id="errorMessage" th:if="${#fields.hasErrors('invoiceAddress')}" th:errors="*{invoiceAddress}">Måste fyllas i</p>
+                    <p id="errorMessage" th:if="${#fields.hasErrors('invoiceAddress')}"
+                       th:errors="*{invoiceAddress}">Måste fyllas i</p>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="invoicePostNumber">Postnummer</label>
+                    <input type="text" th:field="*{invoicePostNumber}" ng-model="invoice.PostNumber"
+                           class="form-control" id="invoicePostNumber"
+                           placeholder="Postnummer">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostNumber')}">Måste fyllas i</p>
                 </div>
 
                 <div class="form-group col-md-3">
@@ -127,27 +164,34 @@
                            placeholder="Stad">
                     <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostalTown')}">Måste fyllas i</p>
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="invoicePostNumber">Postnummer</label>
-                    <input type="text" th:field="*{invoicePostNumber}" ng-model="invoice.PostNumber"
-                           class="form-control" id="invoicePostNumber"
-                           placeholder="Postnummer">
-                    <p class="errorMessage" th:if="${#fields.hasErrors('invoicePostNumber')}">Måste fyllas i</p>
+
+            </div>
+
+            <div>
+                <A HREF = "#ordersammanfattning"><button type="button" class="btn btn-primary">Gå vidare</button></A>
+            </div>
+
+        </div>
+    </div>
+
+        <div class="spacing"></div>
+
+        <div class="part3">
+            <A NAME = "ordersammanfattning"></A>
+            <div class="jumbotron text-center">
+                <h1 class="display-4">er order</h1>
+                <hr class="my-4">
+                <p>Den beställda frukosten</p>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary btn-block">Beställ</button>
                 </div>
-            </div>
-            <div class="form-row">
-                    <textarea class="form-control" th:field="*{additionalText}" id="additionalText" rows="3"
-                              placeholder="Övrig information"></textarea>
-            </div>
+                <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
 
-            <div class="form-row">
-                <button type="submit" class="btn btn-primary btn-block">Beställ</button>
             </div>
-            <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
-
+        </div>
         </form>
     </div>
-</div>
+<!--</div>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="script.js"></script>
 </body>

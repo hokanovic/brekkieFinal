@@ -13,28 +13,28 @@ public class OrderForm {
     @NotEmpty
     @Size(min=2, max=50)
     private String companyName;
-    @NotEmpty
 
+    @NotEmpty
     private String orgNr;
 
     @NotEmpty
     @Size(min = 2, max = 30)
     private String contactperson;
 
-    //@Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
-    //@Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")
+    @NotEmpty
     private String phoneNumber;
 
     @NotEmpty
     @Email
     private String email;
 
+    @NotEmpty
     private String invoiceAddress;
 
+    @NotEmpty
     private String invoicePostalTown;
-    //    @Pattern.List({
-//        @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
-//        @Pattern(regexp = "\\d{5}")})
+
+    @NotEmpty
     private String invoicePostNumber;
 
     @NotEmpty
@@ -44,13 +44,10 @@ public class OrderForm {
     private String deliveryPostalTown;
 
     @NotEmpty
-//    @Pattern.List({
-//            @Pattern(regexp = "\\d{3}[ ]?\\d{2}"),
-//            @Pattern(regexp = "\\d{5}")})
     private String deliveryPostNumber;
 
     @NotNull
-    private boolean allergy;
+    private Boolean allergy;
 
     private String allergyMarking;
 
@@ -70,7 +67,7 @@ public class OrderForm {
                      String email, String invoiceAddress,
                      String invoicePostalTown, String invoicePostNumber,
                      String deliveryAddress, String deliveryPostalTown,
-                     String deliveryPostNumber, boolean allergy, String allergyMarking,
+                     String deliveryPostNumber, Boolean allergy, String allergyMarking,
                      Date deliveryDate, LocalTime deliveryTime) {
         this.companyName = companyName;
         this.orgNr = orgNr;
@@ -133,7 +130,7 @@ public class OrderForm {
         return invoiceAddress;
     }
 
-    public void setInvoiceAddress(String invoiceAdress) {
+    public void setInvoiceAddress(String invoiceAddress) {
         this.invoiceAddress = invoiceAddress;
     }
 
@@ -177,11 +174,11 @@ public class OrderForm {
         this.deliveryPostNumber = deliveryPostNumber;
     }
 
-    public boolean isAllergy() {
+    public Boolean getAllergy() {
         return allergy;
     }
 
-    public void setAllergy(boolean allergy) {
+    public void setAllergy(Boolean allergy) {
         this.allergy = allergy;
     }
 

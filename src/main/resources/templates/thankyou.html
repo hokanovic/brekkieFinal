@@ -16,11 +16,11 @@
         <h5>Tack för din förfrågan, vi återkommer snart med mer information</h5>
 
         <p th:text="'Företag: ' + ${orderForm.companyName}"/>
-        <p th:text="'Organisationsnummer: ' + ${orderForm.orgId}"/>
+        <p th:text="'Organisationsnummer: ' + ${orderForm.orgNr}"/>
         <p th:text="'Kontaktinformation: ' + ${orderForm.email} + ', ' + ${orderForm.phoneNumber}"/>
-        <p th:text="'Kontaktperson/referens: ' + ${orderForm.reference}"/>
-        <p th:text="'Leveransadress: ' + ${orderForm.deliveryAdress} + ', ' + ${orderForm.deliveryPostNumber}  + ' ' + ${orderForm.deliveryPostalTown}"/>
-        <p th:text="'Faktureringsadress: ' + ${orderForm.invoiceAdress} + ', ' + ${orderForm.invoicePostNumber}  + ' ' + ${orderForm.invoicePostalTown}"/>
+        <p th:text="'Kontaktperson/referens: ' + ${orderForm.contactperson}"/>
+        <p th:text="'Leveransadress: ' + ${orderForm.deliveryAddress} + ', ' + ${orderForm.deliveryPostNumber}  + ' ' + ${orderForm.deliveryPostalTown}"/>
+        <p th:text="'Faktureringsadress: ' + ${orderForm.invoiceAddress} + ', ' + ${orderForm.invoicePostNumber}  + ' ' + ${orderForm.invoicePostalTown}"/>
         <p th:text="'Allergier: ' + ${orderForm.allergy} + ', ' + ${orderForm.allergyMarking}"/>
         <p th:text="'Leverandsdatum ' + ${orderForm.deliveryDate}"/>
         <p th:text="'Leverandstid ' + ${orderForm.deliveryTime}"/>
