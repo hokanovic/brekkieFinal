@@ -79,7 +79,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     <a th:each="orderstatus : ${OrderStatuses}"
-                       th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}" class="dropdown-item"
+                       th:href="@{'/dashboardOrderDetailsUpdate?Orderstatus=' + ${orderstatus.id} + '&Orderid=' + ${Orders.getV_dashboard_Order().id}}" class="dropdown-item"
                        th:text="${orderstatus.name}"/>
                 </div>
             </div>

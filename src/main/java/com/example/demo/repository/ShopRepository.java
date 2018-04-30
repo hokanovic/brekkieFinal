@@ -16,8 +16,11 @@ public interface ShopRepository {
     v_dash_orderdetails_order listV_dash_orderdetails_order(int Orderid);
     Customer listCustomer(int Orderid);
     List<v_dashboard_order> listCustomerOrders(String mail);
+    List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
+    v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
 
-    List<Customer> listCustomers();
+
+        List<Customer> listCustomers();
 
     List<OrderLine> listOrderLines();
 
@@ -46,5 +49,7 @@ public interface ShopRepository {
     void addProductCategory(String name);
 
     void addBag_ProductCategory(int bag_id, int productCategory_id);
+
+    void updateOrderStatus(int Orderstatus, int Orderid);
 
 }

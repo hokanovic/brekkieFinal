@@ -74,7 +74,7 @@ public class JDBCRepository implements ShopRepository {
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
-                     "where OS.\"id\" = ?")) {
+                     "where O.\"id\" = ?")) {
             ps.setInt(1, OrderStatus);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
@@ -427,6 +427,19 @@ public class JDBCRepository implements ShopRepository {
         return new v_dash_orderdetails_order(v_dashboard_Order,customer,orderbagList);
     }
 
+    @Override
+    public v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid) {
+//        private v_dashboard_order v_dashboard_Order;
+//        private Customer customer;
+//        private List<v_dash_orderdetails_orderbag> orderbagList;
+
+        v_dashboard_order v_dashboard_Order = listOrdersTextPwhereOrderEquals(Orderid).get(0);
+        Customer customer = listCustomer(Orderid);
+        List<v_dash_orderdetails_orderbag> orderbagList = listOrderBags(Orderid);
+
+        return new v_dash_orderdetails_order(v_dashboard_Order,customer,orderbagList);
+    }
+
 
     public List<v_dash_orderdetails_orderbag> listOrderBags(int Orderid) {
 //        private OrderBag orderbag;
@@ -566,6 +579,43 @@ public class JDBCRepository implements ShopRepository {
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
                      "where C.\"mail\" = ?")) {
             ps.setString(1, mail);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateOrderStatus(int Orderstatus, int Orderid) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE \"Order\" " +
+                     "SET \"OrderStatus_id\" = ?" +
+                     "WHERE \"id\" = ?")) {
+            ps.setInt(1, Orderstatus);
+            ps.setInt(2, Orderid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid) {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
+                     "where O.\"id\" = ?")) {
+            ps.setInt(1, Orderid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
             return orderList;

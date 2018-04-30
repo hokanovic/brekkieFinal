@@ -101,6 +101,8 @@ public class brekkieController {
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
+
+
     @GetMapping("/dashboardOrdersTextP")
     public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus) {
         return new ModelAndView("dashboardOrdersText")
@@ -128,5 +130,39 @@ public class brekkieController {
         return new ModelAndView("dashboardCustomerOrders")
                 .addObject("Orders", shopRepository.listCustomerOrders(Customermail))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
+
+    @GetMapping("/dashboardOrderDetailsUpdate")
+    public ModelAndView OrderDetailsChangeOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
+
+        shopRepository.updateOrderStatus(Orderstatus, Orderid);
+
+        return new ModelAndView("dashboardOrderDetails")
+                .addObject("Orders", shopRepository.listV_dash_orderdetails_orderWhereOrderidEquals(Orderid))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
+
+
+    @GetMapping("/dashboardOrdersTextUpdateOrderStatus")
+    public ModelAndView brekkiedashboardOrdersTextUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
+        shopRepository.updateOrderStatus(Orderstatus, Orderid);
+
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("Orders", shopRepository.listOrdersText())
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
+
+
+    @GetMapping("/dashboardOrdersTextPUpdateOrderStatus")
+    public ModelAndView brekkiedashboardOrdersTextPUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
+
+        shopRepository.updateOrderStatus(Orderstatus, Orderid);
+
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("Orders", shopRepository.listOrdersTextP(Orderstatus))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+
+        //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
+
     }
 }
