@@ -118,10 +118,9 @@ public class brekkieController {
     }
 
     @GetMapping("/dashboardCustomerOrders")
-    public ModelAndView brekkiedashboardCustomerOrders(@RequestParam int Customerid) {
+    public ModelAndView brekkiedashboardCustomerOrders(@RequestParam String Customermail) {
         return new ModelAndView("dashboardCustomerOrders")
-                .addObject("Orders", shopRepository.listCustomerOrders(Customerid))
-                .addObject("OrderStatuses", shopRepository.listOrderStatuses())
-                .addObject("Customer", shopRepository.listCustomer(Customerid));
+                .addObject("Orders", shopRepository.listCustomerOrders(Customermail))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 }

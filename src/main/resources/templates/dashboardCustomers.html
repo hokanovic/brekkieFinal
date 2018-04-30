@@ -41,20 +41,20 @@
                         <th>Kundnr</th>
                         <th>Organisationsnr</th>
                         <th>Namn</th>
-                        <th>Kontaktperson</th>
                         <th>Mejl</th>
+                        <th>Kontaktperson</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="customer : ${Customers}">
-                        <td>
-                            <a th:href="@{dashboardCustomerOrders?Customerid=} + ${customer.id}"  th:text="${customer.id}"></a>
-                        </td>
+
+                        <td th:text="${customer.id}"/>
                         <td th:text="${customer.orgnr}"/>
                         <td th:text="${customer.companyname}"/>
+                        <td>
+                            <a th:href="@{dashboardCustomerOrders?Customermail=} + ${customer.mail}"  th:text="${customer.mail}"></a>
+                        </td>
                         <td th:text="${customer.contactperson}"/>
-                        <td th:text="${customer.mail}"/>
-
                     </tr>
                     </tbody>
                 </table>

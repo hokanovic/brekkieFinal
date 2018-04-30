@@ -15,7 +15,7 @@ public interface ShopRepository {
     List<Product> listProducts();
     v_dash_orderdetails_order listV_dash_orderdetails_order(int Orderid);
     Customer listCustomer(int Orderid);
-    List<v_dashboard_order> listCustomerOrders(int Customerid);
+    List<v_dashboard_order> listCustomerOrders(String mail);
 
     List<Customer> listCustomers();
 
