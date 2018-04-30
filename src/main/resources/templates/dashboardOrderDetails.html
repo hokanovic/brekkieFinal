@@ -14,10 +14,12 @@
         .btn-group {
             white-space: nowrap;
         }
+
         .btn-group .btn {
             float: none;
             display: inline-block;
         }
+
         .btn + .dropdown-toggle {
             margin-left: -4px;
         }
@@ -30,13 +32,23 @@
                 overflow-y: hidden;
                 width: 100%;
             }
+
             .table-responsive > .table {
                 margin-bottom: 0;
             }
+
             .table-responsive > .table > thead > tr > th, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tfoot > tr > td {
                 white-space: nowrap;
             }
 
+        }
+
+        .table td, .table th {
+            border: none;
+        }
+
+        table.table-condensed {
+            border: 1px solid black;
         }
     </style>
 
@@ -52,28 +64,27 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2" th:text="${'Order ' + Orders.getV_dashboard_Order().id}"></h1>
+                <h1 class="h2" th:text="${'Orderdetaljer för order ' + Orders.getV_dashboard_Order().id}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
                         <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
                     </div>
                 </div>
             </div>
-
             <div class="dropdown">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
                         id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                        aria-expanded="false" th:text="'Status: ' + ${Orders.getV_dashboard_Order().getOrderStatus()}">
                     <span data-feather="book-open"></span>
-                    Orderstatus
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
+                    <a th:each="orderstatus : ${OrderStatuses}"
+                       th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}" class="dropdown-item"
                        th:text="${orderstatus.name}"/>
                 </div>
             </div>
-
-            <table class="table table-responsive table-borderless table-sm">
+            <br>
+            <table class="table table-responsive table-borderless table-sm table-condensed">
                 <thead>
                 </thead>
                 <tbody>
@@ -106,7 +117,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">Allergi</td>
+                    <td class="font-weight-bold">Allergi:</td>
                     <td th:text="${Orders.getV_dashboard_Order().allergy}"></td>
                 </tr>
                 <tr>
@@ -125,7 +136,7 @@
                 <tr>
                     <th th:text="${order.getOrderbag().getBag()}"></th>
                     <td th:each="order2 : ${order.getOrderbagproductsList()}">
-                    <span th:text="${order2.getProductCategory()} + ': ' + ${order2.getProduct()}"></span>
+                        <span th:text="${order2.getProductCategory()} + ': ' + ${order2.getProduct()}"></span>
                     </td>
                 </tr>
                 </tbody>
@@ -133,16 +144,16 @@
 
 
             <!--<table class="table table-bordered">-->
-                <!--<thead>-->
-                <!--</thead>-->
-                <!--<tbody th:each="order : ${Orders.getOrderbagList()}">-->
-                <!--<th colspan="8" th:text="${order.getOrderbag().getBag()}"></th>-->
-                <!--<tr th:each="order2 : ${order.getOrderbagproductsList()}">-->
-                    <!--&lt;!&ndash;<td th:text="${order2.getProductCategory()}"></td>&ndash;&gt;-->
-                    <!--<td th:text="${order2.getProductCategory()}"/>-->
-                    <!--<td th:text="${order2.getProduct()}"/>-->
-                <!--</tr>-->
-                <!--</tbody>-->
+            <!--<thead>-->
+            <!--</thead>-->
+            <!--<tbody th:each="order : ${Orders.getOrderbagList()}">-->
+            <!--<th colspan="8" th:text="${order.getOrderbag().getBag()}"></th>-->
+            <!--<tr th:each="order2 : ${order.getOrderbagproductsList()}">-->
+            <!--&lt;!&ndash;<td th:text="${order2.getProductCategory()}"></td>&ndash;&gt;-->
+            <!--<td th:text="${order2.getProductCategory()}"/>-->
+            <!--<td th:text="${order2.getProduct()}"/>-->
+            <!--</tr>-->
+            <!--</tbody>-->
             <!--</table>-->
 
         </main>
@@ -158,10 +169,10 @@
 <script src="bootstrap.min.js"></script>
 <script src="feather.min.js"></script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         var table = $('#orders').DataTable();
 
-        $('#btn-export').on('click', function(){
+        $('#btn-export').on('click', function () {
             $('<table>').append(table.$('tr').clone()).table2excel({
                 exclude: ".excludeThisClass",
                 name: "Worksheet Name",
@@ -180,11 +191,10 @@
 </script>
 
 <script>
-    $("#orders tr").click(function() {
+    $("#orders tr").click(function () {
         window.location = $(this).find('td:eq(1)').attr("href");
     });
 </script>
-
 
 
 </body>
