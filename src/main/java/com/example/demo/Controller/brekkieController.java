@@ -5,13 +5,17 @@ import com.example.demo.domain.OrderForm;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,7 +30,7 @@ public class brekkieController {
     private EmailController emailService;
 
     @GetMapping("/frukost")
-    public ModelAndView orderBreakfast(){
+    public ModelAndView orderBreakfast() {
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
@@ -40,7 +44,7 @@ public class brekkieController {
 
     //HÅRDKÅDAT PLEASE DO REFACTOR!
     @GetMapping("/breakfastBag")
-    public ModelAndView seeYourBreakfastBag(@RequestParam int id){
+    public ModelAndView seeYourBreakfastBag(@RequestParam int id) {
         List<Bag> bagList;
         bagList = shopRepository.listBagById(id);
         Bag bag = bagList.get(0);
@@ -60,25 +64,27 @@ public class brekkieController {
     //End of "Lecoq ändringar"
 
     @PostMapping("/frukost")
-    public String submitOrder(@Valid OrderForm orderForm, BindingResult bindingResult) {
+    public String submitOrder(@ModelAttribute OrderForm orderForm, BindingResult bindingResult) {
+        OrderFormValidator orderFormValidator = new OrderFormValidator();
 
-        if (bindingResult.hasErrors()) {
-            emailService.sendMail(orderForm);
-            if (bindingResult.hasErrors()) {
-                return "orderForm";
-            } else {
-                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-                //OBS - PaymentMethod, Customer_ID!!!
-                shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
-                        orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
-                        orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2,2);
-                // OBS ID
-                shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
-            }
+        if (orderFormValidator.supports(orderForm.getClass())) {
+            orderFormValidator.validate(orderForm, bindingResult);
         }
-        return "thankyou";
+        if (bindingResult.hasErrors()) {
+            return "orderForm";
+        } else {
+            emailService.sendMail(orderForm);
+            Date date = new Date(Calendar.getInstance().getTime().getTime());
 
+            //OBS - Customer_ID!!!
+            shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+                    orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2, 2);
+
+            shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
+        }
+
+        return "thankyou";
     }
 
 

@@ -16,10 +16,68 @@ body{
     background-size: cover;
 
 }
+.part1 {
+    padding-top:5%;
+    padding-bottom: 5%;
+    display:flex;
+    justify-content: center;
+    background-image: url("brekkie.jpg");
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.part2 {
+    padding-top:5%;
+    padding-bottom: 5%;
+    display:flex;
+    justify-content: center;
+    background-image: url("brekkie2.jpg");
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.part3 {
+    padding-top:5%;
+    padding-bottom: 5%;
+    display:flex;
+    justify-content: center;
+    background-image: url("brekkie3.jpg");
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .form {
     display:flex;
     justify-content: left;
 
+}
+
+#allergySpan {
+    margin-left:5%;
+    margin-right:5%;
+}
+#checkbox-invoice {
+    margin-top:2%;
+    margin-bottom:2%;
+
+}
+
+.btn {
+    margin-top:2%;
+}
+.spacing {
+    padding-bottom: 3%;
+    background-color: ghostwhite;
+    background-size: 2%;
 }
 .jumbotron {
     background-color: rgba(255,255,255,0.9);
