@@ -188,13 +188,9 @@
 </script>
 <script>
     $("#navOrderDetails").addClass("active");
+    $("#navOrderDetails").removeAttr("hidden");
 </script>
 
-<script>
-    $("#orders tr").click(function () {
-        window.location = $(this).find('td:eq(1)').attr("href");
-    });
-</script>
 
 
 </body>
