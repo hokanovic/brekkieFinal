@@ -76,7 +76,7 @@
                                     id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                 <span data-feather="book-open"></span>
-                                Orderstatus
+                                Alla orders
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
@@ -104,30 +104,29 @@
                     </thead>
                     <tbody>
                     <tr th:each="order : ${Orders}">
-                        <td th:text="${order.id}" href="http://whatever.com"/>
-                        <td th:text="${order.creationdate}" href="http://whatever.com"/>
-                        <td th:text="${order.OrderStatus}"/>
+                        <td>
+                            <a th:href="@{dashboardOrderDetails?Orderid=} + ${order.id}"  th:text="${order.id}"></a>
+                        </td>
+                        <td th:text="${order.creationdate}"/>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
+                                        id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" th:text="${order.getOrderStatus()}">
+                                    <span data-feather="book-open"></span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+                                    <a th:each="orderstatus : ${OrderStatuses}"
+                                       class="dropdown-item"
+                                       th:text="${orderstatus.name}"/>
+                                </div>
+                            </div>
+                        </td>
                         <td th:text="${order.Customer}"/>
                         <td th:text="${order.PaymentMethod}"/>
                         <td th:text="${order.deliveryaddress}"/>
                         <td th:text="${order.deliveryaddresspostalcode}"/>
-                        <td th:text="${order.deliveryaddresspostaltown}">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-danger">Action</button>
-                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
-                        </td>
-
+                        <td th:text="${order.deliveryaddresspostaltown}"/>
                     </tr>
                     </tbody>
                 </table>
@@ -166,11 +165,11 @@
     $("#navOrders").addClass("active");
 </script>
 
-<script>
-    $("#orders tr").click(function() {
-        window.location = $(this).find('td:eq(1)').attr("href");
-    });
-</script>
+<!--<script>-->
+    <!--$("#orders tr").click(function() {-->
+        <!--window.location = $(this).find('td:eq(1)').attr("href");-->
+    <!--});-->
+<!--</script>-->
 
 
 
