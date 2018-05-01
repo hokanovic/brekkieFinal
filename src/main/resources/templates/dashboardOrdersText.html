@@ -118,6 +118,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                                     <a th:each="orderstatus : ${OrderStatuses}"
                                        class="dropdown-item"
+                                       th:href="@{'/dashboardOrdersTextUpdateOrderStatus?Orderstatus=' + ${orderstatus.id} + '&Orderid=' + ${order.id}}"
                                        th:text="${orderstatus.name}"/>
                                 </div>
                             </div>
