@@ -170,4 +170,20 @@ public class brekkieController {
         //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
 
     }
+
+
+
+    @GetMapping("/dashboardDashboard")
+    public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
+
+
+
+        return new ModelAndView("dashboardDashboard")
+                .addObject("stats", shopRepository.fetchOrderStats(Orderid));
+    }
+
+    @GetMapping("/error")
+    public ModelAndView brekkieError() {
+        return new ModelAndView("error");
+    }
 }

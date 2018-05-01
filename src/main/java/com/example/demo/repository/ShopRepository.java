@@ -19,7 +19,7 @@ public interface ShopRepository {
     List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
-
+    v_dash_order_stats fetchOrderStats(int Orderid);
 
         List<Customer> listCustomers();
 

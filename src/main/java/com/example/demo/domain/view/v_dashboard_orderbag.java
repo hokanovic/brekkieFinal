@@ -5,12 +5,14 @@ public class v_dashboard_orderbag {
     private int Bag_id;
     private int Order_id;
     private String Bag;
+    private double price;
 
-    public v_dashboard_orderbag(int id, int bag_id, int order_id, String bag) {
+    public v_dashboard_orderbag(int id, int bag_id, int order_id, String bag, double price) {
         this.id = id;
         Bag_id = bag_id;
         Order_id = order_id;
         Bag = bag;
+        this.price = price;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class v_dashboard_orderbag {
 
     public void setBag(String bag) {
         Bag = bag;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

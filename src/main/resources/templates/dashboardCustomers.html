@@ -42,6 +42,7 @@
                         <th>Organisationsnr</th>
                         <th>Namn</th>
                         <th>Mejl</th>
+                        <th>Telefon</th>
                         <th>Kontaktperson</th>
                     </tr>
                     </thead>
@@ -54,6 +55,7 @@
                         <td>
                             <a th:href="@{dashboardCustomerOrders?Customermail=} + ${customer.mail}"  th:text="${customer.mail}"></a>
                         </td>
+                        <td th:text="${customer.telephone}"/>
                         <td th:text="${customer.contactperson}"/>
                     </tr>
                     </tbody>
