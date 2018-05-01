@@ -26,4 +26,22 @@ app.controller('formController', function($scope) {
              $scope.copyAddresses();
          }
      }, true);
+
+    var date = new Date();
+    if (date.getHours() > 14) {
+        date.setDate(date.getDate() + 2);
+    }
+    var dd = date.getDate();
+    var mm = date.getMonth()+1; //January is 0!
+    var yyyy = date.getFullYear();
+    if(dd<10){
+        dd='0'+dd;
+    }
+    if(mm<10){
+        mm='0'+mm;
+    }
+    var date =''+yyyy+'-'+mm+'-'+dd+'';
+    $(document).ready(function() {
+        $("#deliveryDate").attr("min", date);
+    });
 });
