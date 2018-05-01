@@ -9,9 +9,6 @@ app.controller('formController', function($scope) {
 
         }
     };
-    $scope.showContent = function(picked_bag_id) {
-            $scope.id = picked_bag_id;
-    };
     $scope.invoice = {};
     $scope.delivery = {};
 
