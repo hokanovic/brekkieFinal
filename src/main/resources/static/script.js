@@ -28,8 +28,9 @@ app.controller('formController', function($scope) {
      }, true);
 
     var date = new Date();
+    date.setDate(date.getDate() + 1);
     if (date.getHours() > 14) {
-        date.setDate(date.getDate() + 2);
+        date.setDate(date.getDate() + 1);
     }
     var dd = date.getDate();
     var mm = date.getMonth()+1; //January is 0!
@@ -40,8 +41,8 @@ app.controller('formController', function($scope) {
     if(mm<10){
         mm='0'+mm;
     }
-    var date =''+yyyy+'-'+mm+'-'+dd+'';
+    var formatDate =''+yyyy+'-'+mm+'-'+dd+'';
     $(document).ready(function() {
-        $("#deliveryDate").attr("min", date);
+        $("#deliveryDate").attr("min", formatDate);
     });
 });
