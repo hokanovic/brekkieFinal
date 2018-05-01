@@ -99,6 +99,22 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<Product> listProductsByCatId(int id) {
+        List<Product> productList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\" FROM \"Product\"" +
+                     "where \"ProductCategory_id\" = ?")) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) productList.add(rsProduct(rs));
+            return productList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //Creates a list of all Customers from database
     @Override
     public List<Customer> listCustomers() {
@@ -137,6 +153,22 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, name FROM \"ProductCategory\"")) {
+            while (rs.next()) productCategoryList.add(rsProductCategory(rs));
+            return productCategoryList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<ProductCategory> listProductCategoriesByBagId(int id) {
+        List<ProductCategory> productCategoryList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select id, \"name\" from \"ProductCategory\" " +
+                     "where id IN (select \"ProductCategory_id\" from \"Bag_ProductCategory\" " +
+                     "where \"Bag_id\" = ?)")) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
             return productCategoryList;
         } catch (SQLException e) {

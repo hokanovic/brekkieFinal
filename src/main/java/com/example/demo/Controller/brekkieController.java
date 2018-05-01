@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -38,14 +40,20 @@ public class brekkieController {
     public ModelAndView seeBreakfastAlternatives() {
         List<Bag> bagList;
         bagList = shopRepository.listBags();
-        List<ProductCategory> catList;
-        catList = shopRepository.listProductCategorys();
-        List<Product> productList;
-        productList = shopRepository.listProducts();
-        return new ModelAndView("order")
-                .addObject("BreakfastBag", bagList)
-                .addObject("Categories", catList)
-                .addObject("Products", productList);
+
+        Map<Bag, Map> bagMapMap = new HashMap<>();
+        Map<ProductCategory, List<Product>> productCategoryListMap;
+
+        for (Bag bag : bagList) {
+            productCategoryListMap = new HashMap<>();
+            for (ProductCategory productCategory: shopRepository.listProductCategoriesByBagId(bag.getId())) {
+                productCategoryListMap.put(productCategory, shopRepository.listProductsByCatId(productCategory.getId()));
+            }
+            bagMapMap.put(bag, productCategoryListMap);
+        }
+
+
+        return new ModelAndView("order").addObject("BagMap", bagMapMap);
     }
 
     /*@RequestMapping("/breakfastBag")

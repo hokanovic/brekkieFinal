@@ -12,47 +12,45 @@
 <body ng-app="app" ng-controller="formController">
 <div class="bg part1">
     <div class="jumbotron text-center">
-        <h1 class="display-4">beställ frukost</h1>
+        <h1 class="display-4">Välj Frukostpåse</h1>
         <hr class="my-4">
 
         <div class="card-deck">
-            <div class="card" th:each="bag : ${BreakfastBag}">
+            <div class="card" th:each="bag : ${BagMap}">
                 <img class="card-img-top" src="" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${bag.name}"></h5>
-                    <p class="card-text" th:text="${bag.description}"></p>
-                    <button th:attr="ng-click='showContent(\''+${bag.id}+'\');'" class="btn btn-primary">välj</button>
+                    <h5 class="card-title" th:text="${bag.key.name}"></h5>
+                    <p class="card-text" th:text="${bag.key.description}"></p>
+                    <button th:id="${bag.key.id}" class="btn btn-primary">Välj</button>
                 </div>
             </div>
         </div>
         <p>välj frukostpåse och gör era val</p>
     </div>
 </div>
-<div class="bg part2" th:attr="ng-show='id===(\''+${bag.id}+'\');'"  th:id="${bag.id}" th:each="bag : ${BreakfastBag}">
-    <div class="bg">
+    <div class="part1" th:each="bag : ${BagMap}">
         <div class="jumbotron text-center">
-            <h1 class="display-4"></h1>
+            <h1 class="display-4" th:text="${bag.key.name}"></h1>
             <hr class="my-4">
 
             <div class="card-deck">
-
-                <div class="card">
+                <div class="card" th:each="category : ${bag.value}">
                     <div class="card-body">
-                        <h5 class="card-title"></h5>
+                        <h5 class="card-title" th:text="${category.key.name}"></h5>
                         <ul class="list-unstyled">
-                            <li>
+                            <li th:each="product : ${category.value}">
                                 <div class="button-container">
-                                    <button onclick="addToCart(this)" class="btn btn-primary">Hej</button>
+                                    <button th:text="${product.name}" onclick="addToCart(this)" class="btn btn-primary"></button>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+            <h5 id="cardText">Välj produkt! Mums!</h5>
         </div>
     </div>
-    <h5 id="cardText">Välj produkt! Mums!</h5>
-</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="script.js"></script>
 <script>
