@@ -2,10 +2,11 @@ package com.example.demo.Controller;
 
 import com.example.demo.domain.Bag;
 import com.example.demo.domain.OrderForm;
+import com.example.demo.domain.Product;
+import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -35,20 +34,18 @@ public class brekkieController {
     }
 
     //Beginning of "Lecoq ändringar"
-    @GetMapping("/alternativ")
+    @GetMapping("/order")
     public ModelAndView seeBreakfastAlternatives() {
         List<Bag> bagList;
         bagList = shopRepository.listBags();
-        return new ModelAndView("displayBags").addObject("BreakfastBag", bagList);
-    }
-
-    //HÅRDKÅDAT PLEASE DO REFACTOR!
-    @GetMapping("/breakfastBag")
-    public ModelAndView seeYourBreakfastBag(@RequestParam int id) {
-        List<Bag> bagList;
-        bagList = shopRepository.listBagById(id);
-        Bag bag = bagList.get(0);
-        return new ModelAndView("breakfastBag").addObject("bag", bag);
+        List<ProductCategory> catList;
+        catList = shopRepository.listProductCategorys();
+        List<Product> productList;
+        productList = shopRepository.listProducts();
+        return new ModelAndView("order")
+                .addObject("BreakfastBag", bagList)
+                .addObject("Categories", catList)
+                .addObject("Products", productList);
     }
 
     /*@RequestMapping("/breakfastBag")
