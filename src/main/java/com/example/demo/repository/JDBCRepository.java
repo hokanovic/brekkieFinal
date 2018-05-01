@@ -67,7 +67,7 @@ public class JDBCRepository implements ShopRepository {
 
     @Override
     //Creates a list of all Orders from database
-    public List<v_dashboard_order> listOrdersTextP(int OrderStatus) {
+    public List<v_dashboard_order> listOrdersTextP(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
@@ -75,6 +75,25 @@ public class JDBCRepository implements ShopRepository {
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
                      "where O.\"id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus) {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
+                     "where OS.\"id\" = ?")) {
             ps.setInt(1, OrderStatus);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));

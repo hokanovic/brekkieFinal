@@ -18,6 +18,7 @@ public interface ShopRepository {
     List<v_dashboard_order> listCustomerOrders(String mail);
     List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
+    List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
 
 
         List<Customer> listCustomers();
