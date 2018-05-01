@@ -88,16 +88,10 @@ public class brekkieController {
     }
 
 
-    @GetMapping("/dashboardOrders")
-    public ModelAndView brekkiedashboardOrders() {
-        return new ModelAndView("dashboardOrders").addObject("Orders", shopRepository.listOrders());
-    }
-
-
     @GetMapping("/dashboardOrdersText")
     public ModelAndView brekkiedashboardOrdersText() {
         return new ModelAndView("dashboardOrdersText")
-                .addObject("Orders", shopRepository.listOrdersText())
+                .addObject("Orders", shopRepository.listOrdersTextPOrderStatus(2))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
@@ -106,7 +100,8 @@ public class brekkieController {
     @GetMapping("/dashboardOrdersTextP")
     public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus) {
         return new ModelAndView("dashboardOrdersText")
-                .addObject("Orders", shopRepository.listOrdersTextP(OrderStatus))
+                .addObject("CurrentOrderStatus",OrderStatus)
+                .addObject("Orders", shopRepository.listOrdersTextPOrderStatus(OrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
 
         //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
@@ -118,6 +113,11 @@ public class brekkieController {
         return new ModelAndView("dashboardCustomers").addObject("Customers", shopRepository.listCustomers());
     }
 
+
+
+
+    //visa detaljer för specifik order,
+    //inparameter Orderid
     @GetMapping("/dashboardOrderDetails")
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
         return new ModelAndView("dashboardOrderDetails")
@@ -125,6 +125,7 @@ public class brekkieController {
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
+    //Lista Orders Efter kundmail
     @GetMapping("/dashboardCustomerOrders")
     public ModelAndView brekkiedashboardCustomerOrders(@RequestParam String Customermail) {
         return new ModelAndView("dashboardCustomerOrders")
@@ -132,6 +133,8 @@ public class brekkieController {
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
+    //inne på en orders orderdetaljer, behöver ny orderstatus
+    //ändra i sql och visa samma vy för samma orderid
     @GetMapping("/dashboardOrderDetailsUpdate")
     public ModelAndView OrderDetailsChangeOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
 
@@ -143,23 +146,20 @@ public class brekkieController {
     }
 
 
-    @GetMapping("/dashboardOrdersTextUpdateOrderStatus")
-    public ModelAndView brekkiedashboardOrdersTextUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
-        shopRepository.updateOrderStatus(Orderstatus, Orderid);
 
-        return new ModelAndView("dashboardOrdersText")
-                .addObject("Orders", shopRepository.listOrdersText())
-                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
-    }
+
+
+
 
 
     @GetMapping("/dashboardOrdersTextPUpdateOrderStatus")
-    public ModelAndView brekkiedashboardOrdersTextPUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
+    public ModelAndView brekkiedashboardOrdersTextPUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid,@RequestParam int showOrderStatus) {
 
         shopRepository.updateOrderStatus(Orderstatus, Orderid);
 
         return new ModelAndView("dashboardOrdersText")
-                .addObject("Orders", shopRepository.listOrdersTextP(Orderstatus))
+                .addObject("CurrentOrderStatus",showOrderStatus)
+                .addObject("Orders", shopRepository.listOrdersTextPOrderStatus(showOrderStatus))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
 
         //return new ModelAndView("dashboardOrdersText").addObject("Orders", shopRepository.listOrdersText());
