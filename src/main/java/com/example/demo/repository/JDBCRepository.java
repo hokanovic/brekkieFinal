@@ -105,7 +105,7 @@ public class JDBCRepository implements ShopRepository {
         List<Product> productList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\" FROM \"Product\"" +
-                     "where \"ProductCategory_id\" = ?")) {
+                     "where \"ProductCategory_id\" = ? order by name ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) productList.add(rsProduct(rs));
@@ -166,7 +166,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("select id, \"name\" from \"ProductCategory\" " +
                      "where id IN (select \"ProductCategory_id\" from \"Bag_ProductCategory\" " +
-                     "where \"Bag_id\" = ?)")) {
+                     "where \"Bag_id\" = ?) order by name ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
@@ -182,7 +182,7 @@ public class JDBCRepository implements ShopRepository {
         List<Bag> breakfastBagsList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\" order by id ASC")) {
             while (rs.next()) breakfastBagsList.add(rsBreakfastBag(rs));
             return breakfastBagsList;
         } catch (SQLException e) {

@@ -35,7 +35,6 @@ public class brekkieController {
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
-    //Beginning of "Lecoq ändringar"
     @GetMapping("/order")
     public ModelAndView seeBreakfastAlternatives() {
         List<Bag> bagList;
@@ -52,21 +51,8 @@ public class brekkieController {
             bagMapMap.put(bag, productCategoryListMap);
         }
 
-
         return new ModelAndView("order").addObject("BagMap", bagMapMap);
     }
-
-    /*@RequestMapping("/breakfastBag")
-    public ModelAndView seeChosenBreakfastBag(@RequestParam int id){
-        List<Bag> bagList;
-        bagList = shopRepository.listBagById(id);
-        Bag bag = bagList.get(0);
-        ModelAndView modelAndView = new ModelAndView("bag");
-        modelAndView.addObject("bag", bag);
-        return modelAndView;
-    }*/
-    //HÅRDKÅDAT PLEASE DO REFACTOR!
-    //End of "Lecoq ändringar"
 
     @PostMapping("/frukost")
     public String submitOrder(@ModelAttribute OrderForm orderForm, BindingResult bindingResult) {
