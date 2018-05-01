@@ -125,7 +125,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, orgnr, " +
-                     "companyname, contactperson, mail FROM \"Customer\"")) {
+                     "companyname, contactperson, mail, telephone FROM \"Customer\"")) {
             while (rs.next()) customerList.add(rsCustomer(rs));
             return customerList;
         } catch (SQLException e) {
@@ -399,7 +399,8 @@ public class JDBCRepository implements ShopRepository {
                 rs.getString("orgnr"),
                 rs.getString("companyname"),
                 rs.getString("contactperson"),
-                rs.getString("mail")
+                rs.getString("mail"),
+                rs.getInt("telephone")
         );
     }
 
@@ -508,7 +509,7 @@ public class JDBCRepository implements ShopRepository {
     private v_dashboard_orderbag listV_dashboard_orderbag(int OrderBag_id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                     "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\" " +
+                     "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\", B.\"price\" " +
                      "from \"OrderBag\" AS OB " +
                      "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\" " +
                      "where OB.\"id\" = ?")) {
@@ -533,7 +534,7 @@ public class JDBCRepository implements ShopRepository {
     @Override
     public Customer listCustomer(int Orderid) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT id, orgnr, companyname, contactperson, mail " +
+             PreparedStatement ps = conn.prepareStatement("SELECT id, orgnr, companyname, contactperson, mail, telephone " +
                      "FROM \"Customer\"" +
                      "where \"id\" = ?")) {
             ps.setInt(1, Orderid);
@@ -551,7 +552,8 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt(1),
                 rs.getInt(2),
                 rs.getInt(3),
-                rs.getString(4)
+                rs.getString(4),
+                rs.getDouble(5)
         );
     }
 
@@ -625,7 +627,6 @@ public class JDBCRepository implements ShopRepository {
 
 
     @Override
-    //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
@@ -641,6 +642,12 @@ public class JDBCRepository implements ShopRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Override
+    public v_dash_order_stats fetchOrderStats(int Orderid) {
+        return new v_dash_order_stats();
     }
 
 }
