@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Dashboard lägg till produkt</title>
+    <title>Dashboard lägg till frukostpåse</title>
     <link href="bootstrap.css" rel="stylesheet">
     <link href="dashboard.css" rel="stylesheet">
 </head>
@@ -20,7 +20,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Lägg till produkt</h1>
+                <h1 class="h2">Lägg till frukostpåse</h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="dropdown mr-2 ">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
@@ -38,21 +38,16 @@
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
-                    <form th:action="@{/dashboardaddProducts}" th:object="${product}" method="post">
+                    <form th:action="@{/dashboardaddProductCategory}" th:object="${productcategory}" method="post">
                         <label>Namn:</label>
                         <input type="text" th:field="*{name}"
-                               placeholder="Namn på produkten">
-                        <label>Pris:</label>
-                        <input type="text" th:field="*{price}"
-                        placeholder="Pris">
-                        <label>Produktkategori:</label>
-                            <select th:field="*{productCategory_id}">
-                                <option th:each="prodCat : ${ProductCategory}"
-                                        th:value="${prodCat.id}"
-                                        th:text="${prodCat.name}"/>
-                            </select>
+                               placeholder="Namn på frukostpåsen">
                         <input type=submit value=Submit>
                     </form>
+                    <tr th:each="productcategory : ${productcategorylist}">
+                        <td th:text="${productcategory.id}"/>
+                        <td th:text="${productcategory.name}"/>
+                    </tr>
                     </thead>
                     <tbody>
                     </tbody>

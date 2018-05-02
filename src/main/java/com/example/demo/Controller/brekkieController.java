@@ -126,6 +126,22 @@ public class brekkieController {
                 .addObject("ProductAndProductCategoryName",shopRepository.listProductsWithProductCategory());
     }
 
+    @GetMapping("/dashboardaddProductCategory")
+    public ModelAndView brekkiedashboardaddProductCategory() {
+        return new ModelAndView("dashboardaddProductCategory")
+                .addObject("productcategory",new ProductCategory())
+                .addObject("productcategorylist",shopRepository.listProductCategorys());
+    }
+
+    @PostMapping("dashboardaddProductCategory")
+    public ModelAndView addProductCategory(@ModelAttribute ProductCategory productcategory) {
+        shopRepository.addProductCategory(productcategory.getName());
+        return new ModelAndView("dashboardaddProductCategory")
+                .addObject("productcategory",new ProductCategory())
+                .addObject("productcategorylist",shopRepository.listProductCategorys());
+    }
+
+
     @GetMapping("/dashboardaddProducts")
     public ModelAndView brekkiedashboardaddProducts() {
         return new ModelAndView("dashboardaddProducts")
