@@ -6,58 +6,75 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
           integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Välj Frukost</title>
 </head>
 <body ng-app="app" ng-controller="formController">
 <div class="bg part1">
     <div class="jumbotron text-center">
-        <h1 class="display-4">Välj Frukostpåse</h1>
+        <h1 class="display-4">välj frukostpåse</h1>
         <hr class="my-4">
 
         <div class="card-deck">
-            <div class="card" th:each="bag : ${BagMap}">
-                <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card" th:id="${bag.key.id}" th:each="bag : ${BagMap}">
+                <!--<img class="card-img-top" src="" alt="Card image cap">-->
                 <div class="card-body">
                     <h5 class="card-title" th:text="${bag.key.name}"></h5>
                     <p class="card-text" th:text="${bag.key.description}"></p>
-                    <button th:id="${bag.key.id}" class="btn btn-primary">Välj</button>
-                </div>
-            </div>
-        </div>
-        <p>välj frukostpåse och gör era val</p>
-    </div>
-</div>
-    <div class="part1" th:each="bag : ${BagMap}">
-        <div class="jumbotron text-center">
-            <h1 class="display-4" th:text="${bag.key.name}"></h1>
-            <hr class="my-4">
-
-            <div class="card-deck">
-                <div class="card" th:each="category : ${bag.value}">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${category.key.name}"></h5>
-                        <ul class="list-unstyled">
-                            <li th:each="product : ${category.value}">
-                                <div class="button-container">
-                                    <button th:text="${product.name}" onclick="addToCart(this)" class="btn btn-primary"></button>
-                                </div>
-                            </li>
-                        </ul>
+                    <div th:switch="${bag.key.name}">
+                        <A th:case="'liten'" HREF="#liten">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'mellan'" HREF="#mellan">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'stor'" HREF="#stor">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'efter'" HREF="#efter">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
                     </div>
                 </div>
             </div>
-            <h5 id="cardText">Välj produkt! Mums!</h5>
         </div>
+        <h6 id="cardText">välj storlek på frukosten och gör era produktval i nästa steg</h6>
     </div>
+</div>
+
+<div class="spacing"></div>
+<div class="part1" th:id="${bag.key.id}" th:each="bag : ${BagMap}">
+    <div th:switch="${bag.key.name}">
+        <A th:case="'liten'" NAME="liten"></A>
+        <A th:case="'mellan'" NAME="mellan"></A>
+        <A th:case="'stor'" NAME="stor"></A>
+        <A th:case="'efter'" NAME="efter"></A>
+    </div>
+    <div class="jumbotron text-center">
+        <span><h1 class="display-4" th:text="${bag.key.name}"></h1>
+        <hr class="my-2">
+<div class="container">
+        <div class="category" th:each="category : ${bag.value}">
+            <h5 class="card-title" th:text="${category.key.name}"></h5>
+            <div class="productCategory">
+                <div class="list-unstyled" th:id="${product.id}" th:each="product : ${category.value}">
+                    <label for="number" id="textLeft" th:text="${product.name}"></label><input id="number"
+                                                                                               type="number">
+
+                </div>
+            </div>
+        </div>
+</div>
+        <div class="button-container">
+            <button onclick="addToCart(this)" class="btn btn-primary">lägg till</button>
+        </div>
+            <!--<h5 id="cardText">Välj produkt! Mums!</h5>-->
+    </div>
+    <div class="spacing"></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="script.js"></script>
-<script>
-    function addToCart(clicked_button) {
-        var choice = clicked_button.innerHTML;
-        $("#cart").append("<li>" + choice + "</li>");
-    }
-</script>
+
 </body>
 </html>
