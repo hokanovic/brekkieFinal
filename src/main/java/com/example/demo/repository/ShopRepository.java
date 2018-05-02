@@ -4,6 +4,8 @@ import com.example.demo.domain.*;
 import com.example.demo.domain.view.*;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ShopRepository {
@@ -22,7 +24,6 @@ public interface ShopRepository {
     v_dash_order_stats fetchOrderStats(int Orderid);
     List<v_dashboard_product> listProductsWithProductCategory();
     List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid);
-
         List<Customer> listCustomers();
 
     List<OrderLine> listOrderLines();
