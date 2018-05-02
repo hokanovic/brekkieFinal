@@ -1,8 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfBag;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfCategory;
 import com.example.demo.domain.view.*;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -203,27 +204,6 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
-    //(Beginning) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
-    //Get a bag from database
-    /*@Override
-    public Bag getBag(int id) {
-        Bag breakfastBag;
-        try (Connection conn = dataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  name, price, description FROM \"Bag\" where id = " + id)) {
-            if (rs.next()) {
-                breakfastBag = new Bag(id,
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getString("description"));
-            }
-            return breakfastBag;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-    //(END) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
 
     //Creates a list of all BreakfastBag_ProductCategorys from database
     @Override
@@ -494,6 +474,15 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
         return orderbagList;
+    }
+
+    public List<OrderView_ContentsOfCategory> listContentsOfCategories() {
+        List<OrderView_ContentsOfCategory> orderView_contentsOfCategoryList = new ArrayList<>();
+        for (ProductCategory category : listProductCategorys()) {
+            OrderView_ContentsOfCategory orderView_contentsOfCategory = new OrderView_ContentsOfCategory(category, listProductsByCatId(category.getId()));
+            orderView_contentsOfCategoryList.add(orderView_contentsOfCategory);
+        }
+        return orderView_contentsOfCategoryList;
     }
 
     private OrderBagProducts rsOrderBagProduct(ResultSet rs)  throws SQLException  {

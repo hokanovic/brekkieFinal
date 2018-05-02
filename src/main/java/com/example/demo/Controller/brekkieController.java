@@ -51,6 +51,8 @@ public class brekkieController {
             bagMapMap.put(bag, productCategoryListMap);
         }
 
+
+
         return new ModelAndView("order").addObject("BagMap", bagMapMap);
     }
 
