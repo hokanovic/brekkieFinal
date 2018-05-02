@@ -476,13 +476,21 @@ public class JDBCRepository implements ShopRepository {
         return orderbagList;
     }
 
-    public List<OrderView_ContentsOfCategory> listContentsOfCategories() {
-        List<OrderView_ContentsOfCategory> orderView_contentsOfCategoryList = new ArrayList<>();
-        for (ProductCategory category : listProductCategorys()) {
-            OrderView_ContentsOfCategory orderView_contentsOfCategory = new OrderView_ContentsOfCategory(category, listProductsByCatId(category.getId()));
-            orderView_contentsOfCategoryList.add(orderView_contentsOfCategory);
+    @Override
+    public List<OrderView_ContentsOfBag> listContentsOfBag() {
+
+        List<OrderView_ContentsOfBag> listContentsOfBag = new ArrayList<>();
+
+        for (Bag bag : listBags()) {
+            List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList = new ArrayList<>();
+            for (ProductCategory category : listProductCategorys()) {
+                OrderView_ContentsOfCategory orderView_contentsOfCategory = new OrderView_ContentsOfCategory(category, listProductsByCatId(category.getId()));
+                orderView_ContentsOfCategoryList.add(orderView_contentsOfCategory);
+            }
+            OrderView_ContentsOfBag orderView_contentsOfBag = new OrderView_ContentsOfBag(bag, orderView_ContentsOfCategoryList);
+            listContentsOfBag.add(orderView_contentsOfBag);
         }
-        return orderView_contentsOfCategoryList;
+        return listContentsOfBag;
     }
 
     private OrderBagProducts rsOrderBagProduct(ResultSet rs)  throws SQLException  {

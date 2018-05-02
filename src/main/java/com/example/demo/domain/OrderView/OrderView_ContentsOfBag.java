@@ -6,11 +6,11 @@ import java.util.List;
 
 public class OrderView_ContentsOfBag {
     private Bag bag;
-    private List<OrderView_ContentsOfCategory> orderView_contentsOfCategoryList;
+    private List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList;
 
-    public OrderView_ContentsOfBag(Bag bag, List<OrderView_ContentsOfCategory> orderView_contentsOfCategoryList) {
+    public OrderView_ContentsOfBag(Bag bag, List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList) {
         this.bag = bag;
-        this.orderView_contentsOfCategoryList = orderView_contentsOfCategoryList;
+        this.orderView_ContentsOfCategoryList = orderView_ContentsOfCategoryList;
     }
 
     public Bag getBag() {
@@ -21,11 +21,11 @@ public class OrderView_ContentsOfBag {
         this.bag = bag;
     }
 
-    public List<OrderView_ContentsOfCategory> getOrderView_contentsOfCategoryList() {
-        return orderView_contentsOfCategoryList;
+    public List<OrderView_ContentsOfCategory> getOrderView_ContentsOfCategoryList() {
+        return orderView_ContentsOfCategoryList;
     }
 
-    public void setOrderView_contentsOfCategoryList(List<OrderView_ContentsOfCategory> orderView_contentsOfCategoryList) {
-        this.orderView_contentsOfCategoryList = orderView_contentsOfCategoryList;
+    public void setOrderView_ContentsOfCategoryList(List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList) {
+        this.orderView_ContentsOfCategoryList = orderView_ContentsOfCategoryList;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfBag;
 import com.example.demo.domain.view.*;
 
 import java.sql.Date;
@@ -19,8 +20,9 @@ public interface ShopRepository {
     List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
 
+    List<OrderView_ContentsOfBag> listContentsOfBag();
 
-        List<Customer> listCustomers();
+    List<Customer> listCustomers();
 
     List<OrderLine> listOrderLines();
 

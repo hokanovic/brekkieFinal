@@ -37,7 +37,7 @@ public class brekkieController {
 
     @GetMapping("/order")
     public ModelAndView seeBreakfastAlternatives() {
-        List<Bag> bagList;
+        /*List<Bag> bagList;
         bagList = shopRepository.listBags();
 
         Map<Bag, Map> bagMapMap = new HashMap<>();
@@ -49,11 +49,9 @@ public class brekkieController {
                 productCategoryListMap.put(productCategory, shopRepository.listProductsByCatId(productCategory.getId()));
             }
             bagMapMap.put(bag, productCategoryListMap);
-        }
+        }*/
 
-
-
-        return new ModelAndView("order").addObject("BagMap", bagMapMap);
+        return new ModelAndView("order").addObject("BagCategoryProduct", shopRepository.listContentsOfBag());
     }
 
     @PostMapping("/frukost")
