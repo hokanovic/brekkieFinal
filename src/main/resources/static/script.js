@@ -9,7 +9,7 @@ app.controller('formController', function($scope) {
 
         }
     };
-
+  
     $scope.invoice = {};
     $scope.delivery = {};
 
