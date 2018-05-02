@@ -2,17 +2,31 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Dashboard Kunder</title>
     <link href="bootstrap.css" rel="stylesheet">
     <link href="dashboard.css" rel="stylesheet">
+    <style>
+
+        #map {
+            height: 70vh;
+            width: 100vh;
+        }
+
+        html,
+        body {
+            height: 90%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
 </head>
 <body>
 
 <div th:insert="Fragments :: navbar">...</div>
-
 
 <div class="container-fluid">
     <div class="row">
@@ -22,12 +36,19 @@
                 <div class="btn-toolbar mb-2 mb-md-0">
                 </div>
             </div>
-            <div th:each="orderbag : ${statList}">
-                <p th:text="${orderbag.getBagname() + ': ' + orderbag.getQuantity() + ' st, ' + orderbag.getSum() + ' kr'}"></p>
-            </div>
+
+
+            <div id="map"></div>
+
         </main>
+
+
     </div>
+
 </div>
+<!-- Karta här -->
+
+<!-- Karta -->
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
@@ -43,5 +64,77 @@
 <script>
     $("#navDashboard").addClass("active");
 </script>
+
+
+<script>
+    var locations = [{
+        lat: 59.3332453,
+        lng: 18.065004799999997
+    }, {
+        lat: 59.334537,
+        lng: 18.07472269999994
+    }, {
+        lat: 59.3332117,
+        lng: 18.064625999999976
+    }, {
+        lat: 59.3333104,
+        lng: 18.058945499999936
+    }, {
+        lat: 59.3337626,
+        lng: 18.07502039999997
+    }]
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: {
+                lat: 59.334591,
+                lng: 18.063240
+            }
+        });
+
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var markers = locations.map(function (location, i) {
+            return new google.maps.Marker({
+                position: location,
+                label: labels[i % labels.length]
+            });
+        });
+        var markerCluster = new MarkerClusterer(map, markers, {
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
+
+
+        var infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+
+        service.getDetails({
+            placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4'
+        }, function (place, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location
+                });
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                        'Place ID: ' + place.place_id + '<br>' +
+                        place.formatted_address + '</div>');
+                    infowindow.open(map, this);
+                });
+            }
+        });
+    }
+</script>
+<script src="markerclusterer.js"></script>
+
+<script>
+    function initialize() {
+        initMap();
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBreoQlpyGMcRteGhBXkHnZrmv8F8QhRC8&libraries=places&callback=initialize"
+        async defer></script>
+
 </body>
 </html>
