@@ -1,8 +1,9 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfBag;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfCategory;
 import com.example.demo.domain.view.*;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -167,8 +168,8 @@ public class JDBCRepository implements ShopRepository {
     public List<Product> listProductsByCatId(int id) {
         List<Product> productList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\" FROM \"Product\"" +
-                     "where \"ProductCategory_id\" = ?")) {
+             PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\", price FROM \"Product\"" +
+                     "where \"ProductCategory_id\" = ? order by name ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) productList.add(rsProduct(rs));
@@ -229,7 +230,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("select id, \"name\" from \"ProductCategory\" " +
                      "where id IN (select \"ProductCategory_id\" from \"Bag_ProductCategory\" " +
-                     "where \"Bag_id\" = ?)")) {
+                     "where \"Bag_id\" = ?) order by id ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
@@ -245,7 +246,7 @@ public class JDBCRepository implements ShopRepository {
         List<Bag> breakfastBagsList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\"")) {
+             ResultSet rs = stmt.executeQuery("SELECT id, name, price, description FROM \"Bag\" order by id ASC")) {
             while (rs.next()) breakfastBagsList.add(rsBreakfastBag(rs));
             return breakfastBagsList;
         } catch (SQLException e) {
@@ -266,27 +267,6 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
-    //(Beginning) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
-    //Get a bag from database
-    /*@Override
-    public Bag getBag(int id) {
-        Bag breakfastBag;
-        try (Connection conn = dataSource.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT  name, price, description FROM \"Bag\" where id = " + id)) {
-            if (rs.next()) {
-                breakfastBag = new Bag(id,
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getString("description"));
-            }
-            return breakfastBag;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-    //(END) WORK IN PROGRESS NEEDS REVIEW (LECOQ)
 
     //Creates a list of all BreakfastBag_ProductCategorys from database
     @Override
@@ -565,6 +545,23 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
         return orderbagList;
+    }
+
+    @Override
+    public List<OrderView_ContentsOfBag> listContentsOfBag() {
+
+        List<OrderView_ContentsOfBag> listContentsOfBag = new ArrayList<>();
+
+        for (Bag bag : listBags()) {
+            List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList = new ArrayList<>();
+            for (ProductCategory category : listProductCategoriesByBagId(bag.getId())) {
+                OrderView_ContentsOfCategory orderView_contentsOfCategory = new OrderView_ContentsOfCategory(category, listProductsByCatId(category.getId()));
+                orderView_ContentsOfCategoryList.add(orderView_contentsOfCategory);
+            }
+            OrderView_ContentsOfBag orderView_contentsOfBag = new OrderView_ContentsOfBag(bag, orderView_ContentsOfCategoryList);
+            listContentsOfBag.add(orderView_contentsOfBag);
+        }
+        return listContentsOfBag;
     }
 
     private OrderBagProducts rsOrderBagProduct(ResultSet rs)  throws SQLException  {

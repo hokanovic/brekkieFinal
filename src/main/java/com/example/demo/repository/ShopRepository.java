@@ -1,9 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.domain.*;
+import com.example.demo.domain.OrderView.OrderView_ContentsOfBag;
 import com.example.demo.domain.view.*;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ShopRepository {
@@ -18,12 +21,15 @@ public interface ShopRepository {
     List<v_dashboard_order> listCustomerOrders(String mail);
     List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
+  
+    List<OrderView_ContentsOfBag> listContentsOfBag();
+  
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
     v_dash_order_stats fetchOrderStats(int Orderid);
     List<v_dashboard_product> listProductsWithProductCategory();
     List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid);
 
-        List<Customer> listCustomers();
+    List<Customer> listCustomers();
 
     List<OrderLine> listOrderLines();
 

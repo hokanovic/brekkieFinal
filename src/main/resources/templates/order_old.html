@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <title>Välj Frukost</title>
+</head>
+<body ng-app="app" ng-controller="formController">
+<div class="bg part1">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Välj Frukostpåse</h1>
+        <hr class="my-4">
+
+        <div class="card-deck">
+            <div class="card" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}" th:id="${orderView_ContentsOfBag.bag.id}">
+                <img class="card-img-top" src="" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${orderView_ContentsOfBag.bag.name}"></h5>
+                    <p class="card-text" th:text="${orderView_ContentsOfBag.bag.description}"></p>
+                    <button th:id="${orderView_ContentsOfBag.bag.id}" class="btn btn-primary">Välj</button>
+                </div>
+            </div>
+        </div>
+        <p>välj frukostpåse och gör era val</p>
+    </div>
+</div>
+    <div class="part1" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}" th:id="${orderView_ContentsOfBag.bag.id}">
+        <div class="jumbotron text-center">
+            <h1 class="display-4" th:text="${orderView_ContentsOfBag.bag.name}"></h1>
+            <hr class="my-4">
+
+            <div class="card-deck">
+                <div class="card" th:each="orderView_ContentsOfCategory : ${orderView_ContentsOfBag.orderView_ContentsOfCategoryList}" th:id="${orderView_ContentsOfCategory.productCategory.id}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${orderView_ContentsOfCategory.productCategory.name}"></h5>
+                        <ul class="list-unstyled">
+                            <li th:each="product : ${orderView_ContentsOfCategory.productList}" th:id="${product.id}">
+                                <div class="button-container">
+                                    <button th:text="${product.name}" onclick="addToCart(this)" class="btn btn-primary"></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <h5 id="cardText">Välj produkt! Mums!</h5>
+        </div>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+<script src="script.js"></script>
+<script>
+    function addToCart(clicked_button) {
+        var choice = clicked_button.innerHTML;
+        $("#cart").append("<li>" + choice + "</li>");
+    }
+</script>
+</body>
+</html>

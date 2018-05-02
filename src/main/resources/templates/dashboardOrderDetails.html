@@ -128,7 +128,7 @@
             </table>
 
             <h4>Sammanfattning</h4>
-            <table class="table table-sm table-responsive table-bordered">
+            <table class="table table-sm table-responsive table-bordered table-condensed">
                 <thead>
                 </thead>
                 <tbody>
@@ -137,10 +137,26 @@
                     <td th:text="${orderbag.getQuantity() + ' st'}"></td>
                     <td th:text="${orderbag.getSum() + ' kr'}"></td>
                 </tr>
+                <tr class="font-weight-bold">
+                    <td>Summa:</td>
+                    <td></td>
+                    <td th:text="${Produkttotal + ' kr'}"></td>
+                </tr>
                 <tr>
-                    <td>Ordertotal exkl moms:</td>
+                    <td>Frakt: </td>
+                    <td></td>
+                    <td th:text="${Frakt + ' kr'}"></td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td>Summa inkl frakt: </td>
                     <td></td>
                     <td th:text="${orderTotalSum + ' kr'}"></td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td>Total inkl moms: </td>
+                    <td></td>
+                    <td th:text="${orderTotalInclVAT + ' kr'}">
+                    </td>
                 </tr>
                 </tbody>
             </table>

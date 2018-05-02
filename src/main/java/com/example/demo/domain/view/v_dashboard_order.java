@@ -17,6 +17,26 @@ public class v_dashboard_order {
     private String PaymentMethod;
     private String Customer;
     private String OrderStatus;
+    private double lat;
+    private double lng;
+
+    public v_dashboard_order(int id, Date creationdate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus, double lat, double lng) {
+        this.id = id;
+        this.creationdate = creationdate;
+        this.additionaltext = additionaltext;
+        this.allergy = allergy;
+        this.deliveryaddress = deliveryaddress;
+        this.deliveryaddresspostalcode = deliveryaddresspostalcode;
+        this.deliveryaddresspostaltown = deliveryaddresspostaltown;
+        this.invoiceaddress = invoiceaddress;
+        this.invoiceaddresspostalcode = invoiceaddresspostalcode;
+        this.invoiceaddresspostaltown = invoiceaddresspostaltown;
+        PaymentMethod = paymentMethod;
+        Customer = customer;
+        OrderStatus = orderStatus;
+        this.lat = lat;
+        this.lng = lng;
+    }
 
     public v_dashboard_order(int id, Date creationdate, Date deliverydate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus) {
         this.id = id;
@@ -35,12 +55,30 @@ public class v_dashboard_order {
         OrderStatus = orderStatus;
     }
 
+
     public Date getDeliverydate() {
         return deliverydate;
     }
 
     public void setDeliverydate(Date deliverydate) {
         this.deliverydate = deliverydate;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+
     }
 
     public int getId() {

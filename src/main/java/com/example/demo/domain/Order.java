@@ -18,6 +18,8 @@ public class Order {
     private int PaymentMethod_id;
     private int Customer_id;
     private int OrderStatus_id;
+    private double lat;
+    private double lng;
 
     public Order(int id, Date creationdate, Date deliverydate, String additionaltext, String allergy,
                  String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
@@ -39,12 +41,47 @@ public class Order {
         this.OrderStatus_id = OrderStatus_id;
     }
 
+
     public Date getDeliverydate() {
         return deliverydate;
     }
 
     public void setDeliverydate(Date deliverydate) {
         this.deliverydate = deliverydate;
+    }
+    public Order(int id, Date creationdate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, int paymentMethod_id, int customer_id, int orderStatus_id, double lat, double lng) {
+        this.id = id;
+        this.creationdate = creationdate;
+        this.additionaltext = additionaltext;
+        this.allergy = allergy;
+        this.deliveryaddress = deliveryaddress;
+        this.deliveryaddresspostalcode = deliveryaddresspostalcode;
+        this.deliveryaddresspostaltown = deliveryaddresspostaltown;
+        this.invoiceaddress = invoiceaddress;
+        this.invoiceaddresspostalcode = invoiceaddresspostalcode;
+        this.invoiceaddresspostaltown = invoiceaddresspostaltown;
+        PaymentMethod_id = paymentMethod_id;
+        Customer_id = customer_id;
+        OrderStatus_id = orderStatus_id;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+
     }
 
     public int getOrderStatus_id() {
