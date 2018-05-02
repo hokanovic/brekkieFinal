@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import com.example.demo.domain.Bag;
 import com.example.demo.domain.OrderForm;
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
@@ -18,9 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -37,38 +34,10 @@ public class brekkieController {
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
     }
 
-    //Beginning of "Lecoq ändringar"
     @GetMapping("/order")
     public ModelAndView seeBreakfastAlternatives() {
-        List<Bag> bagList;
-        bagList = shopRepository.listBags();
-
-        Map<Bag, Map> bagMapMap = new HashMap<>();
-        Map<ProductCategory, List<Product>> productCategoryListMap;
-
-        for (Bag bag : bagList) {
-            productCategoryListMap = new HashMap<>();
-            for (ProductCategory productCategory: shopRepository.listProductCategoriesByBagId(bag.getId())) {
-                productCategoryListMap.put(productCategory, shopRepository.listProductsByCatId(productCategory.getId()));
-            }
-            bagMapMap.put(bag, productCategoryListMap);
-        }
-
-
-        return new ModelAndView("order").addObject("BagMap", bagMapMap);
+        return new ModelAndView("order").addObject("BagCategoryProduct", shopRepository.listContentsOfBag());
     }
-
-    /*@RequestMapping("/breakfastBag")
-    public ModelAndView seeChosenBreakfastBag(@RequestParam int id){
-        List<Bag> bagList;
-        bagList = shopRepository.listBagById(id);
-        Bag bag = bagList.get(0);
-        ModelAndView modelAndView = new ModelAndView("bag");
-        modelAndView.addObject("bag", bag);
-        return modelAndView;
-    }*/
-    //HÅRDKÅDAT PLEASE DO REFACTOR!
-    //End of "Lecoq ändringar"
 
     @PostMapping("/frukost")
     public String submitOrder(@ModelAttribute OrderForm orderForm, BindingResult bindingResult) {
