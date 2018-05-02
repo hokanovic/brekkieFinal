@@ -20,6 +20,7 @@ public interface ShopRepository {
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
     v_dash_order_stats fetchOrderStats(int Orderid);
+    List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid);
 
         List<Customer> listCustomers();
 

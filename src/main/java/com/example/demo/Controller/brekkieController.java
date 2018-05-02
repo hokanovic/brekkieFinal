@@ -2,6 +2,7 @@ package com.example.demo.Controller;
 
 import com.example.demo.domain.Bag;
 import com.example.demo.domain.OrderForm;
+import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -117,9 +119,18 @@ public class brekkieController {
     //inparameter Orderid
     @GetMapping("/dashboardOrderDetails")
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
+
+        List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
+        int orderTotalSum = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            orderTotalSum += v_dash_order_stats_orderbagsum.getSum();
+        }
+
         return new ModelAndView("dashboardOrderDetails")
                 .addObject("Orders", shopRepository.listV_dash_orderdetails_order(Orderid))
-                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses())
+                .addObject("statList", resList)
+                .addObject("orderTotalSum", orderTotalSum);
     }
 
     //Lista Orders Efter kundmail
@@ -171,7 +182,7 @@ public class brekkieController {
 
 
         return new ModelAndView("dashboardDashboard")
-                .addObject("stats", shopRepository.fetchOrderStats(Orderid));
+                .addObject("statList", shopRepository.fetchOrderStats2(Orderid));
     }
 
     @GetMapping("/error")

@@ -694,4 +694,64 @@ public class JDBCRepository implements ShopRepository {
         return new v_dash_order_stats(totalSum);
     }
 
+    @Override
+    public List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid) {
+        List<v_dash_order_stats_orderbagsum> resList = new ArrayList<>();
+
+        List<Integer> OrderBagsWithoutPrices = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "select O.\"Bag_id\", B.\"name\", COUNT(B.\"price\"), SUM(B.\"price\")\n" +
+                             "from \"Bag\" AS B\n" +
+                             "INNER JOIN \"OrderBag\" AS O ON B.\"id\" = O.\"Bag_id\"\n" +
+                             "where O.\"Order_id\" = ?\n" +
+                             "GROUP BY O.\"Bag_id\", B.\"name\""
+             )) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt(4) != 0) {
+                    resList.add(rsFetchOrderStats2(rs));
+                } else {
+                    OrderBagsWithoutPrices.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int orderbagid = 0; orderbagid < OrderBagsWithoutPrices.size(); orderbagid++) {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                         "select OBP.\"OrderBag_id\", B.\"name\" , count(P.\"id\"), sum(P.\"price\")\n" +
+                                 "from \"OrderBagProducts\" AS OBP\n" +
+                                 "INNER JOIN \"OrderBag\" AS OB ON OBP.\"OrderBag_id\" = OB.\"id\"\n" +
+                                 "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\"\n" +
+                                 "INNER JOIN \"Product\" AS P ON OBP.\"Product_id\" = P.\"id\"\n" +
+                                 "where OB.\"Order_id\" = ?\n" +
+                                 "and OB.\"Bag_id\" = ?\n" +
+                                 "GROUP BY OBP.\"OrderBag_id\", B.\"name\""
+                 )) {
+                ps.setInt(1, Orderid);
+                ps.setInt(2, OrderBagsWithoutPrices.get(orderbagid));
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    resList.add(rsFetchOrderStats2(rs));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return resList;
+    }
+
+    private v_dash_order_stats_orderbagsum rsFetchOrderStats2(ResultSet rs)  throws SQLException  {
+        return new v_dash_order_stats_orderbagsum(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getInt(4)
+        );
+    }
+
 }
