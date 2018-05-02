@@ -143,7 +143,7 @@ public class JDBCRepository implements ShopRepository {
     public List<Product> listProductsByCatId(int id) {
         List<Product> productList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\" FROM \"Product\"" +
+             PreparedStatement ps = conn.prepareStatement("select id, name, \"ProductCategory_id\", price FROM \"Product\"" +
                      "where \"ProductCategory_id\" = ? order by name ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
