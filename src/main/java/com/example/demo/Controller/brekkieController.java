@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -101,8 +102,6 @@ public class brekkieController {
                 .addObject("Orders", shopRepository.listOrdersTextPOrderStatus(2))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
-
-
 
     @GetMapping("/dashboardOrdersTextP")
     public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus) {
@@ -198,11 +197,13 @@ public class brekkieController {
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
-
-
-
-
-
+    @GetMapping("/dashboardOrdersTextPSortByCalendar")
+    public ModelAndView brekkiedashboardOrdersTexPSortByCalendar(@RequestParam int Days, @RequestParam int OrderStatus) {
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("CurrentOrderStatus",OrderStatus)
+                .addObject("Orders", shopRepository.listOrdersTextPOrderStatusByCalendar(OrderStatus,CalendarConverter(Days)))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
 
 
     @GetMapping("/dashboardOrdersTextPUpdateOrderStatus")
@@ -234,4 +235,13 @@ public class brekkieController {
     public ModelAndView brekkieError() {
         return new ModelAndView("error");
     }
+
+    public Date CalendarConverter(int days) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE,days);
+        Date date = new Date(c.getTime().getTime());
+        System.out.println(date);
+        return date;
+    }
 }
+

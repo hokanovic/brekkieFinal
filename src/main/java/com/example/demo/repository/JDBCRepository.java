@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 @Component
@@ -54,7 +55,7 @@ public class JDBCRepository implements ShopRepository {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+             ResultSet rs = stmt.executeQuery("SELECT O.id, O.creationdate,O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"")) {
@@ -89,7 +90,7 @@ public class JDBCRepository implements ShopRepository {
     public List<v_dashboard_order> listOrdersTextP(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
@@ -108,7 +109,7 @@ public class JDBCRepository implements ShopRepository {
     public List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
@@ -121,6 +122,30 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersTextPOrderStatusByCalendar(int OrderStatus,Date StartDate) {
+        Date EndDate = new Date(Calendar.getInstance().getTime().getTime());
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate,O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode,\n" +
+                     "O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O\n" +
+                     "                     INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\" \n" +
+                     "                     INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"\n" +
+                     "                     INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"\n" +
+                     "                     where OS.\"id\" = ? AND O.\"deliverydate\" <= ? AND O.\"deliverydate\" >= ?")) {
+            ps.setInt(1, OrderStatus);
+            ps.setDate(2,StartDate);
+            ps.setDate(3,EndDate);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     @Override
@@ -404,6 +429,7 @@ public class JDBCRepository implements ShopRepository {
     private Order rsOrder(ResultSet rs) throws SQLException {
         return new Order(rs.getInt("id"),
                 rs.getDate("creationdate"),
+                rs.getDate("deliverydate"),
                 rs.getString("additionaltext"),
                 rs.getString("allergy"),
                 rs.getString("deliveryaddress"),
@@ -427,6 +453,7 @@ public class JDBCRepository implements ShopRepository {
         return new v_dashboard_order(
                 rs.getInt("id"),
                 rs.getDate("creationdate"),
+                rs.getDate("deliverydate"),
                 rs.getString("additionaltext"),
                 rs.getString("allergy"),
                 rs.getString("deliveryaddress"),
@@ -660,7 +687,7 @@ public class JDBCRepository implements ShopRepository {
     public List<v_dashboard_order> listCustomerOrders(String mail) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
@@ -696,7 +723,7 @@ public class JDBCRepository implements ShopRepository {
     public List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate,O.deliverydate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
                      "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +

@@ -5,6 +5,7 @@ import java.sql.Date;
 public class v_dashboard_order {
     private int id;
     private Date creationdate;
+    private Date deliverydate;
     private String additionaltext;
     private String allergy;
     private String deliveryaddress;
@@ -17,9 +18,10 @@ public class v_dashboard_order {
     private String Customer;
     private String OrderStatus;
 
-    public v_dashboard_order(int id, Date creationdate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus) {
+    public v_dashboard_order(int id, Date creationdate, Date deliverydate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus) {
         this.id = id;
         this.creationdate = creationdate;
+        this.deliverydate = deliverydate;
         this.additionaltext = additionaltext;
         this.allergy = allergy;
         this.deliveryaddress = deliveryaddress;
@@ -33,6 +35,13 @@ public class v_dashboard_order {
         OrderStatus = orderStatus;
     }
 
+    public Date getDeliverydate() {
+        return deliverydate;
+    }
+
+    public void setDeliverydate(Date deliverydate) {
+        this.deliverydate = deliverydate;
+    }
 
     public int getId() {
         return id;

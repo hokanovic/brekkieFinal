@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ShopRepository {
-
+    List<v_dashboard_order> listOrdersTextPOrderStatusByCalendar(int OrderStatus,Date Date);
     List<Order> listOrders();
     List<v_dashboard_order> listOrdersText();
     List<OrderStatus> listOrderStatuses();

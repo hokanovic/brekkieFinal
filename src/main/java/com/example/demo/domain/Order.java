@@ -6,6 +6,7 @@ import java.sql.Time;
 public class Order {
     private int id;
     private Date creationdate;
+    private Date deliverydate;
     private String additionaltext;
     private String allergy;
     private String deliveryaddress;
@@ -18,12 +19,13 @@ public class Order {
     private int Customer_id;
     private int OrderStatus_id;
 
-    public Order(int id, Date creationdate, String additionaltext, String allergy,
+    public Order(int id, Date creationdate, Date deliverydate, String additionaltext, String allergy,
                  String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown,
                  String invoiceaddress, String invoiceaddresspostalcode,
                  String invoiceaddresspostaltown, int PaymentMethod_id, int customer_id, int OrderStatus_id) {
         this.id = id;
         this.creationdate = creationdate;
+        this.deliverydate = deliverydate;
         this.additionaltext = additionaltext;
         this.allergy = allergy;
         this.deliveryaddress = deliveryaddress;
@@ -35,6 +37,14 @@ public class Order {
         this.PaymentMethod_id = PaymentMethod_id;
         this.Customer_id = customer_id;
         this.OrderStatus_id = OrderStatus_id;
+    }
+
+    public Date getDeliverydate() {
+        return deliverydate;
+    }
+
+    public void setDeliverydate(Date deliverydate) {
+        this.deliverydate = deliverydate;
     }
 
     public int getOrderStatus_id() {
