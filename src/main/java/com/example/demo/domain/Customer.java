@@ -6,13 +6,15 @@ public class Customer {
     private String companyname;
     private String contactperson;
     private String mail;
+    private int telephone;
 
-    public Customer(int id, String orgnr, String companyname, String contactperson, String mail) {
+    public Customer(int id, String orgnr, String companyname, String contactperson, String mail, int telephone) {
         this.id = id;
         this.orgnr = orgnr;
         this.companyname = companyname;
         this.contactperson = contactperson;
         this.mail = mail;
+        this.telephone = telephone;
     }
 
     public int getId() {
@@ -53,5 +55,13 @@ public class Customer {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public int getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(int telephone) {
+        this.telephone = telephone;
     }
 }

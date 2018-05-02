@@ -19,8 +19,13 @@ public interface ShopRepository {
     List<v_dashboard_order> listCustomerOrders(String mail);
     List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid);
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
-
+  
     List<OrderView_ContentsOfBag> listContentsOfBag();
+  
+    List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
+    v_dash_order_stats fetchOrderStats(int Orderid);
+    List<v_dashboard_product> listProductsWithProductCategory();
+    List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid);
 
     List<Customer> listCustomers();
 
@@ -46,7 +51,7 @@ public interface ShopRepository {
             String invoiceaddresspostalcode, String invoiceaddresspostaltown,
             int PaymentMethod_id, int Customer_id, int OrderStatus_id);
 
-    void addProduct(String name, int productCategory_id);
+    void addProduct(String name, int productCategory_id, int price);
 
     void addOrderLine(int order_id, int bag_id, int quantity);
 

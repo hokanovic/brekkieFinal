@@ -4,6 +4,10 @@ public class ProductCategory {
     private int id;
     private String name;
 
+    public ProductCategory() {
+
+    }
+
     public ProductCategory(int id, String name) {
         this.id = id;
         this.name = name;

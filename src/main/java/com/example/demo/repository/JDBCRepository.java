@@ -67,8 +67,27 @@ public class JDBCRepository implements ShopRepository {
     }
 
     @Override
+    //Creates a combined list of Product and ProductCategory
+    public List<v_dashboard_product> listProductsWithProductCategory() {
+        List<v_dashboard_product> productsWithProductCategoryList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(
+                     "Select *  from \"Product\" AS P\n" +
+                             "INNER JOIN \"ProductCategory\" AS PC\n" +
+                             "ON P.\"ProductCategory_id\"=PC.\"id\"\n" +
+                             "ORDER BY P.\"id\""
+             )) {
+            while (rs.next()) productsWithProductCategoryList.add(rsv_dashboard_product(rs));
+            return productsWithProductCategoryList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     //Creates a list of all Orders from database
-    public List<v_dashboard_order> listOrdersTextP(int OrderStatus) {
+    public List<v_dashboard_order> listOrdersTextP(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
@@ -76,6 +95,25 @@ public class JDBCRepository implements ShopRepository {
                      "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
                      "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
                      "where O.\"id\" = ?")) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) orderList.add(rsv_dashboard_order(rs));
+            return orderList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    //Creates a list of all Orders from database
+    public List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus) {
+        List<v_dashboard_order> orderList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT O.id, O.creationdate, O.additionaltext, O.allergy, O.deliveryaddress, O.deliveryaddresspostalcode, O.deliveryaddresspostaltown, O.invoiceaddress, O.invoiceaddresspostalcode, O.invoiceaddresspostaltown, P.\"name\", C.\"mail\", OS.\"name\" FROM \"Order\" as O " +
+                     "INNER JOIN \"Customer\" AS C ON O.\"Customer_id\" = C.\"id\"" +
+                     "INNER JOIN \"PaymentMethod\" AS P ON O.\"PaymentMethod_id\" = P.\"id\"" +
+                     "INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"" +
+                     "where OS.\"id\" = ?")) {
             ps.setInt(1, OrderStatus);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
@@ -93,7 +131,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, name, " +
-                     "\"ProductCategory_id\" FROM \"Product\"")) {
+                     "\"ProductCategory_id\", price FROM \"Product\"")) {
             while (rs.next()) productList.add(rsProduct(rs));
             return productList;
         } catch (SQLException e) {
@@ -123,7 +161,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, orgnr, " +
-                     "companyname, contactperson, mail FROM \"Customer\"")) {
+                     "companyname, contactperson, mail, telephone FROM \"Customer\"")) {
             while (rs.next()) customerList.add(rsCustomer(rs));
             return customerList;
         } catch (SQLException e) {
@@ -252,11 +290,13 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds product to database
     @Override
-    public void addProduct(String name, int ProductCategory_id) {
+    public void addProduct(String name, int ProductCategory_id,int price) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name, \"ProductCategory_id\") VALUES (?,?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name," +
+                     " \"ProductCategory_id\", price) VALUES (?,?,?)")) {
             ps.setString(1, name);
             ps.setInt(2, ProductCategory_id);
+            ps.setInt(3,price);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -382,7 +422,7 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new Products from database
     private Product rsProduct(ResultSet rs) throws SQLException {
-        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"));
+        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"),rs.getInt("price"));
     }
 
     //Creates new Customer from database
@@ -392,7 +432,8 @@ public class JDBCRepository implements ShopRepository {
                 rs.getString("orgnr"),
                 rs.getString("companyname"),
                 rs.getString("contactperson"),
-                rs.getString("mail")
+                rs.getString("mail"),
+                rs.getInt("telephone")
         );
     }
 
@@ -459,9 +500,12 @@ public class JDBCRepository implements ShopRepository {
 
         List<v_dash_orderdetails_orderbag> orderbagList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("select * " +
-                     "from \"OrderBag\" " +
-                     "where \"Order_id\" = ?")) {
+             PreparedStatement ps = conn.prepareStatement(
+                     "select *\n" +
+                             "from \"OrderBag\"\n" +
+                             "where \"Order_id\" = ?\n" +
+                             "Order by \"Bag_id\" ASC"
+             )) {
             ps.setInt(1,Orderid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -518,7 +562,7 @@ public class JDBCRepository implements ShopRepository {
     private v_dashboard_orderbag listV_dashboard_orderbag(int OrderBag_id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                     "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\" " +
+                     "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\", B.\"price\" " +
                      "from \"OrderBag\" AS OB " +
                      "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\" " +
                      "where OB.\"id\" = ?")) {
@@ -543,7 +587,7 @@ public class JDBCRepository implements ShopRepository {
     @Override
     public Customer listCustomer(int Orderid) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT id, orgnr, companyname, contactperson, mail " +
+             PreparedStatement ps = conn.prepareStatement("SELECT id, orgnr, companyname, contactperson, mail, telephone " +
                      "FROM \"Customer\"" +
                      "where \"id\" = ?")) {
             ps.setInt(1, Orderid);
@@ -561,7 +605,18 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt(1),
                 rs.getInt(2),
                 rs.getInt(3),
-                rs.getString(4)
+                rs.getString(4),
+                rs.getDouble(5)
+        );
+    }
+
+    private v_dashboard_product rsv_dashboard_product(ResultSet rs) throws SQLException {
+        return new v_dashboard_product(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getInt(4),
+                rs.getString(6)
         );
     }
 
@@ -635,7 +690,6 @@ public class JDBCRepository implements ShopRepository {
 
 
     @Override
-    //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersTextPwhereOrderEquals(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
@@ -651,6 +705,113 @@ public class JDBCRepository implements ShopRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public v_dash_order_stats fetchOrderStats(int Orderid) {
+        int totalSum = 0;
+        List<Integer> OrderBagsWithPrices = new ArrayList<>();
+        List<Integer> OrderBagsWithoutPrices = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "select OB.\"id\", B.\"price\"\n" +
+                             "from \"OrderBag\" AS OB\n" +
+                             "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\"\n" +
+                             "Where OB.\"Order_id\" = ?"
+             )) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getDouble(2) != 0) {
+                    OrderBagsWithPrices.add(rs.getInt(1));
+                    totalSum += rs.getInt(2);
+                } else {
+                    OrderBagsWithoutPrices.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int orderbagid = 0; orderbagid < OrderBagsWithoutPrices.size(); orderbagid++) {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                         "select sum(P.\"price\")\n" +
+                                 "from \"OrderBagProducts\" AS OBP\n" +
+                                 "INNER JOIN \"Product\" AS P ON OBP.\"Product_id\" = P.\"id\"\n" +
+                                 "where OBP.\"OrderBag_id\" = ?"
+                 )) {
+                ps.setInt(1, OrderBagsWithoutPrices.get(orderbagid));
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    totalSum += rs.getDouble(1);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return new v_dash_order_stats(totalSum);
+    }
+
+    @Override
+    public List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid) {
+        List<v_dash_order_stats_orderbagsum> resList = new ArrayList<>();
+
+        List<Integer> OrderBagsWithoutPrices = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "select O.\"Bag_id\", B.\"name\", COUNT(B.\"price\"), SUM(B.\"price\")\n" +
+                             "from \"Bag\" AS B\n" +
+                             "INNER JOIN \"OrderBag\" AS O ON B.\"id\" = O.\"Bag_id\"\n" +
+                             "where O.\"Order_id\" = ?\n" +
+                             "GROUP BY O.\"Bag_id\", B.\"name\""
+             )) {
+            ps.setInt(1, Orderid);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt(4) != 0) {
+                    resList.add(rsFetchOrderStats2(rs));
+                } else {
+                    OrderBagsWithoutPrices.add(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (int orderbagid = 0; orderbagid < OrderBagsWithoutPrices.size(); orderbagid++) {
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                         "select OBP.\"OrderBag_id\", B.\"name\" , count(P.\"id\"), sum(P.\"price\")\n" +
+                                 "from \"OrderBagProducts\" AS OBP\n" +
+                                 "INNER JOIN \"OrderBag\" AS OB ON OBP.\"OrderBag_id\" = OB.\"id\"\n" +
+                                 "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\"\n" +
+                                 "INNER JOIN \"Product\" AS P ON OBP.\"Product_id\" = P.\"id\"\n" +
+                                 "where OB.\"Order_id\" = ?\n" +
+                                 "and OB.\"Bag_id\" = ?\n" +
+                                 "GROUP BY OBP.\"OrderBag_id\", B.\"name\""
+                 )) {
+                ps.setInt(1, Orderid);
+                ps.setInt(2, OrderBagsWithoutPrices.get(orderbagid));
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    resList.add(rsFetchOrderStats2(rs));
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return resList;
+    }
+
+    private v_dash_order_stats_orderbagsum rsFetchOrderStats2(ResultSet rs)  throws SQLException  {
+        return new v_dash_order_stats_orderbagsum(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getInt(4)
+        );
     }
 
 }

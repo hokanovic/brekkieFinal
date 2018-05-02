@@ -9,6 +9,7 @@ app.controller('formController', function($scope) {
 
         }
     };
+  
     $scope.invoice = {};
     $scope.delivery = {};
 
@@ -46,3 +47,8 @@ app.controller('formController', function($scope) {
         $("#deliveryDate").attr("min", formatDate);
     });
 });
+
+function addToCart(clicked_button) {
+    var choice = clicked_button.innerHTML;
+    $("#cart").append("<li>" + choice + "</li>");
+}

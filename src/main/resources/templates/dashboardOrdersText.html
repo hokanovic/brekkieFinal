@@ -74,9 +74,10 @@
                         <div class="dropdown">
                             <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
                                     id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                    th:text="'Status: ' + ${OrderStatuses[CurrentOrderStatus - 1].name}"
                                     aria-expanded="false">
                                 <span data-feather="book-open"></span>
-                                Alla orders
+                                <!--Alla orders-->
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
@@ -84,6 +85,26 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
+                    <!--<div class="dropdown">-->
+                        <!--<button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"-->
+                                <!--id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"-->
+                                <!--aria-expanded="false" th:text="'Status: ' + ${Orders.getV_dashboard_Order().getOrderStatus()}">-->
+                            <!--<span data-feather="book-open"></span>-->
+                        <!--</button>-->
+                        <!--<div class="dropdown-menu" aria-labelledby="dropdownMenu2">-->
+                            <!--<a th:each="orderstatus : ${OrderStatuses}"-->
+                               <!--th:href="@{'/dashboardOrderDetailsUpdate?Orderstatus=' + ${orderstatus.id} + '&Orderid=' + ${Orders.getV_dashboard_Order().id}}" class="dropdown-item"-->
+                               <!--th:text="${orderstatus.name}"/>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+
 
                 </div>
             </div>
@@ -118,7 +139,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
                                     <a th:each="orderstatus : ${OrderStatuses}"
                                        class="dropdown-item"
-                                       th:href="@{'/dashboardOrdersTextUpdateOrderStatus?Orderstatus=' + ${orderstatus.id} + '&Orderid=' + ${order.id}}"
+                                       th:href="@{'/dashboardOrdersTextPUpdateOrderStatus?Orderstatus=' + ${orderstatus.id} + '&Orderid=' + ${order.id} + '&showOrderStatus=' + ${CurrentOrderStatus}}"
                                        th:text="${orderstatus.name}"/>
                                 </div>
                             </div>
@@ -155,6 +176,14 @@
                 filename: "SomeFile" //do not include extension
             });
         });
+        if (window.history && window.history.pushState) {
+
+            window.history.pushState('forward',null,'./#forward');
+
+            $(window).on('popstate', function () {
+                window.location="http://localhost:8080/dashboardOrdersTextP?OrderStatus=2";
+            });
+        }
     })
 </script>
 <script src="jquery.table2excel.js"></script>
