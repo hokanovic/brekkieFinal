@@ -121,6 +121,43 @@ public class brekkieController {
     }
 
 
+    @GetMapping("/dashboardProducts")
+    public ModelAndView brekkiedashboardProducts() {
+        return new ModelAndView("dashboardProducts").addObject("Products", shopRepository.listProducts())
+                .addObject("ProductCategory", shopRepository.listProductCategorys())
+                .addObject("ProductAndProductCategoryName",shopRepository.listProductsWithProductCategory());
+    }
+
+    @GetMapping("/dashboardaddProductCategory")
+    public ModelAndView brekkiedashboardaddProductCategory() {
+        return new ModelAndView("dashboardaddProductCategory")
+                .addObject("productcategory",new ProductCategory())
+                .addObject("productcategorylist",shopRepository.listProductCategorys());
+    }
+
+    @PostMapping("dashboardaddProductCategory")
+    public ModelAndView addProductCategory(@ModelAttribute ProductCategory productcategory) {
+        shopRepository.addProductCategory(productcategory.getName());
+        return new ModelAndView("dashboardaddProductCategory")
+                .addObject("productcategory",new ProductCategory())
+                .addObject("productcategorylist",shopRepository.listProductCategorys());
+    }
+
+
+    @GetMapping("/dashboardaddProducts")
+    public ModelAndView brekkiedashboardaddProducts() {
+        return new ModelAndView("dashboardaddProducts")
+                .addObject("product",new Product())
+                .addObject("ProductCategory", shopRepository.listProductCategorys());
+    }
+
+    @PostMapping("dashboardaddProducts")
+    public ModelAndView addProduct(@ModelAttribute Product product) {
+        shopRepository.addProduct(product.getName(),product.getProductCategory_id(),product.getPrice());
+        return new ModelAndView("dashboardaddProducts")
+                .addObject("product",new Product())
+                .addObject("ProductCategory", shopRepository.listProductCategorys());
+    }
 
 
     //visa detaljer för specifik order,

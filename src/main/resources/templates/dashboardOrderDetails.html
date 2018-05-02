@@ -200,6 +200,7 @@
 <script src="popper.min.js"></script>
 <script src="bootstrap.min.js"></script>
 <script src="feather.min.js"></script>
+
 <script>
     $(document).ready(function () {
         var table = $('#orders').DataTable();
@@ -211,6 +212,17 @@
                 filename: "SomeFile" //do not include extension
             });
         });
+
+        //Hindrar byte av orderstatus när man går bakåt med navigationsknapparna i webläsaren.
+
+        if (window.history && window.history.pushState) {
+
+            window.history.pushState('forward',null,'./#forward');
+
+            $(window).on('popstate', function () {
+                window.location="http://localhost:8080/dashboardOrdersTextP?OrderStatus=2";
+            });
+        }
     })
 </script>
 <script src="jquery.table2excel.js"></script>

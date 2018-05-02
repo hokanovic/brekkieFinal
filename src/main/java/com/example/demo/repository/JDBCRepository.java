@@ -66,6 +66,25 @@ public class JDBCRepository implements ShopRepository {
     }
 
     @Override
+    //Creates a combined list of Product and ProductCategory
+    public List<v_dashboard_product> listProductsWithProductCategory() {
+        List<v_dashboard_product> productsWithProductCategoryList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(
+                     "Select *  from \"Product\" AS P\n" +
+                             "INNER JOIN \"ProductCategory\" AS PC\n" +
+                             "ON P.\"ProductCategory_id\"=PC.\"id\"\n" +
+                             "ORDER BY P.\"id\""
+             )) {
+            while (rs.next()) productsWithProductCategoryList.add(rsv_dashboard_product(rs));
+            return productsWithProductCategoryList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersTextP(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
@@ -111,7 +130,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id, name, " +
-                     "\"ProductCategory_id\" FROM \"Product\"")) {
+                     "\"ProductCategory_id\", price FROM \"Product\"")) {
             while (rs.next()) productList.add(rsProduct(rs));
             return productList;
         } catch (SQLException e) {
@@ -291,11 +310,13 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds product to database
     @Override
-    public void addProduct(String name, int ProductCategory_id) {
+    public void addProduct(String name, int ProductCategory_id,int price) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name, \"ProductCategory_id\") VALUES (?,?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name," +
+                     " \"ProductCategory_id\", price) VALUES (?,?,?)")) {
             ps.setString(1, name);
             ps.setInt(2, ProductCategory_id);
+            ps.setInt(3,price);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -421,7 +442,7 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new Products from database
     private Product rsProduct(ResultSet rs) throws SQLException {
-        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"));
+        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"),rs.getInt("price"));
     }
 
     //Creates new Customer from database
@@ -589,6 +610,16 @@ public class JDBCRepository implements ShopRepository {
                 rs.getInt(3),
                 rs.getString(4),
                 rs.getDouble(5)
+        );
+    }
+
+    private v_dashboard_product rsv_dashboard_product(ResultSet rs) throws SQLException {
+        return new v_dashboard_product(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getInt(4),
+                rs.getString(6)
         );
     }
 

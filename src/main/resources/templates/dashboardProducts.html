@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dashboard Produkter</title>
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="dashboard.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="Fragments :: navbar">...</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Produkter</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="dropdown mr-2 ">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                th:text="'Administrera produkter'">
+                            <span data-feather="book-open"></span>
+                            Period
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <a href="dashboardaddProducts" class="dropdown-item">Lägg till ny Produkt</a>
+                            <a href="dashboardaddProductCategory" class="dropdown-item">Lägg till ny Frukostpåse</a>
+                            <a href="dashboardCustomers" class="dropdown-item">7 dagar</a>
+                            <a href="dashboardCustomers" class="dropdown-item">Alla</a>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
+                                    id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                    th:text="'Kategori:'"
+                                    aria-expanded="false">
+                                <span data-feather="book-open"></span>
+                                <!--Alla orders-->
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <a th:each="productcategory : ${ProductCategory}" class="dropdown-item"
+                                   th:text="${productcategory.name}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>ProduktId</th>
+                        <th>Produktnamn</th>
+                        <th>Pris</th>
+                        <th>Produktkategori</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${ProductAndProductCategoryName}">
+                        <td th:text="${product.id}"/>
+                        <td th:text="${product.name}"/>
+                        <td th:text="${product.price}"/>
+                        <td th:text="${product.productCategory_name}"/>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="jquery-3.3.1.slim.min.js"></script>
+<script>window.jQuery || document.write('<script src="jquery-slim.min.js"><\/script>')</script>
+<script src="popper.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+<script>
+    $("#navProducts").addClass("active");
+</script>
+</body>
+</html>
