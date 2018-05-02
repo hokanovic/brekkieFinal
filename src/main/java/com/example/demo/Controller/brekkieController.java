@@ -1,9 +1,6 @@
 package com.example.demo.Controller;
 
-import com.example.demo.domain.Bag;
 import com.example.demo.domain.OrderForm;
-import com.example.demo.domain.Product;
-import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -37,20 +31,6 @@ public class brekkieController {
 
     @GetMapping("/order")
     public ModelAndView seeBreakfastAlternatives() {
-        /*List<Bag> bagList;
-        bagList = shopRepository.listBags();
-
-        Map<Bag, Map> bagMapMap = new HashMap<>();
-        Map<ProductCategory, List<Product>> productCategoryListMap;
-
-        for (Bag bag : bagList) {
-            productCategoryListMap = new HashMap<>();
-            for (ProductCategory productCategory: shopRepository.listProductCategoriesByBagId(bag.getId())) {
-                productCategoryListMap.put(productCategory, shopRepository.listProductsByCatId(productCategory.getId()));
-            }
-            bagMapMap.put(bag, productCategoryListMap);
-        }*/
-
         return new ModelAndView("order").addObject("BagCategoryProduct", shopRepository.listContentsOfBag());
     }
 

@@ -3,61 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
-          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Välj Frukost</title>
 </head>
 <body ng-app="app" ng-controller="formController">
-<div class="bg part1">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://www.brekkie.se">Hem</a>
+        </div>
+        <ul class="nav nav-pills">
+            <li role="presentation"><A HREF="#liten">liten</A></li>
+            <li role="presentation"><A HREF="#mellan">mellan</A></li>
+            <li role="presentation"><A HREF="#stor">stor</A></li>
+            <li role="presentation"><A HREF="#efter">efter</A></li>
+            <li role="presentation"><A HREF="#extra">extra</A></li>
+        </ul>
+        <!--<button type="button" class="btn navbar-btn" aria-label="Shopping Cart">-->
+        <!--<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>-->
+        <div class="navbar-button">
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Beställ er frukost
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="part1">
     <div class="jumbotron text-center">
-        <h1 class="display-4">Välj Frukostpåse</h1>
+        <h1 class="display-4">välj frukostpåse</h1>
         <hr class="my-4">
 
         <div class="card-deck">
-            <div class="card" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}" th:id="${orderView_ContentsOfBag.bag.id}">
-                <img class="card-img-top" src="" alt="Card image cap">
+            <div class="card" th:id="${orderView_ContentsOfBag.bag.id}" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}">
+                <!--<img class="card-img-top" src="" alt="Card image cap">-->
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${orderView_ContentsOfBag.bag.name}"></h5>
+                    <h4 class="card-title" th:text="${orderView_ContentsOfBag.bag.name}"></h4>
                     <p class="card-text" th:text="${orderView_ContentsOfBag.bag.description}"></p>
-                    <button th:id="${orderView_ContentsOfBag.bag.id}" class="btn btn-primary">Välj</button>
-                </div>
-            </div>
-        </div>
-        <p>välj frukostpåse och gör era val</p>
-    </div>
-</div>
-    <div class="part1" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}" th:id="${orderView_ContentsOfBag.bag.id}">
-        <div class="jumbotron text-center">
-            <h1 class="display-4" th:text="${orderView_ContentsOfBag.bag.name}"></h1>
-            <hr class="my-4">
-
-            <div class="card-deck">
-                <div class="card" th:each="orderView_ContentsOfCategory : ${orderView_ContentsOfBag.orderView_ContentsOfCategoryList}" th:id="${orderView_ContentsOfCategory.productCategory.id}">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${orderView_ContentsOfCategory.productCategory.name}"></h5>
-                        <ul class="list-unstyled">
-                            <li th:each="product : ${orderView_ContentsOfCategory.productList}" th:id="${product.id}">
-                                <div class="button-container">
-                                    <button th:text="${product.name}" onclick="addToCart(this)" class="btn btn-primary"></button>
-                                </div>
-                            </li>
-                        </ul>
+                    <div th:switch="${orderView_ContentsOfBag.bag.name}">
+                        <A th:case="'liten'" HREF="#liten">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'mellan'" HREF="#mellan">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'stor'" HREF="#stor">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'efter'" HREF="#efter">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
+                        <A th:case="'extra'" HREF="#efter">
+                            <button class="btn btn-primary">Välj</button>
+                        </A>
                     </div>
                 </div>
             </div>
-            <h5 id="cardText">Välj produkt! Mums!</h5>
         </div>
+        <h4 id="cardText">välj storlek på frukosten och gör era produktval i nästa steg</h4>
     </div>
+</div>
+<div class="spacing"></div>
+<div class="part1" th:id="${orderView_ContentsOfBag.bag.id}" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}">
+    <!--<form th:action="@{/order}" th:object="${BagMap}" method="post">-->
+    <div th:switch="${orderView_ContentsOfBag.bag.name}">
+        <A th:case="'liten'" NAME="liten"></A>
+        <A th:case="'mellan'" NAME="mellan"></A>
+        <A th:case="'stor'" NAME="stor"></A>
+        <A th:case="'efter'" NAME="efter"></A>
+        <A th:case="'extra'" NAME="extra"></A>
+    </div>
+    <div class="jumbotron text-center">
+        <h1 class="display-4" th:text="${orderView_ContentsOfBag.bag.name}"></h1>
+        <hr class="my-2">
+        <div class="container2">
+            <div class="category" th:each="orderView_ContentsOfCategory : ${orderView_ContentsOfBag.orderView_ContentsOfCategoryList}">
+                <h5 class="card-title" th:text="${orderView_ContentsOfCategory.productCategory.name}"></h5>
+                <div class="productCategory">
+                    <div class="list-unstyled" th:id="${product.id}" th:each="product : ${orderView_ContentsOfCategory.productList}">
+                        <label for="number" id="textLeft" th:text="${product.name}"></label><input id="number"
+                                                                                                   type="number">
+                        <!--th:field="*{product.id}"-->
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button onclick="addToCart(this)" class="btn btn-primary">lägg till</button>
+        </div>
+        <!--<h5 id="cardText">Välj produkt! Mums!</h5>-->
+    </div>
+    <div class="spacing"></div>
+</div>
+<div class="spacing"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="script.js"></script>
-<script>
-    function addToCart(clicked_button) {
-        var choice = clicked_button.innerHTML;
-        $("#cart").append("<li>" + choice + "</li>");
-    }
-</script>
+
+
 </body>
 </html>
