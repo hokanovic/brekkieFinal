@@ -21,6 +21,7 @@ public interface ShopRepository {
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
     v_dash_order_stats fetchOrderStats(int Orderid);
     List<v_dashboard_product> listProductsWithProductCategory();
+    List<v_dash_order_stats_orderbagsum> fetchOrderStats2(int Orderid);
 
         List<Customer> listCustomers();
 

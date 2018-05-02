@@ -22,7 +22,9 @@
                 <div class="btn-toolbar mb-2 mb-md-0">
                 </div>
             </div>
-        <p th:text="${stats.getTotalSum()}"></p>
+            <div th:each="orderbag : ${statList}">
+                <p th:text="${orderbag.getBagname() + ': ' + orderbag.getQuantity() + ' st, ' + orderbag.getSum() + ' kr'}"></p>
+            </div>
         </main>
     </div>
 </div>

@@ -127,18 +127,50 @@
                 </tbody>
             </table>
 
+            <h4>Sammanfattning</h4>
+            <table class="table table-sm table-responsive table-bordered">
+                <thead>
+                </thead>
+                <tbody>
+                <tr th:each="orderbag : ${statList}">
+                    <td th:text="${orderbag.getBagname()}"></td>
+                    <td th:text="${orderbag.getQuantity() + ' st'}"></td>
+                    <td th:text="${orderbag.getSum() + ' kr'}"></td>
+                </tr>
+                <tr>
+                    <td>Ordertotal exkl moms:</td>
+                    <td></td>
+                    <td th:text="${orderTotalSum + ' kr'}"></td>
+                </tr>
+                </tbody>
+            </table>
 
-            <h3>Specifikation</h3>
+            <h4>Specifikation</h4>
             <table class="table table-borderless table-sm">
                 <thead>
                 </thead>
                 <tbody th:each="order : ${Orders.getOrderbagList()}">
-                <tr>
-                    <th th:text="${order.getOrderbag().getBag()}"></th>
-                    <td th:each="order2 : ${order.getOrderbagproductsList()}">
-                        <span th:text="${order2.getProductCategory()} + ': ' + ${order2.getProduct()}"></span>
-                    </td>
-                </tr>
+                <div th:with="expr_result = ${#lists.size(order.getOrderbagproductsList()) < 5}">
+                    <div th:if="${expr_result}">
+                        <tr>
+                            <th th:text="${order.getOrderbag().getBag()}"></th>
+                            <td th:each="order2 : ${order.getOrderbagproductsList()}">
+                                <span th:text="${order2.getProductCategory()} + ': ' + ${order2.getProduct()}"></span>
+                            </td>
+                        </tr>
+                    </div>
+                    <div th:unless="${expr_result}">
+                        <tr colspan="20">
+                            <th colspan="20"
+                                th:text="${order.getOrderbag().getBag()} + ', ' + ${#lists.size(order.getOrderbagproductsList())} + ' produkter:'"></th>
+                        </tr>
+                        <tr colspan="20" th:each="order2 : ${order.getOrderbagproductsList()}">
+                            <td colspan="20">
+                                <span th:text="${order2.getProduct()}"></span>
+                            </td>
+                        </tr>
+                    </div>
+                </div>
                 </tbody>
             </table>
 
