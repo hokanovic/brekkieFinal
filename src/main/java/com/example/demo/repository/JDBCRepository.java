@@ -205,7 +205,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("select id, \"name\" from \"ProductCategory\" " +
                      "where id IN (select \"ProductCategory_id\" from \"Bag_ProductCategory\" " +
-                     "where \"Bag_id\" = ?) order by name ASC")) {
+                     "where \"Bag_id\" = ?) order by id ASC")) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) productCategoryList.add(rsProductCategory(rs));
@@ -527,7 +527,7 @@ public class JDBCRepository implements ShopRepository {
 
         for (Bag bag : listBags()) {
             List<OrderView_ContentsOfCategory> orderView_ContentsOfCategoryList = new ArrayList<>();
-            for (ProductCategory category : listProductCategorys()) {
+            for (ProductCategory category : listProductCategoriesByBagId(bag.getId())) {
                 OrderView_ContentsOfCategory orderView_contentsOfCategory = new OrderView_ContentsOfCategory(category, listProductsByCatId(category.getId()));
                 orderView_ContentsOfCategoryList.add(orderView_contentsOfCategory);
             }
