@@ -135,16 +135,38 @@ public class brekkieController {
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
 
         List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
-        int orderTotalSum = 0;
+        int Produkttotal = 0;
         for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
-            orderTotalSum += v_dash_order_stats_orderbagsum.getSum();
+            Produkttotal += v_dash_order_stats_orderbagsum.getSum();
         }
+
+        int persons = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            persons += v_dash_order_stats_orderbagsum.getQuantity();
+        }
+        int frakt = 0;
+        if (persons > 70) {
+            frakt = 450;
+        }
+        else if (frakt > 30) {
+            frakt = 350;
+        }
+        else {
+            frakt = 250;
+        }
+
+        int orderTotalSum = Produkttotal + frakt;
+        int tax = (int) (orderTotalSum * 0.12);
+        int orderTotalInclVAT = orderTotalSum + tax;
 
         return new ModelAndView("dashboardOrderDetails")
                 .addObject("Orders", shopRepository.listV_dash_orderdetails_order(Orderid))
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses())
                 .addObject("statList", resList)
-                .addObject("orderTotalSum", orderTotalSum);
+                .addObject("Frakt", frakt)
+                .addObject("Produkttotal", Produkttotal)
+                .addObject("orderTotalSum", orderTotalSum)
+                .addObject("orderTotalInclVAT", orderTotalInclVAT);
     }
 
     //Lista Orders Efter kundmail
@@ -168,12 +190,6 @@ public class brekkieController {
     }
 
 
-
-
-
-
-
-
     @GetMapping("/dashboardOrdersTextPUpdateOrderStatus")
     public ModelAndView brekkiedashboardOrdersTextPUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid,@RequestParam int showOrderStatus) {
 
@@ -189,12 +205,8 @@ public class brekkieController {
     }
 
 
-
     @GetMapping("/dashboardDashboard")
     public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
-
-
-
         return new ModelAndView("dashboardDashboard")
                 .addObject("statList", shopRepository.fetchOrderStats2(Orderid));
     }

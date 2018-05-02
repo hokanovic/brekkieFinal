@@ -5,6 +5,8 @@ import com.example.demo.domain.OrderView.OrderView_ContentsOfBag;
 import com.example.demo.domain.view.*;
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface ShopRepository {
