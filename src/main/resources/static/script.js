@@ -9,9 +9,7 @@ app.controller('formController', function($scope) {
 
         }
     };
-    $scope.showContent = function(picked_bag_id) {
-            $scope.id = picked_bag_id;
-    };
+
     $scope.invoice = {};
     $scope.delivery = {};
 
@@ -49,3 +47,8 @@ app.controller('formController', function($scope) {
         $("#deliveryDate").attr("min", formatDate);
     });
 });
+
+function addToCart(clicked_button) {
+    var choice = clicked_button.innerHTML;
+    $("#cart").append("<li>" + choice + "</li>");
+}
