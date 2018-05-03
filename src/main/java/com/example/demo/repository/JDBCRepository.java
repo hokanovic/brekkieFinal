@@ -373,23 +373,41 @@ public class JDBCRepository implements ShopRepository {
                          String deliveryaddress, String deliveryaddresspostalcode,
                          String deliveryaddresspostaltown, String invoiceaddress,
                          String invoiceaddresspostalcode, String invoiceaddresspostaltown,
-                         int PaymentMethod_id, int Customer_id, int OrderStatus_id) {
+                         int PaymentMethod_id, int Customer_id, int OrderStatus_id, double lat, double lng) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (creationdate, additionaltext, allergy, deliveryaddress," +
-                     "deliveryaddresspostalcode, deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, invoiceaddresspostaltown, \"PaymentMethod_id\", " +
-                     "\"Customer_id\", \"OrderStatus_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",  new String[] {"id"})) {
+             PreparedStatement ps = conn.prepareStatement(
+                     "INSERT INTO \"Order\" " +
+                             "(creationdate, " +
+                             "deliverydate, " +
+                             "additionaltext, " +
+                             "allergy, " +
+                             "deliveryaddress, " +
+                             "deliveryaddresspostalcode, " +
+                             "deliveryaddresspostaltown, " +
+                             "invoiceaddress, " +
+                             "invoiceaddresspostalcode, " +
+                             "invoiceaddresspostaltown, " +
+                             "\"PaymentMethod_id\", " +
+                             "\"Customer_id\", " +
+                             "\"OrderStatus_id\", " +
+                             "lat, " +
+                             "lng) " +
+                             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")), new String[] {"id"})) {
             ps.setDate(1, creationdate);
-            ps.setString(2, additionaltext);
-            ps.setString(3, allergy);
-            ps.setString(4, deliveryaddress);
-            ps.setString(5, deliveryaddresspostalcode);
-            ps.setString(6, deliveryaddresspostaltown);
-            ps.setString(7, invoiceaddress);
-            ps.setString(8, invoiceaddresspostalcode);
-            ps.setString(9, invoiceaddresspostaltown);
-            ps.setInt(10, PaymentMethod_id);
-            ps.setInt(11, Customer_id);
-            ps.setInt(12, OrderStatus_id);
+            ps.setDate(2, deliverydate);
+            ps.setString(3, additionaltext);
+            ps.setString(4, allergy);
+            ps.setString(5, deliveryaddress);
+            ps.setString(6, deliveryaddresspostalcode);
+            ps.setString(7, deliveryaddresspostaltown);
+            ps.setString(8, invoiceaddress);
+            ps.setString(9, invoiceaddresspostalcode);
+            ps.setString(10, invoiceaddresspostaltown);
+            ps.setInt(11, PaymentMethod_id);
+            ps.setInt(12, Customer_id);
+            ps.setInt(13, OrderStatus_id);
+            ps.setDouble(14, lat);
+            ps.setDouble(15, lng);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
@@ -431,17 +449,21 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds customer to database
     @Override
-    public void addCustomer(String orgnr, String companyname, String contactperson, String mail) {
+    public int addCustomer(String orgnr, String companyname, String contactperson, String mail) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO " +
                      "\"Customer\" (orgnr, " +
                      "companyname, contactperson, mail)" +
-                     "VALUES (?,?,?,?) ")) {
+                     "VALUES (?,?,?,?) ", new String[] {"id"} )) {
             ps.setString(1, orgnr);
             ps.setString(2, companyname);
             ps.setString(3, contactperson);
             ps.setString(4, mail);
             ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int custid = rs.getInt(1);
+            return custid;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -546,22 +568,22 @@ public class JDBCRepository implements ShopRepository {
     //Creates new Orders from database
     private v_dashboard_order rsv_dashboard_order(ResultSet rs) throws SQLException {
         return new v_dashboard_order(
-        rs.getInt("id"),
-        rs.getDate("creationdate"),
-        rs.getDate("deliverydate"),
-        rs.getString("additionaltext"),
-        rs.getString("allergy"),
-        rs.getString("deliveryaddress"),
-        rs.getString("deliveryaddresspostalcode"),
-        rs.getString("deliveryaddresspostaltown"),
-        rs.getString("invoiceaddress"),
-        rs.getString("invoiceaddresspostalcode"),
-        rs.getString("invoiceaddresspostaltown"),
-        rs.getString("PaymentMethod"),
-        rs.getString("Customer"),
-        rs.getString("OrderStatus"),
-        rs.getDouble("lat"),
-        rs.getDouble("lng"));
+                rs.getInt("id"),
+                rs.getDate("creationdate"),
+                rs.getDate("deliverydate"),
+                rs.getString("additionaltext"),
+                rs.getString("allergy"),
+                rs.getString("deliveryaddress"),
+                rs.getString("deliveryaddresspostalcode"),
+                rs.getString("deliveryaddresspostaltown"),
+                rs.getString("invoiceaddress"),
+                rs.getString("invoiceaddresspostalcode"),
+                rs.getString("invoiceaddresspostaltown"),
+                rs.getString("PaymentMethod"),
+                rs.getString("Customer"),
+                rs.getString("OrderStatus"),
+                rs.getDouble("lat"),
+                rs.getDouble("lng"));
     }
 
     //Creates new Products from database

@@ -1,32 +1,35 @@
 let app = angular.module('app', []);
-app.controller('formController', function($scope) {
+app.controller('formController', function ($scope) {
 
-    $scope.radioClick = function(value) {
-        if (value==='hide'){
+    $scope.radioClick = function (value) {
+        if (value === 'hide') {
             $scope.show = false;
-        }else{
+        } else {
             $scope.show = true;
 
         }
     };
-  
+
     $scope.invoice = {};
     $scope.delivery = {};
 
-    $scope.copyAddresses = function() {
+    $scope.copyAddresses = function () {
         if ($scope.copyAddress) {
-            $scope.invoice = angular.copy($scope.delivery);
+            // $scope.invoice = angular.copy($scope.delivery);
+            // console.log(document.getElementById("deliveryAddress").value);
+            document.getElementById("invoiceAddress").value = document.getElementById("deliveryAddress").value;
+            document.getElementById("invoicePostNumber").value = document.getElementById("inputZip").value;
+            document.getElementById("invoicePostalTown").value = document.getElementById("inputDeliveryPostalTown").value;
         }
-
-         else {
-             $scope.invoice = angular.clear;
-         }
+        else {
+            $scope.invoice = angular.clear;
+        }
     }
-     $scope.$watch('delivery', function(newAddress) {
-         if (newAddress) {
-             $scope.copyAddresses();
-         }
-     }, true);
+    $scope.$watch('delivery', function (newAddress) {
+        if (newAddress) {
+            $scope.copyAddresses();
+        }
+    }, true);
 
     var date = new Date();
     date.setDate(date.getDate() + 1);
@@ -34,16 +37,16 @@ app.controller('formController', function($scope) {
         date.setDate(date.getDate() + 1);
     }
     var dd = date.getDate();
-    var mm = date.getMonth()+1; //January is 0!
+    var mm = date.getMonth() + 1; //January is 0!
     var yyyy = date.getFullYear();
-    if(dd<10){
-        dd='0'+dd;
+    if (dd < 10) {
+        dd = '0' + dd;
     }
-    if(mm<10){
-        mm='0'+mm;
+    if (mm < 10) {
+        mm = '0' + mm;
     }
-    var formatDate =''+yyyy+'-'+mm+'-'+dd+'';
-    $(document).ready(function() {
+    var formatDate = '' + yyyy + '-' + mm + '-' + dd + '';
+    $(document).ready(function () {
         $("#deliveryDate").attr("min", formatDate);
     });
 });

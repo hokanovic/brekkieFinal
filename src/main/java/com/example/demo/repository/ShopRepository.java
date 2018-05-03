@@ -55,7 +55,7 @@ public interface ShopRepository {
 
     List<Bag_ProductCategory> listBag_ProductCategorys();
 
-    void addCustomer(String orgnr, String companyname, String contactperson, String mail);
+    int addCustomer(String orgnr, String companyname, String contactperson, String mail);
 
     int addOrder(Date creationdate, String additionaltext, String allergy,
             String deliveryaddress, String deliveryaddresspostalcode,

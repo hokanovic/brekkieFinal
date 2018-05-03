@@ -2,6 +2,9 @@ package com.example.demo.Controller;
 
 import com.example.demo.domain.*;
 
+import com.example.demo.domain.JsonOrder;
+import com.example.demo.domain.OrderForm;
+
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 
 @Controller
 public class brekkieController {
@@ -88,10 +91,12 @@ public class brekkieController {
             emailService.sendMail(orderForm);
             Date date = new Date(Calendar.getInstance().getTime().getTime());
 
+             int custid = shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
             //OBS - Customer_ID!!!
-            int orderId = shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+
+            int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
                     orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
-                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2, 2);
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 1, orderForm.getLat(), orderForm.getLng());
 
             shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
 
@@ -294,7 +299,7 @@ public class brekkieController {
 
 
     @GetMapping("/dashboardDashboard")
-    public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
+    public ModelAndView brekkiedashboardDashboard() {
         return new ModelAndView("dashboardDashboard")
                 .addObject("locations", shopRepository.getLocations());
     }

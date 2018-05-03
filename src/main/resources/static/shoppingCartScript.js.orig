@@ -43,6 +43,10 @@ function html2json() {
 }
 
 function sendJson() {
+<<<<<<< HEAD
+    alert(html2json());
+=======
+>>>>>>> e2c3eb6869ccb9f2d726eadb15277767971b49a7
     var jsonOrders = html2json();
     console.log(jsonOrders);
     $.ajax({
