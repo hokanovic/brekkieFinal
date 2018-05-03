@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +34,8 @@ public class brekkieController {
     @PostMapping(value = "/frukost", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders) {
+
+
 
         ArrayList<OrderBagProducts> orderBagProductsArrayList = new ArrayList<>();
         Bag bag = shopRepository.getBagById(Integer.parseInt(jsonOrders.get(0).getBagId()));
