@@ -1,10 +1,11 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.*;
+
 import com.example.demo.domain.JsonOrder;
 import com.example.demo.domain.OrderForm;
+
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
-import com.example.demo.domain.Product;
-import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,14 +34,34 @@ public class brekkieController {
 
     @PostMapping(value = "/frukost", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders, HttpSession session) {
-        System.out.println(jsonOrders.get(0).getProductName() + jsonOrders.get(0).getBagId() +
-                " " + jsonOrders.get(0).getProductId() + " " + jsonOrders.get(0).getProductQty());
+    public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders) {
 
-        session.setAttribute("shoppingCart", jsonOrders);
-//        for (JsonOrder jsonOrder : cart) {
-//            System.out.println(jsonOrder.getBagId() + " " + jsonOrder.getProductId() + " " + jsonOrder.getProductQty());
-//        }
+        ArrayList<OrderBagProducts> orderBagProductsArrayList = new ArrayList<>();
+        Bag bag = shopRepository.getBagById(Integer.parseInt(jsonOrders.get(0).getBagId()));
+
+        for (int i=0; i < jsonOrders.size(); i++) {
+
+            OrderBagProducts orderBagProducts = new OrderBagProducts(i, 0, Integer.parseInt(jsonOrders.get(i).getProductId()));
+
+            orderBagProductsArrayList.add(orderBagProducts);
+        }
+
+//        OrderBagProducts smorgasInstance = new OrderBagProducts(35, 15, Integer.parseInt(jsonOrders.get(0).getProductId()));
+//
+//        OrderBagProducts juiceInstance = new OrderBagProducts(35, 15, Integer.parseInt(jsonOrders.get(1).getProductId()));
+//
+//        Product smorgas = shopRepository.getProductByProductId(Integer.parseInt(jsonOrders.get(0).getProductId()));
+//
+//        Product juice = shopRepository.getProductByProductId(Integer.parseInt(jsonOrders.get(1).getProductId()));
+
+        session.setAttribute("jsonOrders", jsonOrders);
+        session.setAttribute("orderBagProductsArrayList", orderBagProductsArrayList);
+        session.setAttribute("bag", bag);
+//        session.setAttribute("smorgasInstance", smorgasInstance);
+//        session.setAttribute("juiceInstance", juiceInstance);
+//        session.setAttribute("smorgas", smorgas);
+//        session.setAttribute("juice", juice);
+
         return "success";
     }
 
@@ -45,7 +69,8 @@ public class brekkieController {
     public ModelAndView orderBreakfast() {
 
         return new ModelAndView("orderForm").addObject("orderForm", new OrderForm())
-                .addObject("shoppingCart",session.getAttribute("shoppingCart"));
+                .addObject("orderBagProductsArrayList", session.getAttribute("orderBagProductsArrayList"))
+                .addObject("jsonOrders", session.getAttribute("jsonOrders"));
     }
 
     @GetMapping("/order")
@@ -68,10 +93,21 @@ public class brekkieController {
 
              int custid = shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
             //OBS - Customer_ID!!!
-            shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+
+            int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
                     orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
                     orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 1, orderForm.getLat(), orderForm.getLng());
 
+            shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
+
+            ArrayList<OrderBagProducts> orderBagProductsArrayList = (ArrayList<OrderBagProducts>)session.getAttribute("orderBagProductsArrayList");
+
+            Bag bag = (Bag)session.getAttribute("bag");
+            int orderBagId = shopRepository.addOrderBag(bag.getId(), orderId);
+
+            for (OrderBagProducts orderBagProducts : orderBagProductsArrayList) {
+                shopRepository.addOrderBagProduct(orderBagId, orderBagProducts.getProduct_id());
+            }
         }
 
         return "thankyou";
