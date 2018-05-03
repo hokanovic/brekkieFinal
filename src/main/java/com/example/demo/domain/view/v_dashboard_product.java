@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.domain.view;
 
 public class v_dashboard_product {
     private int id;
