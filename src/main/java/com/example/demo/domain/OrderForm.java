@@ -59,31 +59,26 @@ public class OrderForm {
 
     private String additionalText;
 
+    private Double lat;
+    private Double lng;
+
     public OrderForm() {
     }
 
-    public OrderForm(String companyName, String orgNr,
-                     String contactperson, String phoneNumber,
-                     String email, String invoiceAddress,
-                     String invoicePostalTown, String invoicePostNumber,
-                     String deliveryAddress, String deliveryPostalTown,
-                     String deliveryPostNumber, Boolean allergy, String allergyMarking,
-                     Date deliveryDate, LocalTime deliveryTime) {
-        this.companyName = companyName;
-        this.orgNr = orgNr;
-        this.contactperson = contactperson;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.invoiceAddress = invoiceAddress;
-        this.invoicePostalTown = invoicePostalTown;
-        this.invoicePostNumber = invoicePostNumber;
-        this.deliveryAddress = deliveryAddress;
-        this.deliveryPostalTown = deliveryPostalTown;
-        this.deliveryPostNumber = deliveryPostNumber;
-        this.allergy = allergy;
-        this.allergyMarking = allergyMarking;
-        this.deliveryDate = deliveryDate;
-        this.deliveryTime = deliveryTime;
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
     }
 
     public String getCompanyName() {

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"-->
+    <!--integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">-->
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -12,6 +15,7 @@
     <title>beställ frukost</title>
 </head>
 <body ng-app="app">
+<!--<div class="bg">-->
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -24,7 +28,6 @@
     </div>
 </nav>
 
-
     <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
     <div class="part1">
         <div class="jumbotron text-center">
@@ -32,75 +35,77 @@
             <h1 class="display-4">beställningsinformation</h1>
             <hr class="my-4">
 
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="inputEmail">Leveransdag</label>
-                        <input type="date" th:field="*{deliveryDate}" class="form-control" min="" id="deliveryDate"
-                               placeholder="">
-                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryDate')}">Felaktigt datum</p>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="kontaktInfo">Leveranstid</label>
-                        <input type="time" th:field="*{deliveryTime}" class="form-control" id="deliveryTime"
-                               placeholder="">
-                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryTime')}">Felaktig tid</p>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <span id="allergySpan">Allergier</span>
-                        <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergiJa"
-                               name="inlineRadioOptions" th:field="*{allergy}" th:value="true">
-                        <label class="form-check-label" for="allergiJa">Ja</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" ng-click="radioClick('hide')" type="radio" id="allergiNej"
-                               name="inlineRadioOptions" th:field="*{allergy}" th:value="false">
-                        <label class="form-check-label" for="allergiNej">Nej</label>
-                    </div>
-                    <p class="errorMessage" th:if="${#fields.hasErrors('allergy')}">Måste besvaras</p>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="inputEmail">Leveransdag</label>
+                    <input type="date" th:field="*{deliveryDate}" class="form-control" min="" id="deliveryDate"
+                           placeholder="">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryDate')}">Felaktigt datum</p>
                 </div>
+                <div class="form-group col-md-4">
+                    <label for="kontaktInfo">Leveranstid</label>
+                    <input type="time" th:field="*{deliveryTime}" class="form-control" id="deliveryTime"
+                           placeholder="">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryTime')}">Felaktig tid</p>
+                </div>
+                <div class="form-check form-check-inline">
+                    <span id="allergySpan">Allergier</span>
+                    <input class="form-check-input" ng-click="radioClick('show')" type="radio" id="allergiJa"
+                           name="inlineRadioOptions" th:field="*{allergy}" th:value="true">
+                    <label class="form-check-label" for="allergiJa">Ja</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" ng-click="radioClick('hide')" type="radio" id="allergiNej"
+                           name="inlineRadioOptions" th:field="*{allergy}" th:value="false">
+                    <label class="form-check-label" for="allergiNej">Nej</label>
+                </div>
+                <p class="errorMessage" th:if="${#fields.hasErrors('allergy')}">Måste besvaras</p>
+            </div>
 
-                    <div ng-if='show === true' class="form-group">
+            <div ng-if='show === true' class="form-group">
                 <textarea class="form-control" th:field="*{allergyMarking}" id="allergyMessage" rows="2"
                           placeholder="Ange allergier här"></textarea>
-                    </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-group col-md-4"  id="locationField">
-                        <label for="deliveryAddress">Leveransaddress</label>
-                        <input type="text" th:field="*{deliveryAddress}" ng-model="delivery.Address"
-                               class="form-control"
-                               id="deliveryAddress"
-                               placeholder="LeveransAddress">
-                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAddress')}">Måste fyllas i</p>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <label for="inputZip">Postnummer</label>
-                        <input type="text"  th:field="*{deliveryPostNumber}" ng-model="delivery.PostNumber"
-                               class="form-control" id="inputZip"
-                               placeholder="Postnummer">
-                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostNumber')}">Måste fyllas i</p>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputDeliveryPostalTown">Stad</label>
-                        <input type="text" th:field="*{deliveryPostalTown}" ng-model="delivery.PostalTown"
-                               class="form-control" id="inputDeliveryPostalTown"
-                               placeholder="Stad">
-                        <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostalTown')}">Måste fyllas i</p>
-                    </div>
-
+            <div class="form-row">
+                <div class="form-group col-md-4" id="locationField">
+                    <label for="deliveryAddress">Leveransaddress</label>
+                    <input type="text" th:field="*{deliveryAddress}" ng-model="delivery.Address"
+                           class="form-control"
+                           id="deliveryAddress"
+                           placeholder="LeveransAddress">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryAddress')}">Måste fyllas i</p>
                 </div>
+                <div class="form-group col-md-2">
+                    <label for="inputZip">Postnummer</label>
+                    <input type="text" th:field="*{deliveryPostNumber}" ng-model="delivery.PostNumber"
+                           class="form-control" id="inputZip"
+                           placeholder="Postnummer">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostNumber')}">Måste fyllas i</p>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputDeliveryPostalTown">Stad</label>
+                    <input type="text" th:field="*{deliveryPostalTown}" ng-model="delivery.PostalTown"
+                           class="form-control" id="inputDeliveryPostalTown"
+                           placeholder="Stad">
+                    <p class="errorMessage" th:if="${#fields.hasErrors('deliveryPostalTown')}">Måste fyllas i</p>
+                </div>
+
+            </div>
             <div class="form-row">
                     <textarea class="form-control" th:field="*{additionalText}" id="additionalText" rows="3"
                               placeholder="Övrig information"></textarea>
             </div>
-            <A HREF = "#kundinformation"><button type="button" class="btn btn-primary">Gå vidare</button></A>
+            <A HREF="#kundinformation">
+                <button type="button" class="btn btn-primary">Gå vidare</button>
+            </A>
         </div>
     </div>
-        <div class="spacing"></div>
+    <div class="spacing"></div>
 
 
     <div class="part2">
-        <A NAME = "kundinformation"></A>
+        <A NAME="kundinformation"></A>
         <div class="jumbotron text-center">
 
             <h1 class="display-4">kundinformation</h1>
@@ -141,14 +146,14 @@
             </div>
             <div class="form-row">
                 <div class="form-check">
-                    <div id = "checkbox-invoice">
-                    <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()"
-                           type="checkbox"
-                           id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
-                        Faktureringsadressen är samma som leveransadressen
-                    </label>
-                </div>
+                    <div id="checkbox-invoice">
+                        <input class="form-check-input" ng-model="copyAddress" ng-change="copyAddresses()"
+                               type="checkbox"
+                               id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Faktureringsadressen är samma som leveransadressen
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
@@ -179,7 +184,9 @@
             </div>
 
             <div>
-                <A HREF = "#ordersammanfattning"><button type="button" class="btn btn-primary">Gå vidare</button></A>
+                <A HREF="#ordersammanfattning">
+                    <button type="button" class="btn btn-primary">Gå vidare</button>
+                </A>
             </div>
 
         </div>
@@ -202,53 +209,67 @@
                 </div>
                 <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
 
+
+    <div class="part3">
+        <A NAME="ordersammanfattning"></A>
+        <div class="jumbotron text-center">
+            <h1 class="display-4">er order</h1>
+            <hr class="my-4">
+            <p>Den beställda frukosten</p>
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary btn-block">Beställ</button>
             </div>
+            <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
+
         </div>
-        </form>
     </div>
 
-<table id="address" hidden>
-    <tr>
-        <td class="label">Street address</td>
-        <td class="slimField">
-            <input class="field" id="street_number" disabled="true"></input>
-        </td>
-        <td class="wideField" colspan="2">
-            <input class="field" id="route" disabled="true"></input>
-        </td>
-    </tr>
-    <tr>
-        <td class="label">City</td>
-        <!-- Note: Selection of address components in this example is typical.
-                 You may need to adjust it for the locations relevant to your app. See
-                 https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
-            -->
-        <td class="wideField" colspan="3">
-            <input class="field" id="locality2" disabled="true"></input>
-        </td>
-    </tr>
-    <tr>
-        <td class="label">State</td>
-        <td class="slimField">
-            <input class="field" id="administrative_area_level_1" disabled="true"></input>
-        </td>
-        <td class="label">Zip code</td>
-        <td class="wideField">
-            <input class="field" id="postal_code" disabled="true"></input>
-        </td>
-    </tr>
-    <tr>
-        <td class="label">Country</td>
-        <td class="wideField" colspan="3">
-            <input class="field" id="country2" disabled="true"></input>
-        </td>
-    </tr>
-</table>
-<div hidden>
-<input name="locality" id="locality" disabled="true">
-<input name="country"  id="country" disabled="true">
-<input name="lat"  id="lat" disabled="true">
-<input name="lng"  id="lng" disabled="true">
+
+    <table id="address" hidden>
+        <tr>
+            <td class="label">Street address</td>
+            <td class="slimField">
+                <input class="field" id="street_number" disabled="true"></input>
+            </td>
+            <td class="wideField" colspan="2">
+                <input class="field" id="route" disabled="true"></input>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">City</td>
+            <!-- Note: Selection of address components in this example is typical.
+                     You may need to adjust it for the locations relevant to your app. See
+                     https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+                -->
+            <td class="wideField" colspan="3">
+                <input class="field" id="locality2" disabled="true"></input>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">State</td>
+            <td class="slimField">
+                <input class="field" id="administrative_area_level_1" disabled="true"></input>
+            </td>
+            <td class="label">Zip code</td>
+            <td class="wideField">
+                <input class="field" id="postal_code" disabled="true"></input>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">Country</td>
+            <td class="wideField" colspan="3">
+                <input class="field" id="country2" disabled="true"></input>
+            </td>
+        </tr>
+    </table>
+    <div hidden>
+        <input name="locality" id="locality" disabled="true">
+        <input name="country" id="country" disabled="true">
+        <input name="lat" th:field="*{lat}" id="lat" disabled="true">
+        <input name="lng" th:field="*{lng}" id="lng" disabled="true">
+    </div>
+
+</form>
 </div>
 
 <!--</div>-->
@@ -286,6 +307,7 @@
         autocomplete = new google.maps.places.Autocomplete((document.getElementById('deliveryAddress')), options);
         autocomplete.addListener('place_changed', fillInAddress);
     }
+
     function fillInAddress() {
         var place = autocomplete.getPlace();
         for (var component in componentForm) {

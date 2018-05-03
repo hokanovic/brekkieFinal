@@ -45,13 +45,13 @@ public interface ShopRepository {
 
     List<Bag_ProductCategory> listBag_ProductCategorys();
 
-    void addCustomer(String orgnr, String companyname, String contactperson, String mail);
+    int addCustomer(String orgnr, String companyname, String contactperson, String mail);
 
-    void addOrder(Date creationdate, String additionaltext, String allergy,
-            String deliveryaddress, String deliveryaddresspostalcode,
-            String deliveryaddresspostaltown, String invoiceaddress,
-            String invoiceaddresspostalcode, String invoiceaddresspostaltown,
-            int PaymentMethod_id, int Customer_id, int OrderStatus_id);
+   void addOrder(Date creationdate, Date deliverydate,String additionaltext, String allergy,
+                         String deliveryaddress, String deliveryaddresspostalcode,
+                         String deliveryaddresspostaltown, String invoiceaddress,
+                         String invoiceaddresspostalcode, String invoiceaddresspostaltown,
+                         int PaymentMethod_id, int Customer_id, int OrderStatus_id, double lat, double lng);
 
     void addProduct(String name, int productCategory_id, int price);
 
