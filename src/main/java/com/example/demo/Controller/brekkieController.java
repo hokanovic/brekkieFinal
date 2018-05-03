@@ -1,20 +1,26 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Cart;
+import com.example.demo.domain.JsonOrder;
 import com.example.demo.domain.ConfirmOrder;
+
 import com.example.demo.domain.OrderForm;
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.lang.reflect.Type;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +36,16 @@ public class brekkieController {
 
     @Autowired
     private EmailController emailService;
+
+    @PostMapping(value = "/frukost", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders) {
+        System.out.println(jsonOrders.get(0).getProductName() + jsonOrders.get(0).getBagId() + " " + jsonOrders.get(0).getProductId() + " " + jsonOrders.get(0).getProductQty());
+//        for (JsonOrder jsonOrder : cart) {
+//            System.out.println(jsonOrder.getBagId() + " " + jsonOrder.getProductId() + " " + jsonOrder.getProductQty());
+//        }
+        return "success";
+    }
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast() {

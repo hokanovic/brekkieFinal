@@ -10,28 +10,50 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Välj Frukost</title>
 </head>
-<body ng-app="app" ng-controller="formController">
+<body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="https://www.brekkie.se">Hem</a>
         </div>
         <ul class="nav nav-pills">
-            <li role="presentation"><A HREF="#liten">liten</A></li>
-            <li role="presentation"><A HREF="#mellan">mellan</A></li>
-            <li role="presentation"><A HREF="#stor">stor</A></li>
-            <li role="presentation"><A HREF="#efter">efter</A></li>
-            <li role="presentation"><A HREF="#extra">extra</A></li>
+            <li th:each="orderView_ContentsOfBag : ${BagCategoryProduct}" role="presentation"><A th:HREF="'#' + ${orderView_ContentsOfBag.bag.name}" th:text="${orderView_ContentsOfBag.bag.name}"></A></li>
         </ul>
         <!--<button type="button" class="btn navbar-btn" aria-label="Shopping Cart">-->
         <!--<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>-->
         <div class="navbar-button">
-            <button type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-shopping-cart"></span> Beställ er frukost
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Kundvagn
             </button>
         </div>
     </div>
 </nav>
+
+<!-- Kundvagn -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Kundvagn content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Din Frukost</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table id="cart">
+                <tbody>
+
+                </tbody>
+            </table>
+            <button id="sendJson" onclick="sendJson()">Gå till kassan</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+</div>
 
 <div class="part1">
     <div class="jumbotron text-center">
@@ -44,17 +66,8 @@
                 <div class="card-body">
                     <h4 class="card-title" th:text="${orderView_ContentsOfBag.bag.name}"></h4>
                     <p class="card-text" th:text="${orderView_ContentsOfBag.bag.description}"></p>
-                    <div th:switch="${orderView_ContentsOfBag.bag.name}">
-                        <A th:case="'liten'" HREF="#liten">
-                            <button class="btn btn-primary">Välj</button>
-                        </A>
-                        <A th:case="'mellan'" HREF="#mellan">
-                            <button class="btn btn-primary">Välj</button>
-                        </A>
-                        <A th:case="'stor'" HREF="#stor">
-                            <button class="btn btn-primary">Välj</button>
-                        </A>
-                        <A th:case="'efter'" HREF="#efter">
+                    <div>
+                        <A th:HREF="'#' + ${orderView_ContentsOfBag.bag.name}">
                             <button class="btn btn-primary">Välj</button>
                         </A>
                     </div>
@@ -67,23 +80,23 @@
 <div class="spacing"></div>
 <div class="part1" th:id="${orderView_ContentsOfBag.bag.id}" th:each="orderView_ContentsOfBag : ${BagCategoryProduct}">
     <!--<form th:action="@{/order}" th:object="${BagMap}" method="post">-->
-    <div th:switch="${orderView_ContentsOfBag.bag.name}">
-        <A th:case="'liten'" NAME="liten"></A>
-        <A th:case="'mellan'" NAME="mellan"></A>
-        <A th:case="'stor'" NAME="stor"></A>
-        <A th:case="'efter'" NAME="efter"></A>
-        <A th:case="'extra'" NAME="extra"></A>
+    <div>
+        <A th:NAME="${orderView_ContentsOfBag.bag.name}"></A>
     </div>
     <div class="jumbotron text-center">
         <h1 class="display-4" th:text="${orderView_ContentsOfBag.bag.name}"></h1>
         <hr class="my-2">
+        <form onsubmit="">
         <div class="container2">
             <div class="category" th:each="orderView_ContentsOfCategory : ${orderView_ContentsOfBag.orderView_ContentsOfCategoryList}">
                 <h5 class="card-title" th:text="${orderView_ContentsOfCategory.productCategory.name}"></h5>
                 <div class="productCategory">
                     <div class="list-unstyled" th:id="${product.id}" th:each="product : ${orderView_ContentsOfCategory.productList}">
-                        <label for="number" id="textLeft" th:text="${product.name}"></label><input id="number"
-                                                                                                   type="number">
+                        <label for="number" class="textLeft product" th:text="${product.name}" th:id="${product.id}"></label>
+                        <p th:class="bagId" th:text="${orderView_ContentsOfBag.bag.id}" hidden></p>
+                        <p th:class="productId" th:text="${product.id}" hidden></p>
+                        <input class="productQty" id="number" type="number">
+
                         <!--th:field="*{product.id}"-->
 
                     </div>
@@ -91,14 +104,15 @@
             </div>
         </div>
         <div class="button-container">
-            <button onclick="addToCart(this)" class="btn btn-primary">lägg till</button>
+            <button onclick="addToCart()" class="btn btn-primary">lägg till</button>
         </div>
-        <!--<h5 id="cardText">Välj produkt! Mums!</h5>-->
+        </form>
     </div>
     <div class="spacing"></div>
 </div>
 <div class="spacing"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
-<script src="script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="shoppingCartScript.js"></script>
 </body>
 </html>

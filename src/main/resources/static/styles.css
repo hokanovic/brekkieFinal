@@ -12,6 +12,8 @@ body, html {
     width:100%;
 }
 
+body { padding-top: 30px; }
+
 /*body { padding-top: 50px; }*/
 /*body{*/
     /*background-image: url("brekkie.jpg");*/
@@ -85,9 +87,12 @@ body, html {
     flex:1;
     text-align: left;
 }
+.nav-pills a{
+    color:white;
+    font-size:large;
+}
 
-
-#textLeft {
+.textLeft {
     padding-left:3%;
     text-align: left;
     width:85%;
