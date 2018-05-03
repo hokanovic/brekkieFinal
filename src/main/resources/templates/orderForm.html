@@ -13,8 +13,7 @@
 </head>
 <body ng-app="app">
 <!--<div class="bg">-->
-
-<form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
+    <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
     <div class="part1">
         <div class="jumbotron text-center">
 
@@ -178,7 +177,23 @@
         </div>
     </div>
 
-    <div class="spacing"></div>
+        <div class="spacing"></div>
+
+        <div class="part3">
+            <A NAME = "ordersammanfattning"></A>
+            <div class="jumbotron text-center">
+                <h1 class="display-4">er order</h1>
+                <hr class="my-4">
+                <div class="order" th:each="inCart : ${shoppingCart}">
+                    <!--<h5 class="cart" th:text="${inCart.bagId}"></h5>-->
+                    <h5 class="cart" th:text="${inCart.productName} + ' ' +${inCart.productQty}"></h5>
+
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary btn-block">Beställ</button>
+                </div>
+                <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
+
 
     <div class="part3">
         <A NAME="ordersammanfattning"></A>
