@@ -190,10 +190,38 @@ public class brekkieController {
     public ModelAndView OrderDetailsChangeOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
 
         shopRepository.updateOrderStatus(Orderstatus, Orderid);
+        List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
+        int Produkttotal = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            Produkttotal += v_dash_order_stats_orderbagsum.getSum();
+        }
 
+        int persons = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            persons += v_dash_order_stats_orderbagsum.getQuantity();
+        }
+        int frakt = 0;
+        if (persons > 70) {
+            frakt = 450;
+        }
+        else if (frakt > 30) {
+            frakt = 350;
+        }
+        else {
+            frakt = 250;
+        }
+
+        int orderTotalSum = Produkttotal + frakt;
+        int tax = (int) (orderTotalSum * 0.12);
+        int orderTotalInclVAT = orderTotalSum + tax;
         return new ModelAndView("dashboardOrderDetails")
                 .addObject("Orders", shopRepository.listV_dash_orderdetails_orderWhereOrderidEquals(Orderid))
-                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses())
+                .addObject("statList", resList)
+                .addObject("Frakt", frakt)
+                .addObject("Produkttotal", Produkttotal)
+                .addObject("orderTotalSum", orderTotalSum)
+                .addObject("orderTotalInclVAT", orderTotalInclVAT);
     }
 
     @GetMapping("/dashboardOrdersTextPSortByCalendar")
@@ -234,7 +262,6 @@ public class brekkieController {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE,days);
         Date date = new Date(c.getTime().getTime());
-        System.out.println(date);
         return date;
     }
 }
