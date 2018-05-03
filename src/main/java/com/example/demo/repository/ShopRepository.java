@@ -57,11 +57,11 @@ public interface ShopRepository {
 
     int addCustomer(String orgnr, String companyname, String contactperson, String mail);
 
-    int addOrder(Date creationdate, String additionaltext, String allergy,
+    int addOrder(Date creationdate, Date deliverydate, String additionaltext, String allergy,
             String deliveryaddress, String deliveryaddresspostalcode,
             String deliveryaddresspostaltown, String invoiceaddress,
             String invoiceaddresspostalcode, String invoiceaddresspostaltown,
-            int PaymentMethod_id, int Customer_id, int OrderStatus_id);
+            int PaymentMethod_id, int Customer_id, int OrderStatus_id, double lat, double lng);
 
     void addProduct(String name, int productCategory_id, int price);
 

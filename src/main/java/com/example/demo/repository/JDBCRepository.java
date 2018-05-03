@@ -369,30 +369,16 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds order to database
     @Override
-    public int addOrder(Date creationdate, String additionaltext, String allergy,
+    public int addOrder(Date creationdate, Date deliverydate, String additionaltext, String allergy,
                          String deliveryaddress, String deliveryaddresspostalcode,
                          String deliveryaddresspostaltown, String invoiceaddress,
                          String invoiceaddresspostalcode, String invoiceaddresspostaltown,
                          int PaymentMethod_id, int Customer_id, int OrderStatus_id, double lat, double lng) {
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(
-                     "INSERT INTO \"Order\" " +
-                             "(creationdate, " +
-                             "deliverydate, " +
-                             "additionaltext, " +
-                             "allergy, " +
-                             "deliveryaddress, " +
-                             "deliveryaddresspostalcode, " +
-                             "deliveryaddresspostaltown, " +
-                             "invoiceaddress, " +
-                             "invoiceaddresspostalcode, " +
-                             "invoiceaddresspostaltown, " +
-                             "\"PaymentMethod_id\", " +
-                             "\"Customer_id\", " +
-                             "\"OrderStatus_id\", " +
-                             "lat, " +
-                             "lng) " +
-                             "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")), new String[] {"id"})) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (creationdate, deliverydate, additionaltext, allergy, deliveryaddress," +
+                     "deliveryaddresspostalcode, deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, invoiceaddresspostaltown, \"PaymentMethod_id\", " +
+                     "\"Customer_id\", \"OrderStatus_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " , new String[] {"id"})) {
+
             ps.setDate(1, creationdate);
             ps.setDate(2, deliverydate);
             ps.setString(3, additionaltext);

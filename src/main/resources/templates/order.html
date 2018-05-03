@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 
     <title>Välj Frukost</title>
-    <script src="shoppingCartScript.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -42,10 +41,8 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-            <table id="cart2">
-                <tbody>
-                </tbody>
-            </table>
+            <ul id="cart2" class="list-unstyled">
+            </ul>
             <br>
             <br>
             <button id="sendJson" onclick="sendJson()">Gå till kassan</button>
@@ -119,90 +116,8 @@
     </tbody>
 </table>
 
-
-
-
-<script>
-    function addToCart() {
-        var x = document.getElementsByClassName("productQty");
-        var i;
-        for (i = 0; i < x.length; i++) {
-            var qty = x[i].value;
-            if (qty.length > 0) {
-                var xx = document.getElementsByClassName("product");
-                var productName = xx[i].innerHTML;
-                var xxx = document.getElementsByClassName("productId");
-                var productId = xxx[i].innerHTML;
-                var xxxx = document.getElementsByClassName("bagId");
-                var bagId = xxxx[i].innerHTML;
-                var newRow = document.getElementById('cart').insertRow();
-                newRow.innerHTML =
-                    "<td>productName\":\"" + productName + "</td>" +
-                    "<td hidden>bagId\":\"" + bagId + "</td>" +
-                    "<td hidden>productId\":\"" + productId + "</td>" +
-                    "<td>productQty\":\"" + qty + "</td>";
-
-
-                var newRow2 = document.getElementById('cart2').insertRow();
-                newRow2.innerHTML =
-                    "<td>" + productName + "</td>" +
-                    "<td>   </td>" +
-                    "<td>" + qty + "</td>";
-            }
-        }
-        var x = document.getElementsByClassName("productQty");
-        var i;
-        for (i = 0; i < x.length; i++) {
-            x[i].value = "";
-        }
-    }
-
-    function html2json() {
-        var json = '[';
-        var otArr = [];
-        // var i = 1;
-        var tbl2 = $('table tbody tr').each(function (e) {
-            x = $(this).children();
-            var itArr = [];
-            x.each(function () {
-                itArr.push('"' + $(this).text() + '"');
-            });
-            otArr.push('{' + itArr.join(',') + '}');
-        })
-        json += otArr.join(",") + ']';
-
-        return json;
-    }
-
-    function sendJson() {
-        alert(html2json());
-        var jsonOrders = html2json();
-        console.log(jsonOrders);
-        $.ajax({
-            type: "POST",
-            error: function () {
-                $(document.body).css({'cursor': 'default'});
-                console.log("error sending the data");
-            },
-            contentType: "application/json; charset=utf-8",
-            data: jsonOrders,
-            url: "/frukost", //which is mapped to its partner function on our controller class
-            success: function (result) {
-                console.log("successfully inserted ", result);
-            }
-        });
-    }
-
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--<script>-->
-    <!--var newRow = document.getElementById('cart').insertRow();-->
-    <!--newRow.innerHTML =-->
-        <!--"<td>productName\":\"" + "häst" + "</td>" +-->
-        <!--"<td hidden>bagId\":\"" + "1" + "</td>" +-->
-        <!--"<td hidden>productId\":\"" + "1" + "</td>" +-->
-        <!--"<td>productQty\":\"" + "1" + "</td>";-->
-<!--</script>-->
+<script src="shoppingCartScript.js"></script>
 </body>
 </html>

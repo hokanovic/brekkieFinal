@@ -16,6 +16,11 @@ function addToCart() {
                 "<td hidden>bagId\":\"" + bagId + "</td>" +
                 "<td hidden>productId\":\"" + productId + "</td>" +
                 "<td>productQty\":\"" + qty + "</td>";
+
+
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(productName + " " + qty));
+            document.getElementById("cart2").appendChild(li);
         }
     }
     var x = document.getElementsByClassName("productQty");
@@ -54,7 +59,7 @@ function sendJson() {
         },
         contentType: "application/json; charset=utf-8",
         data: jsonOrders,
-        url: "/frukost", //which is mapped to its partner function on our controller class
+        url: "/frukost",
         success: function (result) {
             console.log("successfully inserted ", result);
             window.location="/frukost";
