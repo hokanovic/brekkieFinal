@@ -1,32 +1,21 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Cart;
 import com.example.demo.domain.JsonOrder;
-import com.example.demo.domain.ConfirmOrder;
-
 import com.example.demo.domain.OrderForm;
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.lang.reflect.Type;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 
 @Controller
 public class brekkieController {
@@ -70,12 +59,12 @@ public class brekkieController {
             emailService.sendMail(orderForm);
             Date date = new Date(Calendar.getInstance().getTime().getTime());
 
+             int custid = shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
             //OBS - Customer_ID!!!
-            shopRepository.addOrder(date, orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+            shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
                     orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
-                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2, 2);
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 1, orderForm.getLat(), orderForm.getLng());
 
-            shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
         }
 
         return "thankyou";
