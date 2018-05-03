@@ -193,24 +193,6 @@
                 window.location="http://localhost:8080/dashboardOrdersTextP?OrderStatus=2";
             });
         }
-        var date = new Date();
-        date.setDate(date.getDate() + 1);
-        if (date.getHours() > 14) {
-            date.setDate(date.getDate() + 1);
-        }
-        var dd = date.getDate();
-        var mm = date.getMonth()+1; //January is 0!
-        var yyyy = date.getFullYear();
-        if(dd<10){
-            dd='0'+dd;
-        }
-        if(mm<10){
-            mm='0'+mm;
-        }
-        var formatDate =''+yyyy+'-'+mm+'-'+dd+'';
-        $(document).ready(function() {
-            $("#deliveryDate").attr("min", formatDate);
-        });
     })
 </script>
 <script src="jquery.table2excel.js"></script>

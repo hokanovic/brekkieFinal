@@ -20,9 +20,10 @@ public class v_dashboard_order {
     private double lat;
     private double lng;
 
-    public v_dashboard_order(int id, Date creationdate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus, double lat, double lng) {
+    public v_dashboard_order(int id, Date creationdate, Date deliverydate, String additionaltext, String allergy, String deliveryaddress, String deliveryaddresspostalcode, String deliveryaddresspostaltown, String invoiceaddress, String invoiceaddresspostalcode, String invoiceaddresspostaltown, String paymentMethod, String customer, String orderStatus, double lat, double lng) {
         this.id = id;
         this.creationdate = creationdate;
+        this.deliverydate = deliverydate;
         this.additionaltext = additionaltext;
         this.allergy = allergy;
         this.deliveryaddress = deliveryaddress;
