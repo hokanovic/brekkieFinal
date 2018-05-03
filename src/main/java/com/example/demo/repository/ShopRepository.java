@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ShopRepository {
+    List<Location> getLocations();
     List<v_dashboard_order> listOrdersTextPOrderStatusByCalendar(int OrderStatus,Date Date);
     List<Order> listOrders();
     List<v_dashboard_order> listOrdersText();
@@ -21,7 +22,7 @@ public interface ShopRepository {
     v_dash_orderdetails_order listV_dash_orderdetails_orderWhereOrderidEquals(int Orderid);
 
     List<OrderView_ContentsOfBag> listContentsOfBag();
-  
+
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
     v_dash_order_stats fetchOrderStats(int Orderid);
     List<v_dashboard_product> listProductsWithProductCategory();

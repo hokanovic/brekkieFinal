@@ -253,7 +253,7 @@ public class brekkieController {
     @GetMapping("/dashboardDashboard")
     public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
         return new ModelAndView("dashboardDashboard")
-                .addObject("statList", shopRepository.fetchOrderStats2(Orderid));
+                .addObject("locations", shopRepository.getLocations());
     }
 
     @GetMapping("/error")
