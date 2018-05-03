@@ -67,7 +67,11 @@
                 <h1 class="h2" th:text="${'Orderdetaljer för order ' + Orders.getV_dashboard_Order().id}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
+
+                        <button type="submit" id="btn-confirmOrder" class="btn btn-sm btn-outline-secondary">
+                            <a href="/dashboardOrderDetails?Orderid=1">Bekräfta beställning</a></button>
+
+                            <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
                     </div>
                 </div>
             </div>
@@ -128,7 +132,7 @@
             </table>
 
             <h4>Sammanfattning</h4>
-            <table class="table table-sm table-responsive table-bordered">
+            <table class="table table-sm table-responsive table-bordered table-condensed">
                 <thead>
                 </thead>
                 <tbody>
@@ -137,10 +141,26 @@
                     <td th:text="${orderbag.getQuantity() + ' st'}"></td>
                     <td th:text="${orderbag.getSum() + ' kr'}"></td>
                 </tr>
+                <tr class="font-weight-bold">
+                    <td>Summa:</td>
+                    <td></td>
+                    <td th:text="${Produkttotal + ' kr'}"></td>
+                </tr>
                 <tr>
-                    <td>Ordertotal exkl moms:</td>
+                    <td>Frakt: </td>
+                    <td></td>
+                    <td th:text="${Frakt + ' kr'}"></td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td>Summa inkl frakt: </td>
                     <td></td>
                     <td th:text="${orderTotalSum + ' kr'}"></td>
+                </tr>
+                <tr class="font-weight-bold">
+                    <td>Total inkl moms: </td>
+                    <td></td>
+                    <td th:text="${orderTotalInclVAT + ' kr'}">
+                    </td>
                 </tr>
                 </tbody>
             </table>
