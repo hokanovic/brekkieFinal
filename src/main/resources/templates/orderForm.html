@@ -3,16 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"-->
-          <!--integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">-->
-    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
 
     <title>beställ frukost</title>
 </head>
 <body ng-app="app">
-<!--<div class="bg">-->
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://www.brekkie.se">Hem</a>
+        </div>
+        <ul class="nav nav-pills">
+            <li><a href="order">Tillbaka till frukostpåsarna</a></li>
+        </ul>
+    </div>
+</nav>
 
 
     <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
