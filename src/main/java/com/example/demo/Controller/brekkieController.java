@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.ConfirmOrder;
 import com.example.demo.domain.OrderForm;
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -71,8 +73,6 @@ public class brekkieController {
                 .addObject("OrderStatuses", shopRepository.listOrderStatuses());
     }
 
-
-
     @GetMapping("/dashboardOrdersTextP")
     public ModelAndView brekkiedashboardOrdersTextP(@RequestParam int OrderStatus) {
         return new ModelAndView("dashboardOrdersText")
@@ -95,6 +95,14 @@ public class brekkieController {
         return new ModelAndView("dashboardProducts").addObject("Products", shopRepository.listProducts())
                 .addObject("ProductCategory", shopRepository.listProductCategorys())
                 .addObject("ProductAndProductCategoryName",shopRepository.listProductsWithProductCategory());
+    }
+
+    @GetMapping("/dashboardProductsSortedByProductCategory")
+    public ModelAndView brekkiedashboardProductsSorted(@RequestParam int PC_id) {
+        return new ModelAndView("dashboardProducts").addObject("Products", shopRepository.listProducts())
+                .addObject("ProductCategory", shopRepository.listProductCategorys())
+                .addObject("ProductAndProductCategoryName",
+                        shopRepository.listProductsWithProductCategorySortedByProductCategory(PC_id));
     }
 
     @GetMapping("/dashboardaddProductCategory")
@@ -133,6 +141,8 @@ public class brekkieController {
     //inparameter Orderid
     @GetMapping("/dashboardOrderDetails")
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
+
+        emailService.confirmOrder();
 
         List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
         int Produkttotal = 0;
@@ -183,12 +193,47 @@ public class brekkieController {
     public ModelAndView OrderDetailsChangeOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid) {
 
         shopRepository.updateOrderStatus(Orderstatus, Orderid);
+        List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
+        int Produkttotal = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            Produkttotal += v_dash_order_stats_orderbagsum.getSum();
+        }
 
+        int persons = 0;
+        for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
+            persons += v_dash_order_stats_orderbagsum.getQuantity();
+        }
+        int frakt = 0;
+        if (persons > 70) {
+            frakt = 450;
+        }
+        else if (frakt > 30) {
+            frakt = 350;
+        }
+        else {
+            frakt = 250;
+        }
+
+        int orderTotalSum = Produkttotal + frakt;
+        int tax = (int) (orderTotalSum * 0.12);
+        int orderTotalInclVAT = orderTotalSum + tax;
         return new ModelAndView("dashboardOrderDetails")
                 .addObject("Orders", shopRepository.listV_dash_orderdetails_orderWhereOrderidEquals(Orderid))
-                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses())
+                .addObject("statList", resList)
+                .addObject("Frakt", frakt)
+                .addObject("Produkttotal", Produkttotal)
+                .addObject("orderTotalSum", orderTotalSum)
+                .addObject("orderTotalInclVAT", orderTotalInclVAT);
     }
 
+    @GetMapping("/dashboardOrdersTextPSortByCalendar")
+    public ModelAndView brekkiedashboardOrdersTexPSortByCalendar(@RequestParam int Days, @RequestParam int OrderStatus) {
+        return new ModelAndView("dashboardOrdersText")
+                .addObject("CurrentOrderStatus",OrderStatus)
+                .addObject("Orders", shopRepository.listOrdersTextPOrderStatusByCalendar(OrderStatus,CalendarConverter(Days)))
+                .addObject("OrderStatuses", shopRepository.listOrderStatuses());
+    }
 
     @GetMapping("/dashboardOrdersTextPUpdateOrderStatus")
     public ModelAndView brekkiedashboardOrdersTextPUpdateOrderStatus(@RequestParam int Orderstatus, @RequestParam int Orderid,@RequestParam int showOrderStatus) {
@@ -215,4 +260,12 @@ public class brekkieController {
     public ModelAndView brekkieError() {
         return new ModelAndView("error");
     }
+
+    public Date CalendarConverter(int days) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE,days);
+        Date date = new Date(c.getTime().getTime());
+        return date;
+    }
 }
+

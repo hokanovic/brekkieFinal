@@ -64,10 +64,16 @@
                             Period
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            <a href="dashboardCustomers" class="dropdown-item">Idag</a>
-                            <a href="dashboardCustomers" class="dropdown-item">Imorgon</a>
-                            <a href="dashboardCustomers" class="dropdown-item">7 dagar</a>
-                            <a href="dashboardCustomers" class="dropdown-item">Alla</a>
+                            <a th:href="@{'/dashboardOrdersTextPSortByCalendar?Days=0&OrderStatus='
+                             + ${OrderStatuses[CurrentOrderStatus - 1].id}}" class="dropdown-item">Idag</a>
+                            <a th:href="@{'/dashboardOrdersTextPSortByCalendar?Days=1&OrderStatus='
+                             + ${OrderStatuses[CurrentOrderStatus - 1].id}}" class="dropdown-item">Imorgon</a>
+                            <a th:href="@{'/dashboardOrdersTextPSortByCalendar?Days=7&OrderStatus='
+                             + ${OrderStatuses[CurrentOrderStatus - 1].id}}" class="dropdown-item">7 dagar</a>
+                            <a th:href="@{'/dashboardOrdersTextPSortByCalendar?Days=30&OrderStatus='
+                             + ${OrderStatuses[CurrentOrderStatus - 1].id}}" class="dropdown-item">30 dagar</a>
+                            <a th:href="@{'/dashboardOrdersTextP?OrderStatus='
+                             + ${OrderStatuses[CurrentOrderStatus - 1].id}}" class="dropdown-item">Alla</a>
                         </div>
                     </div>
                     <div class="">
@@ -80,7 +86,8 @@
                                 <!--Alla orders-->
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <a th:each="orderstatus : ${OrderStatuses}"  th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
+                                <a th:each="orderstatus : ${OrderStatuses}"
+                                   th:href="@{'/dashboardOrdersTextP?OrderStatus=' + ${orderstatus.id}}"  class="dropdown-item"
                                         th:text="${orderstatus.name}"/>
                             </div>
                         </div>
@@ -115,6 +122,7 @@
                     <tr>
                         <th>Ordernr</th>
                         <th>Skapad</th>
+                        <th>Leveransdag</th>
                         <th>Status</th>
                         <th>Mail</th>
                         <th>Betalningsmetod</th>
@@ -129,6 +137,7 @@
                             <a th:href="@{dashboardOrderDetails?Orderid=} + ${order.id}"  th:text="${order.id}"></a>
                         </td>
                         <td th:text="${order.creationdate}"/>
+                        <td th:text="${order.deliverydate}"/>
                         <td>
                             <div class="dropdown">
                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle " type="button"
