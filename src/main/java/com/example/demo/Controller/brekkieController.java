@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.ConfirmOrder;
 import com.example.demo.domain.OrderForm;
 import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
@@ -141,6 +142,8 @@ public class brekkieController {
     @GetMapping("/dashboardOrderDetails")
     public ModelAndView brekkiedashboardOrderDetails(@RequestParam int Orderid) {
 
+        emailService.confirmOrder();
+
         List<v_dash_order_stats_orderbagsum> resList = shopRepository.fetchOrderStats2(Orderid);
         int Produkttotal = 0;
         for (v_dash_order_stats_orderbagsum v_dash_order_stats_orderbagsum : resList) {
@@ -250,7 +253,7 @@ public class brekkieController {
     @GetMapping("/dashboardDashboard")
     public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
         return new ModelAndView("dashboardDashboard")
-                .addObject("statList", shopRepository.fetchOrderStats2(Orderid));
+                .addObject("locations", shopRepository.getLocations());
     }
 
     @GetMapping("/error")

@@ -67,7 +67,11 @@
                 <h1 class="h2" th:text="${'Orderdetaljer för order ' + Orders.getV_dashboard_Order().id}"></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                     <div class="btn-group mr-2">
-                        <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
+
+                        <button type="submit" id="btn-confirmOrder" class="btn btn-sm btn-outline-secondary">
+                            <a href="/dashboardOrderDetails?Orderid=1">Bekräfta beställning</a></button>
+
+                            <button id="btn-export" class="btn btn-sm btn-outline-secondary">Exportera till Excel</button>
                     </div>
                 </div>
             </div>
