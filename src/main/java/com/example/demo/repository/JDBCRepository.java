@@ -814,4 +814,29 @@ public class JDBCRepository implements ShopRepository {
         );
     }
 
+
+    @Override
+    public List<Location> getLocations() {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "select lat, lng\n" +
+                             "from \"Order\"\n" +
+                             "where \"OrderStatus_id\" = 2"
+             )) {
+            List<Location> locationList = new ArrayList<>();
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) locationList.add(objLocations(rs));
+            return locationList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Location objLocations(ResultSet rs) throws SQLException {
+        return new Location(
+                rs.getDouble("lng"),
+                rs.getDouble("lat")
+        );
+    }
+
 }
