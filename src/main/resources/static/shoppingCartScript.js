@@ -41,7 +41,6 @@ function html2json() {
     return json;
 }
 function sendJson() {
-    alert(html2json())
     var jsonOrders = html2json();
     console.log(jsonOrders)
     $.ajax({
@@ -49,12 +48,14 @@ function sendJson() {
         error: function () {
             $(document.body).css({'cursor': 'default'});
             console.log("error sending the data");
+            window.location="/error";
         },
         contentType: "application/json; charset=utf-8",
         data: jsonOrders,
         url: "/frukost", //which is mapped to its partner function on our controller class
         success: function (result) {
             console.log("successfully inserted ", result);
+            window.location="/frukost";
         }
     });
 }

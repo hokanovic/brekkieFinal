@@ -9,7 +9,6 @@ import com.example.demo.domain.view.v_dash_order_stats_orderbagsum;
 import com.example.demo.domain.Product;
 import com.example.demo.domain.ProductCategory;
 import com.example.demo.repository.ShopRepository;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.MediaType;
@@ -30,6 +29,8 @@ import java.util.List;
 
 @Controller
 public class brekkieController {
+    @Autowired
+    private HttpSession session;
 
     @Autowired
     private ShopRepository shopRepository;
@@ -39,8 +40,11 @@ public class brekkieController {
 
     @PostMapping(value = "/frukost", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders) {
-        System.out.println(jsonOrders.get(0).getProductName() + jsonOrders.get(0).getBagId() + " " + jsonOrders.get(0).getProductId() + " " + jsonOrders.get(0).getProductQty());
+    public String jsonCart(@RequestBody ArrayList<JsonOrder> jsonOrders, HttpSession session) {
+        System.out.println(jsonOrders.get(0).getProductName() + jsonOrders.get(0).getBagId() +
+                " " + jsonOrders.get(0).getProductId() + " " + jsonOrders.get(0).getProductQty());
+
+        session.setAttribute("shoppingCart", jsonOrders);
 //        for (JsonOrder jsonOrder : cart) {
 //            System.out.println(jsonOrder.getBagId() + " " + jsonOrder.getProductId() + " " + jsonOrder.getProductQty());
 //        }
@@ -49,7 +53,9 @@ public class brekkieController {
 
     @GetMapping("/frukost")
     public ModelAndView orderBreakfast() {
-        return new ModelAndView("orderForm").addObject("orderForm", new OrderForm());
+
+        return new ModelAndView("orderForm").addObject("orderForm", new OrderForm())
+                .addObject("shoppingCart",session.getAttribute("shoppingCart"));
     }
 
     @GetMapping("/order")
