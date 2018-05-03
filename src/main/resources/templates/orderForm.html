@@ -182,10 +182,8 @@
             <div class="jumbotron text-center">
                 <h1 class="display-4">er order</h1>
                 <hr class="my-4">
-                <div class="order" th:each="inCart : ${shoppingCart}">
-                    <!--<h5 class="cart" th:text="${inCart.bagId}"></h5>-->
-                    <h5 class="cart" th:text="${inCart.productName} + ' ' +${inCart.productQty}"></h5>
-
+                <div class="order" th:each="product : ${jsonOrders}">
+                    <h5 class="cart" th:text="${product.productName} + ' ' + ${product.productQty}"></h5>
                 </div>
                 <div class="form-row">
                     <button type="submit" class="btn btn-primary btn-block">Beställ</button>

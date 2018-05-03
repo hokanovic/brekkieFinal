@@ -23,6 +23,16 @@ public interface ShopRepository {
 
     List<OrderView_ContentsOfBag> listContentsOfBag();
 
+    Product getProductByProductId(int id);
+
+    Bag getBagById(int id);
+
+    ProductCategory getCategoryByProductId(int id);
+
+    void addOrderBagProduct(int OrderBag_id, int product_id);
+
+    int addOrderBag(int Bag_id, int Order_id);
+
     List<v_dashboard_order> listOrdersTextPOrderStatus(int OrderStatus);
     v_dash_order_stats fetchOrderStats(int Orderid);
     List<v_dashboard_product> listProductsWithProductCategory();
@@ -47,7 +57,7 @@ public interface ShopRepository {
 
     void addCustomer(String orgnr, String companyname, String contactperson, String mail);
 
-    void addOrder(Date creationdate, String additionaltext, String allergy,
+    int addOrder(Date creationdate, String additionaltext, String allergy,
             String deliveryaddress, String deliveryaddresspostalcode,
             String deliveryaddresspostaltown, String invoiceaddress,
             String invoiceaddresspostalcode, String invoiceaddresspostaltown,
