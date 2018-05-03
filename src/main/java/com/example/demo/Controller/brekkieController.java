@@ -256,7 +256,7 @@ public class brekkieController {
 
 
     @GetMapping("/dashboardDashboard")
-    public ModelAndView brekkiedashboardDashboard(@RequestParam int Orderid) {
+    public ModelAndView brekkiedashboardDashboard() {
         return new ModelAndView("dashboardDashboard")
                 .addObject("locations", shopRepository.getLocations());
     }

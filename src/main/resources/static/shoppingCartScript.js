@@ -1,15 +1,15 @@
 function addToCart() {
-    var x = document.getElementsByClassName("productQty")
+    var x = document.getElementsByClassName("productQty");
     var i;
     for (i = 0; i < x.length; i++) {
-        var qty = x[i].value
+        var qty = x[i].value;
         if (qty.length > 0) {
-            var xx = document.getElementsByClassName("product")
-            var productName = xx[i].innerHTML
-            var xxx = document.getElementsByClassName("productId")
-            var productId = xxx[i].innerHTML
-            var xxxx = document.getElementsByClassName("bagId")
-            var bagId = xxxx[i].innerHTML
+            var xx = document.getElementsByClassName("product");
+            var productName = xx[i].innerHTML;
+            var xxx = document.getElementsByClassName("productId");
+            var productId = xxx[i].innerHTML;
+            var xxxx = document.getElementsByClassName("bagId");
+            var bagId = xxxx[i].innerHTML;
             var newRow = document.getElementById('cart').insertRow();
             newRow.innerHTML =
                 "<td>productName\":\"" + productName + "</td>" +
@@ -18,12 +18,13 @@ function addToCart() {
                 "<td>productQty\":\"" + qty + "</td>";
         }
     }
-    var x = document.getElementsByClassName("productQty")
+    var x = document.getElementsByClassName("productQty");
     var i;
     for (i = 0; i < x.length; i++) {
         x[i].value = "";
     }
 }
+
 function html2json() {
     var json = '[';
     var otArr = [];
@@ -36,14 +37,15 @@ function html2json() {
         });
         otArr.push('{' + itArr.join(',') + '}');
     })
-    json += otArr.join(",") + ']'
+    json += otArr.join(",") + ']';
 
     return json;
 }
+
 function sendJson() {
-    alert(html2json())
+    alert(html2json());
     var jsonOrders = html2json();
-    console.log(jsonOrders)
+    console.log(jsonOrders);
     $.ajax({
         type: "POST",
         error: function () {
