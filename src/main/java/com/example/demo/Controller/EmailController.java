@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.domain.ConfirmOrder;
 import com.example.demo.domain.OrderForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +29,18 @@ public class EmailController {
 
         emailService.sendSimpleMessage(to, subject, text);
 
-        return "Your mail has taken off!";
+        return "";
+    }
+
+    public String confirmOrder() {
+
+        String to = "slutprojektacademy@gmail.com";
+        String subject = "Din frukostbeställning behandlas!";
+        String text = " En testbekräftelse från Brekkiegänget. Vi gör just nu en låtsasfrukost enligt Er beställning :)";
+
+        emailService.sendSimpleMessage(to, subject, text);
+
+        return "";
     }
 /*
     @GetMapping("/mailtemplate")
