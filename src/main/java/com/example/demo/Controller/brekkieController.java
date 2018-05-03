@@ -46,14 +46,6 @@ public class brekkieController {
             orderBagProductsArrayList.add(orderBagProducts);
         }
 
-//        OrderBagProducts smorgasInstance = new OrderBagProducts(35, 15, Integer.parseInt(jsonOrders.get(0).getProductId()));
-//
-//        OrderBagProducts juiceInstance = new OrderBagProducts(35, 15, Integer.parseInt(jsonOrders.get(1).getProductId()));
-//
-//        Product smorgas = shopRepository.getProductByProductId(Integer.parseInt(jsonOrders.get(0).getProductId()));
-//
-//        Product juice = shopRepository.getProductByProductId(Integer.parseInt(jsonOrders.get(1).getProductId()));
-
         session.setAttribute("jsonOrders", jsonOrders);
         session.setAttribute("orderBagProductsArrayList", orderBagProductsArrayList);
         session.setAttribute("bag", bag);
@@ -96,7 +88,7 @@ public class brekkieController {
 
             int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
                     orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
-                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 1, orderForm.getLat(), orderForm.getLng());
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2, 1, orderForm.getLat(), orderForm.getLng());
 
             shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
 
