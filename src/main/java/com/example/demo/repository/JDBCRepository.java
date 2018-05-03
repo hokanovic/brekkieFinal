@@ -87,6 +87,28 @@ public class JDBCRepository implements ShopRepository {
     }
 
     @Override
+    public List<v_dashboard_product> listProductsWithProductCategorySortedByProductCategory(int PC_id) {
+        List<v_dashboard_product> productsWithProductCategorySortedByProductCategoryList = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement();
+             PreparedStatement ps = conn.prepareStatement(
+                     "Select *  from \"Product\" AS P\n" +
+                             "INNER JOIN \"ProductCategory\" AS PC\n" +
+                             "ON \"ProductCategory_id\" =PC.\"id\"\n" +
+                             "WHERE \"ProductCategory_id\" = ? \n" +
+                             "ORDER BY P.\"id\""
+             )) {
+            ps.setInt(1, PC_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) productsWithProductCategorySortedByProductCategoryList.add(rsv_dashboard_product(rs));
+            return productsWithProductCategorySortedByProductCategoryList;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
     //Creates a list of all Orders from database
     public List<v_dashboard_order> listOrdersTextP(int Orderid) {
         List<v_dashboard_order> orderList = new ArrayList<>();
@@ -126,7 +148,7 @@ public class JDBCRepository implements ShopRepository {
 
     @Override
     //Creates a list of all Orders from database
-    public List<v_dashboard_order> listOrdersTextPOrderStatusByCalendar(int OrderStatus,Date StartDate) {
+    public List<v_dashboard_order> listOrdersTextPOrderStatusByCalendar(int OrderStatus, Date StartDate) {
         Date EndDate = new Date(Calendar.getInstance().getTime().getTime());
         List<v_dashboard_order> orderList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
@@ -137,8 +159,8 @@ public class JDBCRepository implements ShopRepository {
                      "                     INNER JOIN \"OrderStatus\" AS OS ON O.\"OrderStatus_id\" = OS.\"id\"\n" +
                      "                     where OS.\"id\" = ? AND O.\"deliverydate\" <= ? AND O.\"deliverydate\" >= ?")) {
             ps.setInt(1, OrderStatus);
-            ps.setDate(2,StartDate);
-            ps.setDate(3,EndDate);
+            ps.setDate(2, StartDate);
+            ps.setDate(3, EndDate);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) orderList.add(rsv_dashboard_order(rs));
             return orderList;
@@ -146,7 +168,6 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
 
 
     @Override
@@ -315,13 +336,13 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds product to database
     @Override
-    public void addProduct(String name, int ProductCategory_id,int price) {
+    public void addProduct(String name, int ProductCategory_id, int price) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Product\" (name," +
                      " \"ProductCategory_id\", price) VALUES (?,?,?)")) {
             ps.setString(1, name);
             ps.setInt(2, ProductCategory_id);
-            ps.setInt(3,price);
+            ps.setInt(3, price);
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -365,12 +386,12 @@ public class JDBCRepository implements ShopRepository {
 
     //Adds Bag to database
     @Override
-    public void addBag(String name, int price,String description) {
+    public void addBag(String name, int price, String description) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Bag\" (name, price, description) VALUES (?,?,?)")) {
             ps.setString(1, name);
             ps.setInt(2, price);
-            ps.setString(3,description);
+            ps.setString(3, description);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -449,7 +470,7 @@ public class JDBCRepository implements ShopRepository {
 
     //Creates new Products from database
     private Product rsProduct(ResultSet rs) throws SQLException {
-        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"),rs.getInt("price"));
+        return new Product(rs.getInt("id"), rs.getString("name"), rs.getInt("productCategory_id"), rs.getInt("price"));
     }
 
     //Creates new Customer from database
@@ -504,7 +525,7 @@ public class JDBCRepository implements ShopRepository {
         Customer customer = listCustomer(Orderid);
         List<v_dash_orderdetails_orderbag> orderbagList = listOrderBags(Orderid);
 
-        return new v_dash_orderdetails_order(v_dashboard_Order,customer,orderbagList);
+        return new v_dash_orderdetails_order(v_dashboard_Order, customer, orderbagList);
     }
 
     @Override
@@ -517,7 +538,7 @@ public class JDBCRepository implements ShopRepository {
         Customer customer = listCustomer(Orderid);
         List<v_dash_orderdetails_orderbag> orderbagList = listOrderBags(Orderid);
 
-        return new v_dash_orderdetails_order(v_dashboard_Order,customer,orderbagList);
+        return new v_dash_orderdetails_order(v_dashboard_Order, customer, orderbagList);
     }
 
 
@@ -533,13 +554,13 @@ public class JDBCRepository implements ShopRepository {
                              "where \"Order_id\" = ?\n" +
                              "Order by \"Bag_id\" ASC"
              )) {
-            ps.setInt(1,Orderid);
+            ps.setInt(1, Orderid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 v_dashboard_orderbag orderBag = listV_dashboard_orderbag(rs.getInt(1));
                 List<v_dashboard_orderbagproducts> orderBagProductsList = listV_dashboard_orderbagproducts(rs.getInt(1));
 
-                orderbagList.add(new v_dash_orderdetails_orderbag(orderBag,orderBagProductsList));
+                orderbagList.add(new v_dash_orderdetails_orderbag(orderBag, orderBagProductsList));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -564,7 +585,7 @@ public class JDBCRepository implements ShopRepository {
         return listContentsOfBag;
     }
 
-    private OrderBagProducts rsOrderBagProduct(ResultSet rs)  throws SQLException  {
+    private OrderBagProducts rsOrderBagProduct(ResultSet rs) throws SQLException {
         return new OrderBagProducts(
                 rs.getInt(1),
                 rs.getInt(2),
@@ -590,9 +611,9 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "select OB.\"id\", OB.\"Bag_id\", OB.\"Order_id\", B.\"name\", B.\"price\" " +
-                     "from \"OrderBag\" AS OB " +
-                     "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\" " +
-                     "where OB.\"id\" = ?")) {
+                             "from \"OrderBag\" AS OB " +
+                             "INNER JOIN \"Bag\" AS B ON OB.\"Bag_id\" = B.\"id\" " +
+                             "where OB.\"id\" = ?")) {
             ps.setInt(1, OrderBag_id);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -605,9 +626,9 @@ public class JDBCRepository implements ShopRepository {
 
     private OrderBag rsOrderBag(ResultSet rs) throws SQLException {
         return new OrderBag(
-            rs.getInt(1),
-            rs.getInt(2),
-            rs.getInt(3)
+                rs.getInt(1),
+                rs.getInt(2),
+                rs.getInt(3)
         );
     }
 
@@ -647,7 +668,7 @@ public class JDBCRepository implements ShopRepository {
         );
     }
 
-    private v_dashboard_orderbagproducts rsV_dashboard_orderbagproducts(ResultSet rs)  throws SQLException  {
+    private v_dashboard_orderbagproducts rsV_dashboard_orderbagproducts(ResultSet rs) throws SQLException {
         return new v_dashboard_orderbagproducts(
                 rs.getInt(1),
                 rs.getInt(2),
@@ -678,7 +699,6 @@ public class JDBCRepository implements ShopRepository {
     }
 
 
-
     //Creates a list of all Orders from database
     @Override
     public List<v_dashboard_order> listCustomerOrders(String mail) {
@@ -703,8 +723,8 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "UPDATE \"Order\" " +
-                     "SET \"OrderStatus_id\" = ?" +
-                     "WHERE \"id\" = ?")) {
+                             "SET \"OrderStatus_id\" = ?" +
+                             "WHERE \"id\" = ?")) {
             ps.setInt(1, Orderstatus);
             ps.setInt(2, Orderid);
             ps.executeUpdate();
@@ -712,8 +732,6 @@ public class JDBCRepository implements ShopRepository {
             throw new RuntimeException(e);
         }
     }
-
-
 
 
     @Override
@@ -832,7 +850,7 @@ public class JDBCRepository implements ShopRepository {
         return resList;
     }
 
-    private v_dash_order_stats_orderbagsum rsFetchOrderStats2(ResultSet rs)  throws SQLException  {
+    private v_dash_order_stats_orderbagsum rsFetchOrderStats2(ResultSet rs) throws SQLException {
         return new v_dash_order_stats_orderbagsum(
                 rs.getInt(1),
                 rs.getString(2),

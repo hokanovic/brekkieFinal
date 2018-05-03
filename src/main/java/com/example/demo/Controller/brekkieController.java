@@ -96,6 +96,14 @@ public class brekkieController {
                 .addObject("ProductAndProductCategoryName",shopRepository.listProductsWithProductCategory());
     }
 
+    @GetMapping("/dashboardProductsSortedByProductCategory")
+    public ModelAndView brekkiedashboardProductsSorted(@RequestParam int PC_id) {
+        return new ModelAndView("dashboardProducts").addObject("Products", shopRepository.listProducts())
+                .addObject("ProductCategory", shopRepository.listProductCategorys())
+                .addObject("ProductAndProductCategoryName",
+                        shopRepository.listProductsWithProductCategorySortedByProductCategory(PC_id));
+    }
+
     @GetMapping("/dashboardaddProductCategory")
     public ModelAndView brekkiedashboardaddProductCategory() {
         return new ModelAndView("dashboardaddProductCategory")

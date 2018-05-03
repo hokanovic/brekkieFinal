@@ -32,8 +32,6 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                             <a href="dashboardaddProducts" class="dropdown-item">Lägg till ny Produkt</a>
                             <a href="dashboardaddProductCategory" class="dropdown-item">Lägg till ny Frukostpåse</a>
-                            <a href="dashboardCustomers" class="dropdown-item">7 dagar</a>
-                            <a href="dashboardCustomers" class="dropdown-item">Alla</a>
                         </div>
                     </div>
                     <div class="">
@@ -47,7 +45,10 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 <a th:each="productcategory : ${ProductCategory}" class="dropdown-item"
-                                   th:text="${productcategory.name}"/>
+                                   th:text="${productcategory.name}"
+                                   th:href="@{'/dashboardProductsSortedByProductCategory?PC_id='
+                             + ${productcategory.id}}"/>
+                                <a href="dashboardProducts" class="dropdown-item">Alla produkter</a>
                             </div>
                         </div>
                     </div>
