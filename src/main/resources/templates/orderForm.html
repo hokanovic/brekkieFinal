@@ -28,7 +28,7 @@
     </div>
 </nav>
 
-    <form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
+<form ng-controller="formController" th:action="@{/frukost}" th:object="${orderForm}" method="post">
     <div class="part1">
         <div class="jumbotron text-center">
 
@@ -192,67 +192,67 @@
         </div>
     </div>
 
-        <div class="spacing"></div>
+    <div class="spacing"></div>
 
-        <div class="part3">
-            <A NAME = "ordersammanfattning"></A>
-            <div class="jumbotron text-center">
-                <h1 class="display-4">er order</h1>
-                <hr class="my-4">
-                <div class="order" th:each="product : ${jsonOrders}">
-                    <h5 class="cart" th:text="${product.productName} + ' ' + ${product.productQty}"></h5>
-                </div>
-                <div class="form-row">
-                    <button type="submit" class="btn btn-primary btn-block">Beställ</button>
-                </div>
-                <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
+    <div class="part3">
+        <A NAME = "ordersammanfattning"></A>
+        <div class="jumbotron text-center">
+            <h1 class="display-4">er order</h1>
+            <hr class="my-4">
+            <div class="order" th:each="product : ${jsonOrders}">
+                <h5 class="cart" th:text="${product.productName} + ' ' + ${product.productQty}"></h5>
             </div>
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary btn-block">Beställ</button>
+            </div>
+            <h5 id="cardText">Vi ser fram emot att leverera er frukost</h5>
         </div>
-
-
-    <table id="address" hidden>
-        <tr>
-            <td class="label">Street address</td>
-            <td class="slimField">
-                <input class="field" id="street_number" disabled="true"></input>
-            </td>
-            <td class="wideField" colspan="2">
-                <input class="field" id="route" disabled="true"></input>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">City</td>
-            <!-- Note: Selection of address components in this example is typical.
-                     You may need to adjust it for the locations relevant to your app. See
-                     https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
-                -->
-            <td class="wideField" colspan="3">
-                <input class="field" id="locality2" disabled="true"></input>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">State</td>
-            <td class="slimField">
-                <input class="field" id="administrative_area_level_1" disabled="true"></input>
-            </td>
-            <td class="label">Zip code</td>
-            <td class="wideField">
-                <input class="field" id="postal_code" disabled="true"></input>
-            </td>
-        </tr>
-        <tr>
-            <td class="label">Country</td>
-            <td class="wideField" colspan="3">
-                <input class="field" id="country2" disabled="true"></input>
-            </td>
-        </tr>
-    </table>
-    <div hidden>
-        <input name="locality" id="locality" disabled="true">
-        <input name="country" id="country" disabled="true">
-        <input name="lat" th:field="*{lat}" id="lat" disabled="true">
-        <input name="lng" th:field="*{lng}" id="lng" disabled="true">
     </div>
+
+
+            <table id="address" hidden>
+                <tr>
+                    <td class="label">Street address</td>
+                    <td class="slimField">
+                        <input class="field" id="street_number" disabled="true"></input>
+                    </td>
+                    <td class="wideField" colspan="2">
+                        <input class="field" id="route" disabled="true"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">City</td>
+                    <!-- Note: Selection of address components in this example is typical.
+                             You may need to adjust it for the locations relevant to your app. See
+                             https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+                        -->
+                    <td class="wideField" colspan="3">
+                        <input class="field" id="locality2" disabled="true"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">State</td>
+                    <td class="slimField">
+                        <input class="field" id="administrative_area_level_1" disabled="true"></input>
+                    </td>
+                    <td class="label">Zip code</td>
+                    <td class="wideField">
+                        <input class="field" id="postal_code" disabled="true"></input>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Country</td>
+                    <td class="wideField" colspan="3">
+                        <input class="field" id="country2" disabled="true"></input>
+                    </td>
+                </tr>
+            </table>
+            <div hidden>
+                <input name="locality" id="locality" disabled="true">
+                <input name="country" id="country" disabled="true">
+                <input name="lat" th:field="*{lat}" id="lat" disabled="true">
+                <input name="lng" th:field="*{lng}" id="lng" disabled="true">
+            </div>
 
 </form>
 </div>
@@ -274,25 +274,19 @@
         country: 'long_name',
         postal_code: 'short_name'
     };
-
-
     function initAutocomplete() {
-
         var defaultBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(59.307697, 18.001537),
             new google.maps.LatLng(59.344860, 18.101600));
-
         var options = {
             types: ['address'],
             locality: ['Stockholm'],
             bounds: defaultBounds,
             strictBounds: true
         };
-
         autocomplete = new google.maps.places.Autocomplete((document.getElementById('deliveryAddress')), options);
         autocomplete.addListener('place_changed', fillInAddress);
     }
-
     function fillInAddress() {
         var place = autocomplete.getPlace();
         for (var component in componentForm) {
@@ -312,15 +306,11 @@
         document.getElementById("lng").value = '';
         document.getElementById("lng").disabled = false;
         document.getElementById("lng").value = place.geometry.location.lng();
-
         document.getElementById("inputZip").value = document.getElementById("postal_code").value;
         document.getElementById("inputDeliveryPostalTown").value = document.getElementById("administrative_area_level_1").value;
-
         deliveryAddress
-
         var addr = document.getElementById("route").value + " " + document.getElementById("street_number").value;
         document.getElementById("deliveryAddress").value = addr;
-
         // street_number
         // route
     }

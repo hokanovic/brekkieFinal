@@ -377,7 +377,7 @@ public class JDBCRepository implements ShopRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO \"Order\" (creationdate, deliverydate, additionaltext, allergy, deliveryaddress," +
                      "deliveryaddresspostalcode, deliveryaddresspostaltown, invoiceaddress, invoiceaddresspostalcode, invoiceaddresspostaltown, \"PaymentMethod_id\", " +
-                     "\"Customer_id\", \"OrderStatus_id\") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " , new String[] {"id"})) {
+                     "\"Customer_id\", \"OrderStatus_id\", lat, lng) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) " , new String[] {"id"})) {
 
             ps.setDate(1, creationdate);
             ps.setDate(2, deliverydate);
