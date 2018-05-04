@@ -62,6 +62,27 @@ public class OrderForm {
     private Double lat;
     private Double lng;
 
+    public OrderForm(@NotEmpty @Size(min = 2, max = 50) String companyName, @NotEmpty String orgNr, @NotEmpty @Size(min = 2, max = 30) String contactperson, @NotEmpty String phoneNumber, @NotEmpty @Email String email, @NotEmpty String invoiceAddress, @NotEmpty String invoicePostalTown, @NotEmpty String invoicePostNumber, @NotEmpty String deliveryAddress, @NotEmpty String deliveryPostalTown, @NotEmpty String deliveryPostNumber, @NotNull Boolean allergy, String allergyMarking, @NotNull Date deliveryDate, @NotNull LocalTime deliveryTime, String additionalText, Double lat, Double lng) {
+        this.companyName = companyName;
+        this.orgNr = orgNr;
+        this.contactperson = contactperson;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.invoiceAddress = invoiceAddress;
+        this.invoicePostalTown = invoicePostalTown;
+        this.invoicePostNumber = invoicePostNumber;
+        this.deliveryAddress = deliveryAddress;
+        this.deliveryPostalTown = deliveryPostalTown;
+        this.deliveryPostNumber = deliveryPostNumber;
+        this.allergy = allergy;
+        this.allergyMarking = allergyMarking;
+        this.deliveryDate = deliveryDate;
+        this.deliveryTime = deliveryTime;
+        this.additionalText = additionalText;
+        this.lat = lat;
+        this.lng = lng;
+    }
+
     public OrderForm() {
     }
 

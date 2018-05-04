@@ -83,14 +83,19 @@ public class brekkieController {
             emailService.sendMail(orderForm);
             Date date = new Date(Calendar.getInstance().getTime().getTime());
 
-             int custid = shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
+            int custid = shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
             //OBS - Customer_ID!!!
 
-            int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+            int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(), orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
                     orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
-                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, 2, 1, orderForm.getLat(), orderForm.getLng());
+                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 2, orderForm.getLat(), orderForm.getLng());
 
             shopRepository.addCustomer(orderForm.getOrgNr(), orderForm.getCompanyName(), orderForm.getContactperson(), orderForm.getEmail());
+
+//            int orderId = shopRepository.addOrder(date, orderForm.getDeliveryDate(),orderForm.getAdditionalText(), orderForm.getAllergyMarking(), orderForm.getDeliveryAddress(),
+//                    orderForm.getDeliveryPostNumber(), orderForm.getDeliveryPostalTown(), orderForm.getInvoiceAddress(),
+//                    orderForm.getInvoicePostNumber(), orderForm.getInvoicePostalTown(), 1, custid, 1, orderForm.getLat(), orderForm.getLng());
+
 
             ArrayList<OrderBagProducts> orderBagProductsArrayList = (ArrayList<OrderBagProducts>)session.getAttribute("orderBagProductsArrayList");
 

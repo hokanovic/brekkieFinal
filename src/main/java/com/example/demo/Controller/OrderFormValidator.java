@@ -27,14 +27,14 @@ public class OrderFormValidator implements Validator {
 //                !orderForm.getPhoneNumber().matches("^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4}|^\\(?(\\d{2})\\)?[- ]?(\\d{8})l)$")) {
 //            errors.rejectValue("phoneNumber", "felaktigt telefonnummer");
 //        }
-        if (!orderForm.getDeliveryPostNumber().matches("(\\d{3}[ ]?\\d{2})") ||
-                !orderForm.getDeliveryPostNumber().matches("(\\d{5})")) {
-            errors.rejectValue("deliveryPostNumber", "felaktigt postnummer");
-        }
-        if (!orderForm.getInvoicePostNumber().matches("(\\d{3}[ ]?\\d{2})") ||
-                !orderForm.getDeliveryPostNumber().matches("(\\d{5})")) {
-            errors.rejectValue("invoicePostNumber", "felaktigt postnummer");
-        }
+//        if (!orderForm.getDeliveryPostNumber().matches("(\\d{3}[ ]?\\d{2})") ||
+//                !orderForm.getDeliveryPostNumber().matches("(\\d{5})")) {
+//            errors.rejectValue("deliveryPostNumber", "felaktigt postnummer");
+//        }
+//        if (!orderForm.getInvoicePostNumber().matches("(\\d{3}[ ]?\\d{2})") ||
+//                !orderForm.getDeliveryPostNumber().matches("(\\d{5})")) {
+//            errors.rejectValue("invoicePostNumber", "felaktigt postnummer");
+//        }
         if (orderForm.getAllergy()==null || (orderForm.getAllergy() && (orderForm.getAllergyMarking() == null || orderForm.getAllergyMarking() ==""))){
             errors.rejectValue("allergy", "Vänligen ange allergier");
 
